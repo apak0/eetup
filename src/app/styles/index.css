@@ -1,6 +1,5 @@
-@tailwind components;
 @tailwind utilities;
 
-@import "./reset.css";
-@import "./button.css";
-@import "./input.css";
+@import './reset.css';
+@import './button.css';
+@import './input.css';

@@ -1,7 +1,7 @@
 import { JWT_SECRET, users } from '@/app/api/db'
 import jsonwebtoken from 'jsonwebtoken'
 import { cookies } from 'next/headers'
-import { User } from '../schema'
+import { User } from '../db/schema'
 
 export function authenticateRequest() {
   const token = cookies().get('accessToken')?.value

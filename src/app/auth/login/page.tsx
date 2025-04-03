@@ -1,26 +1,27 @@
-"use client";
+'use client'
 
-import { login } from "@/app/lib/services";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useFormState, useFormStatus } from "react-dom";
+import { login } from '@/app/lib/services'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useActionState } from 'react'
+import { useFormState, useFormStatus } from 'react-dom'
 
 export default function Login() {
-  const router = useRouter();
+  const router = useRouter()
   const authenticate = async (state: any, formData: FormData) => {
-    const object: any = {};
+    const object: any = {}
     formData.forEach((value, key) => {
-      object[key] = value;
-    });
+      object[key] = value
+    })
     const result = login(object)
       .then(() => {
-        router.push("/home");
+        router.push('/home')
       })
-      .catch(console.error);
+      .catch(console.error)
 
-    return result;
-  };
-  const [errorMessage, dispatch] = useFormState(authenticate, undefined);
+    return result
+  }
+  const [errorMessage, dispatch] = useActionState(authenticate, undefined)
 
   return (
     <form action={dispatch}>
@@ -37,21 +38,21 @@ export default function Login() {
         </Link>
       </div>
     </form>
-  );
+  )
 }
 
 function LoginButton() {
-  const { pending } = useFormStatus();
+  const { pending } = useFormStatus()
 
   const handleClick = (event: any) => {
     if (pending) {
-      event.preventDefault();
+      event.preventDefault()
     }
-  };
+  }
 
   return (
     <button className="w-full" aria-disabled={pending} type="submit" onClick={handleClick}>
       Login
     </button>
-  );
+  )
 }
