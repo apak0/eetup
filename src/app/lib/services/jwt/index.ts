@@ -1,32 +1,32 @@
-import { LoginRequest, RegisterRequest } from "./types";
+import { LoginRequest, RegisterRequest } from './types'
 
-import { bFetch } from "../baseFetch";
+import { bFetch } from '../baseFetch'
 
 const getCurrentUser = async () => {
-  return await bFetch({ url: `/users/me` });
-};
+  return await bFetch({ url: `/users/me` })
+}
 
 const login = async (body: LoginRequest) => {
   return await bFetch({
-    url: "/auth/login",
-    method: "POST",
+    url: '/auth/login',
+    method: 'POST',
     body,
-  });
-};
+  })
+}
 
 const logout = async () => {
   return await bFetch({
-    url: "/auth/logout",
-    method: "POST",
-  });
-};
+    url: '/auth/logout',
+    method: 'POST',
+  })
+}
 
 const register = async (body: FormData) => {
   return await bFetch({
-    url: "/auth/register",
-    method: "POST",
+    url: '/auth/register',
+    method: 'POST',
     body,
-  });
-};
+  })
+}
 
-export { getCurrentUser, login, logout, register };
+export { getCurrentUser, login, logout, register }

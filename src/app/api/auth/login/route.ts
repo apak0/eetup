@@ -1,4 +1,4 @@
-import { NextRequest } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcrypt'
 import jsonwebtoken from 'jsonwebtoken'
 import { cookies } from 'next/headers'
@@ -12,16 +12,12 @@ export async function POST(req: NextRequest) {
   const [foundUser] = await db.select().from(user).where(eq(user.email, email))
 
   if (!foundUser) {
-    return new Response(JSON.stringify({ message: 'Invalid credentials' }), {
-      status: 400,
-    })
+    return NextResponse.json({ message: 'Invalid credentials' }, { status: 400 })
   }
 
   const isPasswordValid = await bcrypt.compare(password, foundUser.password)
   if (!isPasswordValid) {
-    return new Response(JSON.stringify({ message: 'Invalid credentials' }), {
-      status: 400,
-    })
+    return NextResponse.json({ message: 'Invalid credentials' }, { status: 400 })
   }
   const { password: _, ...userWithoutPassword } = foundUser
 
@@ -43,7 +39,5 @@ export async function POST(req: NextRequest) {
     path: '/',
   })
 
-  return new Response(JSON.stringify({ message: 'Login Successful' }), {
-    status: 200,
-  })
+  return NextResponse.json({ message: 'Login Successful' }, { status: 200 })
 }

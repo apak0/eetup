@@ -1,4 +1,5 @@
 import { cookies } from 'next/headers'
+import { NextResponse } from 'next/server'
 
 export async function POST() {
   const cookieStore = await cookies()
@@ -6,7 +7,5 @@ export async function POST() {
   cookieStore.delete('accessToken')
   cookieStore.delete('refreshToken')
 
-  return new Response(JSON.stringify({ message: 'Logout Successful' }), {
-    status: 200,
-  })
+  return NextResponse.json({ message: 'Logout Successful' }, { status: 200 })
 }

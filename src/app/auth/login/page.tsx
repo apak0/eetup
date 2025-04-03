@@ -14,7 +14,7 @@ export default function Login() {
       object[key] = value
     })
     const result = login(object)
-      .then(() => {
+      .then((res) => {
         router.push('/home')
       })
       .catch(console.error)
