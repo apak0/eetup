@@ -1,0 +1,9 @@
+input {
+  @apply py-1 px-2 rounded-md;
+}
+
+@media (prefers-color-scheme: dark) {
+  input {
+    @apply bg-gray-800;
+  }
+}
