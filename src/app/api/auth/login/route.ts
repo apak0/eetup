@@ -1,44 +1,49 @@
-import { NextRequest } from "next/server";
-import { JWT_SECRET, users } from "../../db";
-import bcrypt from "bcrypt";
-import jsonwebtoken from "jsonwebtoken";
-import { cookies } from "next/headers";
+import { NextRequest } from 'next/server'
+import bcrypt from 'bcrypt'
+import jsonwebtoken from 'jsonwebtoken'
+import { cookies } from 'next/headers'
+import { user } from '@/app/lib/database/schema'
+import { eq } from 'drizzle-orm'
+import { db } from '@/app/lib/database/db'
+import { JWT_SECRET } from '@/constants'
 
 export async function POST(req: NextRequest) {
-  const { email, password } = await req.json();
-  const user = users[email];
+  const { email, password } = await req.json()
+  const [foundUser] = await db.select().from(user).where(eq(user.email, email))
 
-  if (!user) {
-    return new Response(JSON.stringify({ message: "Invalid credentials" }), {
+  if (!foundUser) {
+    return new Response(JSON.stringify({ message: 'Invalid credentials' }), {
       status: 400,
-    });
+    })
   }
 
-  const isPasswordValid = await bcrypt.compare(password, user.password);
+  const isPasswordValid = await bcrypt.compare(password, foundUser.password)
   if (!isPasswordValid) {
-    return new Response(JSON.stringify({ message: "Invalid credentials" }), {
+    return new Response(JSON.stringify({ message: 'Invalid credentials' }), {
       status: 400,
-    });
+    })
   }
-  const { password: _, ...userWithoutPassword } = user;
+  const { password: _, ...userWithoutPassword } = foundUser
 
-  const accessToken = jsonwebtoken.sign(userWithoutPassword, JWT_SECRET, { expiresIn: "1d" });
-  const refreshToken = jsonwebtoken.sign({}, JWT_SECRET, { expiresIn: "1w" });
+  const accessToken = jsonwebtoken.sign(userWithoutPassword, JWT_SECRET, { expiresIn: '1d' })
+  const refreshToken = jsonwebtoken.sign({}, JWT_SECRET, { expiresIn: '1w' })
 
-  cookies().set("accessToken", accessToken, {
+  const cookieStore = await cookies()
+
+  cookieStore.set('accessToken', accessToken, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.NODE_ENV === 'production',
     maxAge: 60 * 60 * 24, // One day
-    path: "/",
-  });
-  cookies().set("refreshToken", refreshToken, {
+    path: '/',
+  })
+  cookieStore.set('refreshToken', refreshToken, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.NODE_ENV === 'production',
     maxAge: 60 * 60 * 24 * 7, // One week
-    path: "/",
-  });
+    path: '/',
+  })
 
-  return new Response(JSON.stringify({ message: "Login Successful" }), {
+  return new Response(JSON.stringify({ message: 'Login Successful' }), {
     status: 200,
-  });
+  })
 }

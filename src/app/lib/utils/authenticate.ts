@@ -1,10 +1,14 @@
-import { JWT_SECRET, users } from '@/app/api/db'
 import jsonwebtoken from 'jsonwebtoken'
 import { cookies } from 'next/headers'
-import { User } from '../db/schema'
+import { user, User } from '../database/schema'
+import { JWT_SECRET } from '@/constants'
+import { db } from '../database/db'
+import { eq } from 'drizzle-orm'
 
-export function authenticateRequest() {
-  const token = cookies().get('accessToken')?.value
+export async function authenticateRequest() {
+  const cookieStore = await cookies()
+
+  const token = cookieStore.get('accessToken')?.value
 
   console.log('ahoy1', token)
 
@@ -13,9 +17,11 @@ export function authenticateRequest() {
   }
 
   try {
-    const user: any = jsonwebtoken.verify(token, JWT_SECRET)
-    const { password, ...foundUser } = users[user.email]
-    return foundUser as User
+    const tokenUser: any = jsonwebtoken.verify(token, JWT_SECRET)
+    const [foundUser] = await db.select().from(user).where(eq(user.email, tokenUser.email))
+
+    const { password, ...rest } = foundUser
+    return rest as User
   } catch {
     throw new Error('Invalid Token')
   }

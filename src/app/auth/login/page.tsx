@@ -4,7 +4,7 @@ import { login } from '@/app/lib/services'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useActionState } from 'react'
-import { useFormState, useFormStatus } from 'react-dom'
+import { useFormStatus } from 'react-dom'
 
 export default function Login() {
   const router = useRouter()

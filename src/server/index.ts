@@ -4,9 +4,11 @@ import next from 'next'
 import { createServer } from 'node:http'
 import { Server } from 'socket.io'
 import { SocketType } from './types'
+import { JWT_SECRET } from '@/constants'
 dotenv.config()
 
 const dev = process.env.NODE_ENV !== 'production'
+
 const hostname = 'localhost'
 const port = parseInt(process.env.PORT || '', 10) || 3000
 
@@ -15,7 +17,6 @@ const app = next({ dev, hostname, port })
 const handler = app.getRequestHandler()
 
 // TODO: Move to environment variable
-const JWT_SECRET = 'MYSECRET'
 
 // Middleware for token authentication
 const authenticateToken = (socket: SocketType, next: any) => {
