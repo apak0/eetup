@@ -10,7 +10,6 @@ export async function authenticateRequest() {
 
   const token = cookieStore.get('accessToken')?.value
 
-  console.log('ahoy1', token)
 
   if (!token) {
     throw new Error('Unauthorized')

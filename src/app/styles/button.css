@@ -1,16 +1,18 @@
-button,
-.btn {
-  @apply text-white px-4 py-1 cursor-pointer rounded-md border-0 bg-blue-400/80 text-lg;
-}
+@layer components {
+  button,
+  .btn {
+    @apply h-15 text-white px-4 py-1 cursor-pointer rounded-md border-0 bg-blue-4/90 text-lg;
+  }
 
-button:hover,
-.btn:hover {
-  @apply bg-blue-400/100;
-}
+  button:hover,
+  .btn:hover {
+    @apply bg-blue-4/100;
+  }
 
-.link {
-  @apply text-blue-500 underline;
-}
-.link:hover {
-  @apply text-blue-400;
+  button.link {
+    @apply bg-transparent text-blue-500 underline;
+  }
+  .link:hover {
+    @apply text-blue-400;
+  }
 }

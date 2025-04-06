@@ -1,0 +1,24 @@
+@layer components {
+  .border-bottom {
+    border-bottom: 1px solid var(--border-color);
+  }
+  .border-top {
+    border-top: 1px solid var(--border-color);
+  }
+  .card {
+    @apply rounded-lg bg-(--bg) mb-4;
+  }
+
+  .flagged {
+    height: 100%;
+    width: 4px;
+    border-radius: 3px;
+    background-color: var(--gray-4);
+  }
+  .no-underline {
+    text-decoration: none !important;
+  }
+  .dark .drop-shadow {
+    @apply drop-shadow-none;
+  }
+}

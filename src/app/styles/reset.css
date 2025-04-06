@@ -19,4 +19,44 @@
   h6 {
     @apply text-sm;
   }
+
+  html,
+  body {
+    color: var(--text);
+    background-color: var(--bg);
+    font-family: 'manrope', sans-serif;
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    scrollbar-color: var(--gray-3) transparent;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+  }
+
+  dl,
+  ol,
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    color: var(--blue-3);
+    text-decoration: none;
+  }
+  a:hover {
+    color: var(--blue);
+    text-decoration: underline;
+  }
+
+
 }

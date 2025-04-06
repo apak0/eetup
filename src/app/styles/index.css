@@ -1,5 +1,8 @@
 @tailwind utilities;
 
 @import './reset.css';
+@import './colors.css';
 @import './button.css';
 @import './input.css';
+
+@import './tailwind-reusables.css';

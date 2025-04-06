@@ -5,16 +5,21 @@
   "scripts": {
     "build": "tsc ./src/server/index.ts --outDir ./dist --module preserve && next build",
     "lint": "next lint",
-    "start": "npx tsx src/server/index.ts",
+    "start1": "npx tsx src/server/index.ts",
+    "start": "next dev",
     "prod": "cross-env NODE_ENV=production node dist/index.js",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@headlessui/react": "^2.2.1",
     "@libsql/client": "^0.15.2",
     "@types/pg": "^8.11.11",
     "bcrypt": "^5.1.1",
+    "classnames": "^2.5.1",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.41.0",
     "jsonwebtoken": "^9.0.2",
