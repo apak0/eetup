@@ -8,7 +8,7 @@ export const SignInButton = () => {
 
   return (
     <div>
-      <button className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600" onClick={() => setAuthOpen(true)}>
+      <button className="h-8" onClick={() => setAuthOpen(true)}>
         Sign In
       </button>
 

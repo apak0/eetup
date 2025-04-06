@@ -5,8 +5,7 @@
   "scripts": {
     "build": "tsc ./src/server/index.ts --outDir ./dist --module preserve && next build",
     "lint": "next lint",
-    "start1": "npx tsx src/server/index.ts",
-    "start": "next dev",
+    "start": "npx tsx src/server/index.ts",
     "prod": "cross-env NODE_ENV=production node dist/index.js",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
