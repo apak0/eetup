@@ -43,6 +43,8 @@
   --color-purple: #f6f0fb;
   --color-purple-2: #a667d3;
   --color-purple-3: #5f3b78;
+
+  --container-app: 1280px;
 }
 
 @layer base {

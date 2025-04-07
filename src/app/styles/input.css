@@ -1,6 +1,6 @@
 input {
-  @apply h-10 py-2 px-2 rounded-md;
+  @apply h-10 py-2 px-2 rounded-md bg-(--bg-secondary);
   .dark & {
-    @apply border border-gray-3 border-solid bg-gray-5;
+    @apply bg-gray-5;
   }
 }

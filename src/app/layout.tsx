@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
 import './globals.css'
 import { TopBar } from './components/TopBar'
+import { Footer } from './components/Footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,7 +23,8 @@ export default function RootLayout({
       <body className={`${inter.className} antialiased`}>
         <TopBar />
         <Toaster position="bottom-right" />
-        {children}
+        <main className="max-w-app mx-auto px-2 lg:px-10">{children}</main>
+        <Footer />
       </body>
     </html>
   )
