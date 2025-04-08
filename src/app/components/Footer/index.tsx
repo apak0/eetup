@@ -17,25 +17,25 @@ export const Footer = () => {
           </ul>
           <ul className="flex flex-col gap-3">
             <li className="text-sm text-gray-500 hover:text-gray-700">
-              <Link href={'/about-us'}>About Us</Link>
+              <Link href={'/hub/about-us'}>About Us</Link>
             </li>
             <li className="text-sm text-gray-500 hover:text-gray-700">
-              <Link href={'/faq'}>FAQ</Link>
+              <Link href={'/hub/faq'}>FAQ</Link>
             </li>
             <li className="text-sm text-gray-500 hover:text-gray-700">
-              <Link href={'/blog'}>Blog</Link>
+              <Link href={'/hub/blog'}>Blog</Link>
             </li>
           </ul>
 
           <ul className="flex flex-col gap-3">
             <li className="text-sm text-gray-500 hover:text-gray-700">
-              <Link href={'/privacy-policy'}>Privacy Policy</Link>
+              <Link href={'/hub/privacy-policy'}>Privacy Policy</Link>
             </li>
             <li className="text-sm text-gray-500 hover:text-gray-700">
-              <Link href={'/terms-of-service'}>Terms of Service</Link>
+              <Link href={'/hub/terms-of-service'}>Terms of Service</Link>
             </li>
             <li className="text-sm text-gray-500 hover:text-gray-700">
-              <Link href={'/contact-us'}>Contact Us</Link>
+              <Link href={'/hub/contact-us'}>Contact Us</Link>
             </li>
           </ul>
         </div>

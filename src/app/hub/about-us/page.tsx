@@ -4,14 +4,14 @@ import Image from "next/image";
 
 export default function AboutUsPage() {
   return (
-    <main className="max-w-4xl mx-auto px-4 py-12">
+    <main className="max-w-4xl min-h-screen mx-auto px-4 py-12">
       <h1 className="text-4xl font-bold mb-6 text-center text-blue-700">
         About Us
       </h1>
 <hr/>
       <div className="my-6 rounded-lg overflow-hidden shadow-md">
         <Image
-          src="https://img.freepik.com/free-photo/restaurant-interior_1127-3394.jpg?t=st=1744137660~exp=1744141260~hmac=74c4b83a21e475dc671a91a9ba87c7a717023ee418b2df2f4a3f2cbbe7ff346b&w=1380"
+          src="https://img.freepik.com/free-photo/restaurant-interior_1127-3392.jpg?t=st=1744142350~exp=1744145950~hmac=8be14e51725baa4e0f29e5c6827368d5dd93a8afa75b56d42e2e3397f6199c99&w=900"
           alt="Restaurant interior"
           width={1380}
           height={600}
@@ -53,7 +53,7 @@ export default function AboutUsPage() {
           Contact Us
         </h2>
         <p className="text-gray-600">
-          Have questions or feedback? Reach out to us at <span className="underline">support@neemee.com</span> and we’ll get back to you as soon as possible.
+          Have questions or feedback? Reach out to us at <span className="underline">{process.env.E_MAIL}</span> and we’ll get back to you as soon as possible.
         </p>
       </section>
     </main>
