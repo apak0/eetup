@@ -1,0 +1,42 @@
+.react-tel-input {
+  width: initial;
+}
+.react-tel-input .form-control {
+  width: 100%;
+}
+
+.react-tel-input .form-control,
+.react-tel-input .country-list,
+.react-tel-input .country-list .country.highlight,
+.react-tel-input .country-list .country:hover,
+.react-tel-input .flag-dropdown,
+.react-tel-input .flag-dropdown.open,
+.react-tel-input .flag-dropdown.open .selected-flag,
+.react-tel-input .selected-flag:hover,
+.react-tel-input .selected-flag:focus {
+  background: var(--bg);
+  color: inherit;
+}
+
+.react-tel-input .country-list .country:hover,
+.react-tel-input .country-list .country.highlight,
+.react-tel-input .selected-flag:hover,
+.react-tel-input .selected-flag:focus {
+  background: var(--bg-secondary);
+}
+.react-tel-input .country-list .country .dial-code {
+  color: var(--blue);
+}
+
+.react-tel-input .selected-flag .arrow {
+  border-top: 4px solid var(--text);
+}
+.react-tel-input .selected-flag .arrow.up {
+  border-bottom: 4px solid var(--text);
+}
+
+.ant-form-item-has-error .react-tel-input .flag-dropdown,
+.ant-form-item-has-error .react-tel-input .form-control {
+  border-color: var(--red);
+  background-color: transparent;
+}

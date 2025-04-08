@@ -12,7 +12,7 @@ export const Footer = () => {
         <div className="flex flex-col lg:flex-row gap-3 w-1/2 lg:w-1/3 justify-between">
           <ul className="flex flex-col gap-3">
             <li className="text-sm text-gray-500 hover:text-gray-700">
-              <Link href={'/register-as-restaurant'}>Register As Restaurant</Link>
+              <Link href={'/auth/company/start'}>Start As Company</Link>
             </li>
           </ul>
           <ul className="flex flex-col gap-3">

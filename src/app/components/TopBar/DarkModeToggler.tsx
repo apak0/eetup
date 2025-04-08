@@ -7,15 +7,15 @@ type DarkModeTogglerProps = {}
 
 export const DarkModeToggler = ({}: DarkModeTogglerProps) => {
   const [theme, setTheme] = useState(
-    localStorage.getItem('theme') ||
-      (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && 'dark'),
+    globalThis.localStorage?.getItem('theme') ||
+      (globalThis.matchMedia && globalThis.matchMedia('(prefers-color-scheme: dark)').matches && 'dark'),
   )
 
   useEffect(() => {
     try {
       const initialTheme =
-        localStorage.getItem('theme') ||
-        (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && 'dark') ||
+        globalThis.localStorage.getItem('theme') ||
+        (globalThis.matchMedia && globalThis.matchMedia('(prefers-color-scheme: dark)').matches && 'dark') ||
         'light'
       document.documentElement.classList.toggle('dark', initialTheme === 'dark')
     } catch (e) {
