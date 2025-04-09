@@ -34,6 +34,23 @@ export const startCompanyRegister = async (formData: FormData) => {
     },
   })
 
+  // Email options
+  const mailOptions = {
+    from: process.env.SMTP_FROM,
+    to: email,
+    subject: 'Company Registration to EetUp',
+    text: 'Register your store at EetUp below',
+    html: `<b>Register your store at EetUp with the following link: <a href="${process.env.FRONTEND_COMPANY_REGISTER_LINK}">Register</a></b>`,
+  }
+
+  // Send the email
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return console.error('Error sending email:', error)
+    }
+    console.log('Email sent:', info.response)
+  })
+
   // TODO: send email with token to register the company
 
   console.log('ahoy1', transporter)
