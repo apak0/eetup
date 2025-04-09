@@ -7,9 +7,7 @@ import Register from './register'
 
 export function AuthModal({ open, onOpenChange }: { open: boolean; onOpenChange: (val: boolean) => void }) {
   const [loginContent, setLoginContent] = useState('initial')
-  const onLoginClick = () => {
-    console.log('ahoy1')
-  }
+
   return (
     <Modal
       title={'Welcome!'}

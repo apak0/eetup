@@ -1,7 +1,7 @@
 'use client'
 
 import { login } from '@/app/lib/services'
-import SignInPage from '@/app/sign-in-google/page'
+import SignInPage from './SignInGoogle'
 import { useRouter } from 'next/navigation'
 import { useActionState } from 'react'
 import { useFormStatus } from 'react-dom'

@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { DarkModeToggler } from './DarkModeToggler'
-import { SignInButton } from './SignInButton'
+import { SignInButton } from './sign-in'
 
 export const TopBar = () => {
   return (
