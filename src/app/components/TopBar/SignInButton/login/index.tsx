@@ -1,6 +1,7 @@
 'use client'
 
 import { login } from '@/app/lib/services'
+import SignInPage from '@/app/sign-in-google/page'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useActionState } from 'react'
@@ -26,6 +27,7 @@ export default function Login({ setLoginContent }: { setLoginContent: (val: stri
   return (
     <form action={dispatch}>
       <h1 className="mb-8 text-center">Login</h1>
+      <SignInPage />
 
       <div className="flex flex-col gap-4">
         <input type="email" name="email" id="email" placeholder="Email" required autoComplete="email" />
