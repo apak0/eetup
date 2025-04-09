@@ -1,35 +1,35 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { getServerSession } from "next-auth";
-import { Toaster } from "react-hot-toast";
-import "./globals.css";
-import { TopBar } from "./components/TopBar";
-import { Footer } from "./components/Footer";
-import SessionWrapper from "./components/SessionWrapper"; // Yeni bileşeni import et
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+import { Providers, ProviderWrapper } from './Providers'
+import { TopBar } from './components/TopBar'
+import { Toaster } from 'react-hot-toast'
+import { Footer } from './components/Footer'
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: "Neemmee",
-  description: "Neemmee food chain",
-};
+  title: 'Neemmee',
+  description: 'Neemmee food chain',
+}
 
 export default async function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
-  const session = await getServerSession();
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
-        <TopBar />
-        <Toaster position="bottom-right" />
-        <main className="max-w-app mx-auto px-2 lg:px-10">
-          <SessionWrapper session={session}>{children}</SessionWrapper>
-        </main>
-        <Footer />
+        <ProviderWrapper>
+          <>
+            <TopBar />
+            <Toaster position="bottom-right" />
+            <main className="max-w-app mx-auto px-2 lg:px-10">{children}</main>
+            <Footer />
+          </>
+        </ProviderWrapper>
       </body>
     </html>
-  );
+  )
 }
