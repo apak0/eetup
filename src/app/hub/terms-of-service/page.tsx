@@ -6,9 +6,10 @@ export default function TermsOfService() {
       <h1 className="text-4xl font-bold mb-6 text-center text-blue-700">Terms of Service</h1>
       <hr />
       <p className="my-6 text-gray-600">
-        These Terms of Service ("Agreement") govern your access to and use of the platform as a registered restaurant
-        ("You", "Restaurant") on our food delivery and ordering service ("Platform"). By registering and using the
-        Platform, you agree to comply with and be bound by these Terms.
+        These Terms of Service (&ldquo;Agreement&ldquo;) govern your access to and use of the platform as a registered
+        restaurant (&ldquo;You&ldquo;, &ldquo;Restaurant&ldquo;) on our food delivery and ordering service
+        (&ldquo;Platform&ldquo;). By registering and using the Platform, you agree to comply with and be bound by these
+        Terms.
       </p>
 
       <section className="mb-8">
@@ -55,7 +56,7 @@ export default function TermsOfService() {
         <h2 className="text-2xl font-semibold text-gray-700 mb-2">6. Intellectual Property</h2>
         <p className="text-gray-600">
           You retain the rights to your branding and menu items. However, by registering, you grant us a license to use
-          your restaurant's name, logo, and images for marketing and platform display purposes.
+          your restaurant&apos;s name, logo, and images for marketing and platform display purposes.
         </p>
       </section>
 

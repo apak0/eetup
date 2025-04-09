@@ -10,7 +10,7 @@ export default function BlogPage() {
         <Link href="/blog/boost-your-online-orders">
           <div className="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
             <h2 className="text-2xl font-semibold text-gray-600 mb-2 no-underline">
-              5 Tips to Boost Your Restaurant's Online Orders
+              5 Tips to Boost Your Restaurant&apos;s Online Orders
             </h2>
             <p className="text-gray-600">
               Discover how to enhance your digital presence, improve your menu listings, and provide excellent delivery

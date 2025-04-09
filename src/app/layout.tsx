@@ -1,10 +1,12 @@
+import { Toaster } from 'react-hot-toast'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import './globals.css'
-import { ProviderWrapper } from './Providers'
-import { TopBar } from './components/TopBar'
-import { Toaster } from 'react-hot-toast'
+
 import { Footer } from './components/Footer'
+import { TopBar } from './components/TopBar'
+import { ProviderWrapper } from './Providers'
+
+import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 

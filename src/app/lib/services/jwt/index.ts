@@ -1,6 +1,6 @@
-import { LoginRequest, RegisterRequest } from './types'
-
 import { bFetch } from '../baseFetch'
+
+import { LoginRequest } from './types'
 
 const getCurrentUser = async () => {
   return await bFetch({ url: `/users/me` })

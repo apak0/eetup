@@ -1,10 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcrypt'
+import { eq } from 'drizzle-orm'
 import jsonwebtoken from 'jsonwebtoken'
 import { cookies } from 'next/headers'
-import { user } from '@/app/lib/database/schema'
-import { eq } from 'drizzle-orm'
+import { NextRequest, NextResponse } from 'next/server'
+
 import { db } from '@/app/lib/database/db'
+import { user } from '@/app/lib/database/schema'
 import { JWT_SECRET } from '@/constants'
 
 export async function POST(req: NextRequest) {

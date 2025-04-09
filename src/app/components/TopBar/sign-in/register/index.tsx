@@ -1,9 +1,10 @@
 'use client'
 
-import { register } from '@/app/lib/services'
-import { useRouter } from 'next/navigation'
 import { useFormState, useFormStatus } from 'react-dom'
 import toast from 'react-hot-toast'
+import { useRouter } from 'next/navigation'
+
+import { register } from '@/app/lib/services'
 
 export default function Register({ setLoginContent }: { setLoginContent: (val: string) => void }) {
   const router = useRouter()
@@ -17,12 +18,12 @@ export default function Register({ setLoginContent }: { setLoginContent: (val: s
         toast.success('Registered successfully!')
         router.replace('/auth/login')
       })
-      .catch((e) => {
+      .catch(() => {
         toast.error('Could not register, please try again')
       })
   }
 
-  const [errorMessage, dispatch] = useFormState(authenticate, undefined)
+  const [, dispatch] = useFormState(authenticate, undefined)
 
   return (
     <form action={dispatch}>

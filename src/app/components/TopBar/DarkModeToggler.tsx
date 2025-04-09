@@ -1,11 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+
 import { DarkModeTogglerContainer } from './styled'
 
-type DarkModeTogglerProps = {}
-
-export const DarkModeToggler = ({}: DarkModeTogglerProps) => {
+export const DarkModeToggler = () => {
   const [theme, setTheme] = useState(
     globalThis.localStorage?.getItem('theme') ||
       (globalThis.matchMedia && globalThis.matchMedia('(prefers-color-scheme: dark)').matches && 'dark'),

@@ -1,7 +1,8 @@
 import { eq } from 'drizzle-orm'
+import nodemailer from 'nodemailer'
+
 import { db } from '../../database/db'
 import { company } from '../../database/schema'
-import nodemailer from 'nodemailer'
 
 export const startCompanyRegister = async (formData: FormData) => {
   const email = formData.get('email')?.toString() || ''
@@ -10,8 +11,10 @@ export const startCompanyRegister = async (formData: FormData) => {
   const organization = formData.get('organization')?.toString() || ''
   const tel = formData.get('tel')?.toString() || ''
 
-  const [foundCompany] = await db.select().from(company).where(eq(company.email, email))
+  console.log('ahoy2', email, ownerName, cocId, organization, tel)
 
+  const [foundCompany] = await db.select().from(company).where(eq(company.email, email))
+  console.log('ahoy4', foundCompany)
   if (foundCompany) {
     return {
       error: true,
@@ -44,6 +47,8 @@ export const registerCompany = async (formData: FormData) => {
   const cocId = formData.get('cocId')?.toString() || ''
   const organization = formData.get('organization')?.toString() || ''
   const tel = formData.get('tel')?.toString() || ''
+
+  console.log('ahoy2', email, ownerName, cocId, organization, tel)
 
   const [foundCompany] = await db.select().from(company).where(eq(company.email, email))
 

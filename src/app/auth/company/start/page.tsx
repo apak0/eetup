@@ -1,7 +1,7 @@
+import Link from 'next/link'
+
 import { PhoneInput } from '@/app/components/PhoneInput'
 import { startCompanyRegister } from '@/app/lib/actions/auth'
-import Link from 'next/link'
-import { NextRequest } from 'next/server'
 
 export default function StartAsCompany() {
   const formAction = async (formData: FormData) => {
@@ -9,8 +9,8 @@ export default function StartAsCompany() {
 
     // convert nextjs api route to handler for server action
 
-    console.log('ahoy41')
     const res = await startCompanyRegister(formData)
+    console.log('ahoy41', res)
   }
 
   return (
@@ -32,7 +32,7 @@ export default function StartAsCompany() {
         <input type="text" name="email" id="email" placeholder="Company Email" required autoComplete="email" />
         <input type="text" name="name" id="name" placeholder="Owner Name" required autoComplete="name" />
         <input type="text" name="cocId" id="cocId" placeholder="Company CoC Id" required autoComplete="cocId" />
-        <PhoneInput name={'tel'} placeholder="Company Phone" />
+        <PhoneInput name="tel" placeholder="Company Phone" />
       </div>
       <div className="grid gap-4 mt-8">
         {/* add privacy-policy checkbox */}

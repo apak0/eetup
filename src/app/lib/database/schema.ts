@@ -9,10 +9,8 @@ export const user = cs1.table('user', {
   firstName: varchar({ length: 255 }).notNull(),
   lastName: varchar({ length: 255 }).notNull(),
   email: varchar({ length: 255 }).unique().notNull(),
-  isOwner: integer().default(0).notNull(),
-  companyId: integer()
-    .notNull()
-    .references(() => company.id, { onDelete: 'cascade' }),
+  isOwner: integer().default(0),
+  companyId: integer().references(() => company.id, { onDelete: 'cascade' }),
 })
 
 export const company = cs1.table('company', {
