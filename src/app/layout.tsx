@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { Providers, ProviderWrapper } from './Providers'
+import { ProviderWrapper } from './Providers'
 import { TopBar } from './components/TopBar'
 import { Toaster } from 'react-hot-toast'
 import { Footer } from './components/Footer'
