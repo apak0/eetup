@@ -12,30 +12,30 @@ export const Footer = () => {
         <div className="flex flex-col lg:flex-row gap-3 w-1/2 lg:w-1/3 justify-between">
           <ul className="flex flex-col gap-3">
             <li className="text-sm text-gray-500 hover:text-gray-700">
-              <Link href={'/auth/company/start'}>Start As Company</Link>
+              <Link href="/auth/company/start">Start As Company</Link>
             </li>
           </ul>
           <ul className="flex flex-col gap-3">
             <li className="text-sm text-gray-500 hover:text-gray-700">
-              <Link href={'/hub/about-us'}>About Us</Link>
+              <Link href="/hub/about-us">About Us</Link>
             </li>
             <li className="text-sm text-gray-500 hover:text-gray-700">
-              <Link href={'/hub/faq'}>FAQ</Link>
+              <Link href="/hub/faq">FAQ</Link>
             </li>
             <li className="text-sm text-gray-500 hover:text-gray-700">
-              <Link href={'/hub/blog'}>Blog</Link>
+              <Link href="/hub/blog">Blog</Link>
             </li>
           </ul>
 
           <ul className="flex flex-col gap-3">
             <li className="text-sm text-gray-500 hover:text-gray-700">
-              <Link href={'/hub/privacy-policy'}>Privacy Policy</Link>
+              <Link href="/hub/privacy-policy">Privacy Policy</Link>
             </li>
             <li className="text-sm text-gray-500 hover:text-gray-700">
-              <Link href={'/hub/terms-of-service'}>Terms of Service</Link>
+              <Link href="/hub/terms-of-service">Terms of Service</Link>
             </li>
             <li className="text-sm text-gray-500 hover:text-gray-700">
-              <Link href={'/hub/contact-us'}>Contact Us</Link>
+              <Link href="/hub/contact-us">Contact Us</Link>
             </li>
           </ul>
         </div>

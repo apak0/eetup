@@ -3,7 +3,9 @@ import jsonwebtoken from 'jsonwebtoken'
 import next from 'next'
 import { createServer } from 'node:http'
 import { Server } from 'socket.io'
+
 import { SocketType } from './types'
+
 import { JWT_SECRET } from '@/constants'
 dotenv.config()
 
@@ -19,8 +21,8 @@ const handler = app.getRequestHandler()
 // TODO: Move to environment variable
 
 // Middleware for token authentication
-const authenticateToken = (socket: SocketType, next: any) => {
-  const token = socket.handshake.auth.token
+const authenticateToken = (socket_: SocketType, next: any) => {
+  const token = socket_.handshake.auth.token
   if (token == null) {
     return next(new Error('Authentication error'))
   }
@@ -30,7 +32,7 @@ const authenticateToken = (socket: SocketType, next: any) => {
       return next(new Error('Authentication error'))
     }
     const { iat, exp, ...user } = data
-    socket.user = user
+    socket_.user = user
     next()
   })
 }

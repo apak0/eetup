@@ -1,8 +1,9 @@
 import bcrypt from 'bcrypt'
+import { eq } from 'drizzle-orm'
 import { NextRequest, NextResponse } from 'next/server'
+
 import { db } from '@/app/lib/database/db'
 import { user } from '@/app/lib/database/schema'
-import { eq } from 'drizzle-orm'
 
 export async function POST(req: NextRequest) {
   const { email, firstName, lastName, password } = await req.json()

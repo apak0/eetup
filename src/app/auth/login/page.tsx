@@ -1,10 +1,11 @@
 'use client'
 
-import { login } from '@/app/lib/services'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { useActionState } from 'react'
 import { useFormStatus } from 'react-dom'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+
+import { login } from '@/app/lib/services'
 
 export default function Login() {
   const router = useRouter()
@@ -14,14 +15,14 @@ export default function Login() {
       object[key] = value
     })
     const result = login(object)
-      .then((res) => {
+      .then(() => {
         router.push('/home')
       })
       .catch(console.error)
 
     return result
   }
-  const [errorMessage, dispatch] = useActionState(authenticate, undefined)
+  const [, dispatch] = useActionState(authenticate, undefined)
 
   return (
     <form action={dispatch}>

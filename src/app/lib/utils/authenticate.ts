@@ -1,15 +1,16 @@
+import { eq } from 'drizzle-orm'
 import jsonwebtoken from 'jsonwebtoken'
 import { cookies } from 'next/headers'
-import { user, User } from '../database/schema'
-import { JWT_SECRET } from '@/constants'
+
 import { db } from '../database/db'
-import { eq } from 'drizzle-orm'
+import { User, user } from '../database/schema'
+
+import { JWT_SECRET } from '@/constants'
 
 export async function authenticateRequest() {
   const cookieStore = await cookies()
 
   const token = cookieStore.get('accessToken')?.value
-
 
   if (!token) {
     throw new Error('Unauthorized')

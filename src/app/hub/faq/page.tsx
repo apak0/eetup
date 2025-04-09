@@ -14,7 +14,7 @@ export default function FAQPage() {
           You can register your restaurant by clicking the “Register As Restaurant” link in the footer or visiting{' '}
           <span className="underline">
             {' '}
-            <Link href={'/register-as-restaurant'}> /register-as-restaurant</Link>
+            <Link href="/register-as-restaurant"> /register-as-restaurant</Link>
           </span>
           . Fill out the required information and our team will contact you shortly.
         </p>

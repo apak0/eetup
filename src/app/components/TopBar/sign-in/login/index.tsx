@@ -1,10 +1,12 @@
 'use client'
 
-import { login } from '@/app/lib/services'
-import SignInPage from './SignInGoogle'
-import { useRouter } from 'next/navigation'
 import { useActionState } from 'react'
 import { useFormStatus } from 'react-dom'
+import { useRouter } from 'next/navigation'
+
+import SignInPage from './SignInGoogle'
+
+import { login } from '@/app/lib/services'
 
 export default function Login({ setLoginContent }: { setLoginContent: (val: string) => void }) {
   const router = useRouter()
@@ -14,14 +16,14 @@ export default function Login({ setLoginContent }: { setLoginContent: (val: stri
       object[key] = value
     })
     const result = login(object)
-      .then((res) => {
+      .then(() => {
         router.push('/home')
       })
       .catch(console.error)
 
     return result
   }
-  const [errorMessage, dispatch] = useActionState(authenticate, undefined)
+  const [, dispatch] = useActionState(authenticate, undefined)
 
   return (
     <div>

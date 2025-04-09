@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "build": "tsc ./src/server/index.ts --outDir ./dist --module preserve && next build",
-    "lint": "next lint",
+    "check-format": "prettier --check .",
+    "check-lint": "eslint src",
+    "check-type": "tsc --skipLibCheck --noemit",
+    "lint": "npm run check-lint && npm run check-type && npm run check-format",
     "start": "npx tsx src/server/index.ts",
     "prod": "cross-env NODE_ENV=production node dist/index.js",
     "db:generate": "drizzle-kit generate",
@@ -33,12 +36,9 @@
     "react-phone-input-2": "^2.15.1",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
-    "sqlite3": "^5.1.7",
-    "typescript-eslint": "^8.29.0"
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@eslint/js": "^9.23.0",
     "@tailwindcss/postcss": "^4.1.2",
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.9",
@@ -54,6 +54,7 @@
     "eslint-plugin-unused-imports": "^4.1.4",
     "prettier": "^3.5.3",
     "tailwindcss": "^4.1.2",
-    "typescript": "^5"
+    "typescript": "^5",
+    "typescript-eslint": "^8.29.1"
   }
 }
