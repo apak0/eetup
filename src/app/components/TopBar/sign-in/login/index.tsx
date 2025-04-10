@@ -27,8 +27,6 @@ export default function Login({ setLoginContent }: { setLoginContent: (val: stri
 
   return (
     <div>
-      <SignInPage />
-
       <form action={dispatch}>
         <h1 className="mb-8 text-center">Login</h1>
 
@@ -50,6 +48,7 @@ export default function Login({ setLoginContent }: { setLoginContent: (val: stri
           </button>
         </div>
       </form>
+      <SignInPage />
     </div>
   )
 }
