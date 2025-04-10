@@ -5,6 +5,7 @@ import { db } from '../../database/db'
 import { company } from '../../database/schema'
 
 import { registerCompanyEmailTemplate } from './mail-templates/register-company'
+
 import { appName } from '@/constants'
 
 export const startCompanyRegister = async (formData: FormData) => {
