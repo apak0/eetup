@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
-import { PhoneInput } from '@/app/components/PhoneInput'
-import { startCompanyRegister } from '@/app/lib/actions/auth'
+import { PhoneInput } from '@/components/PhoneInput'
+import { startCompanyRegister } from '@/lib/actions/auth'
 
 export default function StartAsCompany() {
   const formAction = async (formData: FormData) => {
@@ -14,13 +14,13 @@ export default function StartAsCompany() {
   }
 
   return (
-    <form action={formAction} className="flex flex-col items-center justify-center min-h-[calc(100vh-5rem)] py-8">
+    <form action={formAction} className="flex flex-col items-center justify-center min-h-[calc(100vh-5rem)] py-16">
       <div className="flex flex-col items-center justify-center mb-8">
         <h1 className="mb-4">Start As Company</h1>
         <p>Partner with us to reach more customers, make more money and grow your business online</p>
         <p>Your success story starts here</p>
       </div>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col w-80 gap-4">
         <input
           type="text"
           name="organization"
@@ -34,7 +34,7 @@ export default function StartAsCompany() {
         <input type="text" name="cocId" id="cocId" placeholder="Company CoC Id" required autoComplete="cocId" />
         <PhoneInput name="tel" placeholder="Company Phone" />
       </div>
-      <div className="grid gap-4 mt-8">
+      <div className="grid gap-4 mt-8 w-80">
         {/* add privacy-policy checkbox */}
         <div className="flex items-center gap-2">
           <input type="checkbox" name="privacy-policy" id="privacy-policy" required />

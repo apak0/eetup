@@ -5,7 +5,7 @@ import { useState } from 'react'
 import Login from './login'
 import Register from './register'
 
-import Modal from '@/app/reusables/Modal'
+import Modal from '@/reusables/Modal'
 
 export function AuthModal({ open, onOpenChange }: { open: boolean; onOpenChange: (val: boolean) => void }) {
   const [loginContent, setLoginContent] = useState('initial')

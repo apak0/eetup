@@ -5,7 +5,7 @@ import { useFormStatus } from 'react-dom'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
-import { login } from '@/app/lib/services'
+import { login } from '@/lib/services'
 
 export default function Login() {
   const router = useRouter()

@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 
 import SignInPage from './SignInGoogle'
 
-import { login } from '@/app/lib/services'
+import { login } from '@/lib/services'
 
 export default function Login({ setLoginContent }: { setLoginContent: (val: string) => void }) {
   const router = useRouter()

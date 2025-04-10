@@ -4,8 +4,8 @@ import jsonwebtoken from 'jsonwebtoken'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
-import { db } from '@/app/lib/database/db'
-import { user } from '@/app/lib/database/schema'
+import { db } from '@/lib/database/db'
+import { user } from '@/lib/database/schema'
 import { JWT_SECRET } from '@/constants'
 
 export async function POST(req: NextRequest) {

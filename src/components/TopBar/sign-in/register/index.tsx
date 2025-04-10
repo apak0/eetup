@@ -4,7 +4,7 @@ import { useFormState, useFormStatus } from 'react-dom'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 
-import { register } from '@/app/lib/services'
+import { register } from '@/lib/services'
 
 export default function Register({ setLoginContent }: { setLoginContent: (val: string) => void }) {
   const router = useRouter()

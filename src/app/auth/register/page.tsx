@@ -5,7 +5,7 @@ import toast from 'react-hot-toast'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
-import { register } from '@/app/lib/services'
+import { register } from '@/lib/services'
 
 export default function Register() {
   const router = useRouter()

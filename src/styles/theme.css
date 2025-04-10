@@ -1,0 +1,19 @@
+@theme inline {
+  --container-app: 1280px;
+}
+
+@layer base {
+  :root {
+    --text: var(--color-gray-6);
+    --bg: var(--color-white);
+    --bg-secondary: var(--color-gray-1);
+    --border-color: var(--color-gray-2);
+  }
+
+  :root.dark {
+    --text: var(--color-gray-1);
+    --bg: var(--color-gray-6);
+    --bg-secondary: var(--color-gray-5);
+    --border-color: var(--color-gray-4);
+  }
+}

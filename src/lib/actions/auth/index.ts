@@ -4,6 +4,9 @@ import nodemailer from 'nodemailer'
 import { db } from '../../database/db'
 import { company } from '../../database/schema'
 
+import { registerCompanyEmailTemplate } from './mail-templates/register-company'
+import { appName } from '@/constants'
+
 export const startCompanyRegister = async (formData: FormData) => {
   const email = formData.get('email')?.toString() || ''
   const ownerName = formData.get('name')?.toString() || ''
@@ -34,13 +37,15 @@ export const startCompanyRegister = async (formData: FormData) => {
     },
   })
 
+  const mailTemplate = registerCompanyEmailTemplate({ firstName: ownerName })
+
   // Email options
   const mailOptions = {
     from: process.env.SMTP_FROM,
     to: email,
-    subject: 'Company Registration to EetUp',
-    text: 'Register your store at EetUp below',
-    html: `<b>Register your store at EetUp with the following link: <a href="${process.env.FRONTEND_COMPANY_REGISTER_LINK}">Register</a></b>`,
+    subject: `Company Invitation to ${appName}`,
+    text: `Register your store at ${appName} below`,
+    html: mailTemplate,
   }
 
   // Send the email

@@ -50,11 +50,11 @@
   }
 
   a {
-    color: var(--color-blue-3);
+    color: var(--color-orange-1);
     text-decoration: none;
   }
   a:hover {
-    color: var(--color-blue-2);
+    color: var(--color-orange-2);
     text-decoration: underline;
   }
 }

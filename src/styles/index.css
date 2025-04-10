@@ -1,6 +1,7 @@
 @tailwind utilities;
 
 @import './reset.css';
+@import './colors/generated-colors.css';
 @import './theme.css';
 @import './button.css';
 @import './input.css';

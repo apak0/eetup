@@ -1,12 +1,12 @@
 {
-  "id": "d78e6089-5522-4a5d-a825-ff317719380d",
+  "id": "571d618b-e8e5-44f1-bffb-59a483174c89",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "chain-store-1.company": {
+    "eetup-dev.company": {
       "name": "company",
-      "schema": "chain-store-1",
+      "schema": "eetup-dev",
       "columns": {
         "id": {
           "name": "id",
@@ -24,7 +24,32 @@
           "name": "email",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "password": {
+          "name": "password",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "firstName": {
+          "name": "firstName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lastName": {
+          "name": "lastName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},
@@ -43,9 +68,9 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "chain-store-1.user": {
+    "eetup-dev.user": {
       "name": "user",
-      "schema": "chain-store-1",
+      "schema": "eetup-dev",
       "columns": {
         "id": {
           "name": "id",
@@ -55,7 +80,7 @@
           "identity": {
             "type": "always",
             "name": "user_id_seq",
-            "schema": "chain-store-1",
+            "schema": "eetup-dev",
             "increment": "1",
             "startWith": "1",
             "minValue": "1",
@@ -87,38 +112,10 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
-        },
-        "isOwner": {
-          "name": "isOwner",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 0
-        },
-        "companyId": {
-          "name": "companyId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "user_companyId_company_id_fk": {
-          "name": "user_companyId_company_id_fk",
-          "tableFrom": "user",
-          "tableTo": "company",
-          "schemaTo": "chain-store-1",
-          "columnsFrom": [
-            "companyId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "user_email_unique": {
@@ -136,7 +133,7 @@
   },
   "enums": {},
   "schemas": {
-    "chain-store-1": "chain-store-1"
+    "eetup-dev": "eetup-dev"
   },
   "sequences": {},
   "roles": {},
