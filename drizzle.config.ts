@@ -1,8 +1,8 @@
 import type { Config } from 'drizzle-kit'
 
 export default {
-  schema: './src/app/lib/database/schema.ts',
-  out: './src/app/lib/database/migrations',
+  schema: './src/lib/database/schema.ts',
+  out: './src/lib/database/migrations',
   dialect: 'postgresql',
   dbCredentials: {
     url: process.env.DATABASE_URL!,

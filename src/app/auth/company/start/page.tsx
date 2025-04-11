@@ -7,10 +7,9 @@ export default function StartAsCompany() {
   const formAction = async (formData: FormData) => {
     'use server'
 
-    // convert nextjs api route to handler for server action
-
     const res = await startCompanyRegister(formData)
     console.log('ahoy41', res)
+    // TODO: handle response
   }
 
   return (
@@ -30,8 +29,22 @@ export default function StartAsCompany() {
           autoComplete="organization"
         />
         <input type="text" name="email" id="email" placeholder="Company Email" required autoComplete="email" />
-        <input type="text" name="name" id="name" placeholder="Owner Name" required autoComplete="name" />
-        <input type="text" name="cocId" id="cocId" placeholder="Company CoC Id" required autoComplete="cocId" />
+        <input
+          type="text"
+          name="firstName"
+          id="firstName"
+          placeholder="Owner First Name"
+          required
+          autoComplete="given-name"
+        />
+        <input
+          type="text"
+          name="lastName"
+          id="lastName"
+          placeholder="Owner Last Name"
+          required
+          autoComplete="family-name"
+        />
         <PhoneInput name="tel" placeholder="Company Phone" />
       </div>
       <div className="grid gap-4 mt-8 w-80">
