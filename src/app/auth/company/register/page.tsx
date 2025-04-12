@@ -15,7 +15,7 @@ export default async function RegisterAsCompany({ searchParams }: Props) {
 
     const res = await registerCompany(formData)
 
-    console.log('ahoy1', res)
+    console.log('ahoy2', res)
     // TODO: handle error and success messages
   }
 
