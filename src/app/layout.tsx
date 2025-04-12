@@ -5,9 +5,11 @@ import { Inter } from 'next/font/google'
 import { Footer } from '../components/Footer'
 import { TopBar } from '../components/TopBar'
 
-import { ProviderWrapper } from './Providers'
+import { Providers } from './Providers'
 
 import './globals.css'
+
+import { ToastFirer } from '@/components/ToastFirer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -33,15 +35,15 @@ export default async function RootLayout({
         <meta name="keywords" content="food delivery, restaurants, delivery, online ordering" />
       </head>
       <body className={`${inter.className} antialiased`}>
-        <ProviderWrapper>
+        <Providers>
           <>
             <TopBar />
             <Toaster position="bottom-right" />
-
+            <ToastFirer />
             <main className="max-w-app mx-auto px-2 lg:px-10">{children}</main>
             <Footer />
           </>
-        </ProviderWrapper>
+        </Providers>
       </body>
     </html>
   )

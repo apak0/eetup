@@ -1,15 +1,27 @@
 import Link from 'next/link'
 
+import { startCompanyRegister } from './actions'
+
 import { PhoneInput } from '@/components/PhoneInput'
-import { startCompanyRegister } from '@/lib/actions/auth'
 
 export default function StartAsCompany() {
   const formAction = async (formData: FormData) => {
     'use server'
 
     const res = await startCompanyRegister(formData)
-    console.log('ahoy41', res)
-    // TODO: handle response
+
+    console.log('ahoy1', res)
+    // TODO: handle error and success messages
+
+    // if (res.error) {
+    //   const headerList = await headers()
+    //   const pathname = headerList.get('current-path')
+    //   redirect(pathname + '?' + qs.stringify({ error: res.message }))
+    // } else {
+    //   const headerList = await headers()
+    //   const pathname = headerList.get('current-path')
+    //   redirect(pathname + '?' + qs.stringify({ success: res.message }))
+    // }
   }
 
   return (
@@ -19,7 +31,7 @@ export default function StartAsCompany() {
         <p>Partner with us to reach more customers, make more money and grow your business online</p>
         <p>Your success story starts here</p>
       </div>
-      <div className="flex flex-col w-80 gap-4">
+      <div className="flex flex-col w-80 gap-4 ">
         <input
           type="text"
           name="organization"
