@@ -4,3 +4,10 @@ input {
     @apply bg-gray-5;
   }
 }
+
+input[disabled] {
+  @apply bg-gray-3 cursor-not-allowed;
+  .dark & {
+    @apply bg-gray-4;
+  }
+}

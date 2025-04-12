@@ -1,17 +1,25 @@
+import jwt from 'jsonwebtoken'
 import Link from 'next/link'
 
-import { PhoneInput } from '@/components/PhoneInput'
-import { registerCompany } from '@/lib/actions/auth'
+import { registerCompany } from './actions'
 
-export default function RegisterAsCompany() {
+type Props = {
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export default async function RegisterAsCompany({ searchParams }: Props) {
+  const token = (await searchParams).token as string
+
   const formAction = async (formData: FormData) => {
     'use server'
 
     const res = await registerCompany(formData)
 
-    console.log('ahoy41', res)
-    // TODO: handle response
+    console.log('ahoy1', res)
+    // TODO: handle error and success messages
   }
+
+  const decodedToken = jwt.decode(token) as { email: string }
 
   return (
     <form action={formAction} className="flex flex-col items-center justify-center min-h-[calc(100vh-5rem)] py-16">
@@ -23,30 +31,52 @@ export default function RegisterAsCompany() {
       <div className="flex flex-col w-80 gap-4">
         <input
           type="text"
-          name="organization"
-          id="organization"
-          placeholder="Company Name"
+          name="email"
+          id="email"
+          placeholder="User Name"
           required
-          autoComplete="organization"
+          disabled
+          autoComplete="off"
+          defaultValue={decodedToken?.email}
         />
-        <input type="text" name="email" id="email" placeholder="Company Email" required autoComplete="email" />
+        <input type="text" name="cocId" id="cocId" placeholder="Chamber of Commerce ID" required autoComplete="off" />
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Password"
+          required
+          autoComplete="new-password"
+        />
+        <input
+          type="password"
+          name="passwordConfirm"
+          id="passwordConfirm"
+          placeholder="Confirm Password"
+          required
+          autoComplete="new-password"
+        />
+        <h2 className="text-lg font-semibold">Company Address</h2>
+        {/* add address fields with labels and required sign */}
+        <input type="text" name="postcode" id="postcode" placeholder="Postcode" required autoComplete="postal-code" />
+        <input type="text" name="city" id="city" placeholder="City" required autoComplete="address-level2" />
+        <input type="text" name="street" id="street" placeholder="Street" required autoComplete="address-line1" />
         <input
           type="text"
-          name="firstName"
-          id="firstName"
-          placeholder="Owner First Name"
+          name="houseNumber"
+          id="houseNumber"
+          placeholder="House Number"
           required
-          autoComplete="given-name"
+          autoComplete="address-line2"
         />
         <input
           type="text"
-          name="lastName"
-          id="lastName"
-          placeholder="Owner Last Name"
-          required
-          autoComplete="family-name"
+          name="houseNumberAddition"
+          id="houseNumberAddition"
+          placeholder="House Number Addition (optional)"
+          autoComplete="address-line3"
         />
-        <PhoneInput name="tel" placeholder="Company Phone" />
+        <input hidden type="text" name="token" id="token" defaultValue={token} />
       </div>
       <div className="grid gap-4 mt-8 w-80">
         <div className="flex items-center gap-2">

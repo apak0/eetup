@@ -1,5 +1,3 @@
-'use client'
-
 import { JSX, useEffect, useState } from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import classNames from 'classnames'
@@ -29,7 +27,7 @@ export default function Modal({
 
   useEffect(() => {
     ;(onOpenChange ?? setIsOpen)(open ?? isOpen)
-  }, [isOpen, open])
+  }, [isOpen, onOpenChange, open])
 
   return (
     <Dialog open={open ?? isOpen} onClose={onOpenChange ?? setIsOpen} className="relative z-10">
