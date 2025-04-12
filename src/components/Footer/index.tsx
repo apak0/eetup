@@ -6,7 +6,7 @@ export const Footer = () => {
       <div className="border-bottom w-full" />
       <div className="flex justify-between w-full items-start py-4 mb-4 gap-4">
         <div className="whitespace-pre-wrap">
-          <p>&copy; {new Date().getFullYear()} Apak. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Eetup. All rights reserved.</p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-3 w-1/2 lg:w-1/3 justify-between">
