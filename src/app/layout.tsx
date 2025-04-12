@@ -12,8 +12,11 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Neemmee',
-  description: 'Neemmee food chain',
+  title: 'Eeetup',
+  description: 'Order food from your favorite restaurants',
+  icons: {
+    icon: '/logo.png',
+  },
 }
 
 export default async function RootLayout({
@@ -23,11 +26,18 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <meta name="description" content="Your favorite restaurants at your doorstep" />
+        <meta name="keywords" content="food delivery, restaurants, delivery, online ordering" />
+      </head>
       <body className={`${inter.className} antialiased`}>
         <ProviderWrapper>
           <>
             <TopBar />
             <Toaster position="bottom-right" />
+
             <main className="max-w-app mx-auto px-2 lg:px-10">{children}</main>
             <Footer />
           </>
