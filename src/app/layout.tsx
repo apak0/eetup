@@ -5,8 +5,6 @@ import { Inter } from 'next/font/google'
 import { Footer } from '../components/Footer'
 import { TopBar } from '../components/TopBar'
 
-import BurgerImage from './home_burger_img/page'
-import GroceryImage from './home_grocory_basket_img/page'
 import { ProviderWrapper } from './Providers'
 
 import './globals.css'
@@ -30,7 +28,7 @@ export default async function RootLayout({
     <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="theme-color" content="#000000" />
+
         <meta name="description" content="Your favorite restaurants at your doorstep" />
         <meta name="keywords" content="food delivery, restaurants, delivery, online ordering" />
       </head>
@@ -39,8 +37,7 @@ export default async function RootLayout({
           <>
             <TopBar />
             <Toaster position="bottom-right" />
-            <GroceryImage />
-            <BurgerImage />
+
             <main className="max-w-app mx-auto px-2 lg:px-10">{children}</main>
             <Footer />
           </>

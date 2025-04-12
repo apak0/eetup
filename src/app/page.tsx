@@ -5,6 +5,16 @@ export default function Home() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative h-[500px] bg-gradient-to-r from-primary/90 to-primary flex items-center justify-center">
+        <div className="md:block hidden  ">
+          <Image
+            src="/images/home_grocery_basket.png"
+            alt="Grocery Basket"
+            width={400}
+            height={400}
+            className="object-contain"
+            priority
+          />
+        </div>
         <div className="container mx-auto px-4">
           <div className="">
             <div className="w-full flex flex-col items-center text-center">
@@ -12,17 +22,27 @@ export default function Home() {
                 Order your favorite meals quickly and securely from the best restaurants.
               </p>
               <div className="bg-white rounded-lg shadow-lg w-full max-w-3xl relative">
-              <input
-    type="text"
-    placeholder="Enter your address..."
-    className="w-full p-12 pr-36 outline-none rounded-lg rounded-r-none"
-  />
+                <input
+                  type="text"
+                  placeholder="Enter your address..."
+                  className="w-full p-12 pr-36 outline-none rounded-lg rounded-r-none"
+                />
                 <button className="absolute rounded-l-none  max-h-10 bg-primary text-white px-6 rounded-r-md hover:bg-primary/90 transition">
                   Search
                 </button>
               </div>
             </div>
           </div>
+        </div>
+        <div className="md:block hidden ">
+          <Image
+            src="/images/home_burger.png"
+            alt="Grocery Basket"
+            width={400}
+            height={400}
+            className="object-contain"
+            priority
+          />
         </div>
       </section>
 
