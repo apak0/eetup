@@ -12,7 +12,7 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'FoodDelivery',
+  title: 'Eeetup',
   description: 'Order food from your favorite restaurants',
   icons: {
     icon: '/logo.png',

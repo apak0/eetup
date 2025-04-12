@@ -4,43 +4,41 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-[500px] bg-gradient-to-r from-primary/90 to-primary flex items-center justify-center">
-        <div className="md:block hidden  ">
+      <section className="min-h-[40vh] md:h-[50vh] flex items-center justify-center w-full ">
+        <div className="md:block hidden absolute left-0 top-[10%] w-[30%] max-w-[400px]">
           <Image
             src="/images/home_grocery_basket.png"
             alt="Grocery Basket"
             width={400}
             height={400}
-            className="object-contain"
+            className="object-contain w-full h-auto"
             priority
           />
         </div>
-        <div className="container mx-auto px-4">
-          <div className="">
-            <div className="w-full flex flex-col items-center text-center">
-              <p className="text-3xl font-bold text-gray-600 mb-8 max-w-xl">
-                Order your favorite meals quickly and securely from the best restaurants.
-              </p>
-              <div className="bg-white rounded-lg shadow-lg w-full max-w-3xl relative">
-                <input
-                  type="text"
-                  placeholder="Enter your address..."
-                  className="w-full p-12 pr-36 outline-none rounded-lg rounded-r-none"
-                />
-                <button className="absolute rounded-l-none  max-h-10 bg-primary text-white px-6 rounded-r-md hover:bg-primary/90 transition">
-                  Search
-                </button>
-              </div>
+        <div className="container relative z-10 px-4 max-w-[1200px] mx-auto top-[10%] w-[60%] lg:w-[40%]">
+          <div className="w-full flex flex-col items-center text-center">
+            <p className="text-xl pr-10 md:text-3xl font-bold text-gray-600 mb-8 max-w-xl ">
+              Order your favorite meals quickly and securely from the best restaurants.
+            </p>
+            <div className=" rounded-lg  w-full min-w-[280px] max-w-3xl flex items-center">
+              <input
+                type="text"
+                placeholder="Enter your address..."
+                className="w-full py-3 px-4 outline-none rounded-lg rounded-r-none"
+              />
+              <button className="rounded-l-none whitespace-nowrap bg-primary text-white max-h-10 mr-10 rounded-r-lg hover:bg-primary/90 transition">
+                Search
+              </button>
             </div>
           </div>
         </div>
-        <div className="md:block hidden ">
+        <div className="sm:block hidden absolute right-0 top-[10%] w-[30%] max-w-[400px]">
           <Image
             src="/images/home_burger.png"
             alt="Grocery Basket"
             width={400}
             height={400}
-            className="object-contain"
+            className="object-contain w-full h-auto"
             priority
           />
         </div>
