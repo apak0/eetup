@@ -5,7 +5,7 @@ export const Footer = () => {
     <footer className="flex flex-col items-center justify-center max-w-app px-2 lg:px-10 flex-1 mx-auto">
       <div className="border-bottom w-full" />
       <div className="flex justify-between w-full items-start py-4 mb-4 gap-4">
-        <div className="whitespace-pre-wrap">
+        <div className="whitespace-pre-wrap ">
           <p>&copy; {new Date().getFullYear()} Eetup. All rights reserved.</p>
         </div>
 

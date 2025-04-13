@@ -16,6 +16,8 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'Eeetup',
   description: 'Order food from your favorite restaurants',
+  viewport: 'width=device-width, initial-scale=1.0',
+  keywords: 'food delivery, restaurants, delivery, online ordering',
   icons: {
     icon: '/logo.png',
   },
@@ -28,12 +30,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-        <meta name="description" content="Your favorite restaurants at your doorstep" />
-        <meta name="keywords" content="food delivery, restaurants, delivery, online ordering" />
-      </head>
+      <head></head>
       <body className={`${inter.className} antialiased`}>
         <Providers>
           <>
