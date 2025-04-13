@@ -6,7 +6,7 @@ export function middleware(request: NextRequest) {
 
   const accessToken = request.cookies.get('accessToken')?.value
   const authRoute = currentPath.startsWith('/auth') || currentPath === '/'
-  const publicRoute = currentPath.startsWith('/open')
+  const publicRoute = currentPath.startsWith('/hub')
 
   headers.set('current-path', currentPath)
 

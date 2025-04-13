@@ -15,6 +15,7 @@ export const user = cs1.table('user', {
   street: varchar({ length: 255 }),
   houseNumber: varchar({ length: 255 }),
   houseNumberAddition: varchar({ length: 255 }),
+  emailVerified: boolean().default(false).notNull(),
 })
 
 export const company = cs1.table('company', {
@@ -33,6 +34,7 @@ export const company = cs1.table('company', {
   houseNumber: varchar({ length: 255 }),
   houseNumberAddition: varchar({ length: 255 }),
   bannedPostcodes: varchar({ length: 255 }).array(),
+  emailVerified: boolean().default(false).notNull(),
 })
 
 export type UserWithPassword = InferSelectModel<typeof user>

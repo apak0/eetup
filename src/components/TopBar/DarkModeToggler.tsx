@@ -5,22 +5,17 @@ import { useEffect, useState } from 'react'
 import { DarkModeTogglerContainer } from './styled'
 
 export const DarkModeToggler = () => {
-  const [theme, setTheme] = useState(
-    globalThis.localStorage?.getItem('theme') ||
-      (globalThis.matchMedia && globalThis.matchMedia('(prefers-color-scheme: dark)').matches && 'dark'),
-  )
+  const initialTheme =
+    globalThis?.localStorage?.getItem('theme') ||
+    (globalThis.matchMedia && globalThis.matchMedia('(prefers-color-scheme: dark)').matches && 'dark') ||
+    'light'
+
+  const [theme, setTheme] = useState(initialTheme)
 
   useEffect(() => {
-    try {
-      const initialTheme =
-        globalThis.localStorage.getItem('theme') ||
-        (globalThis.matchMedia && globalThis.matchMedia('(prefers-color-scheme: dark)').matches && 'dark') ||
-        'light'
-      document.documentElement.classList.toggle('dark', initialTheme === 'dark')
-    } catch (e) {
-      console.log('Error in localStorage:', e)
-    }
-  }, [])
+    setTheme(initialTheme)
+    document.documentElement.classList.toggle('dark', initialTheme === 'dark')
+  }, [initialTheme])
 
   const toggleTheme = () => {
     const nextTheme = theme == 'light' ? 'dark' : 'light'

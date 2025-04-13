@@ -25,6 +25,7 @@ export async function POST(req: NextRequest) {
   if (!isPasswordValid && entery.password) {
     return NextResponse.json({ message: 'Invalid credentials' }, { status: 400 })
   }
+
   const { password: _, ...userWithoutPassword } = entery
 
   const accessToken = jsonwebtoken.sign(userWithoutPassword, JWT_SECRET, { expiresIn: '1d' })

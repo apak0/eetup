@@ -78,26 +78,26 @@ export const DarkModeTogglerContainer = styled.div`
     transition: 0.3s ease background-color;
   }
 
-  #toggle_checkbox:checked + label {
+  .dark && label {
     background-color: #000;
   }
 
-  #toggle_checkbox:checked + label #star {
+  .dark && label #star {
     top: 2px;
     left: 30px;
     transform: scale(0.3);
     background-color: yellow;
   }
 
-  #toggle_checkbox:checked + label .star {
+  .dark && label .star {
     color: yellow;
   }
 
-  #toggle_checkbox:checked + label #moon {
+  .dark && label #moon {
     bottom: 6px;
   }
 
-  #toggle_checkbox:checked + label #moon:before {
+  .dark && label #moon:before {
     background-color: #000;
   }
 `
