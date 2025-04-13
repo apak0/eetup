@@ -1,37 +1,36 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { DarkModeTogglerContainer } from './styled'
 
-export const DarkModeToggler = () => {
-  const initialTheme =
-    globalThis?.localStorage?.getItem('theme') ||
+export const DarkModeToggler = ({ preferredTheme }: { preferredTheme: 'dark' | 'light' }) => {
+  const initialTheme: any =
+    preferredTheme ||
     (globalThis.matchMedia && globalThis.matchMedia('(prefers-color-scheme: dark)').matches && 'dark') ||
     'light'
 
-  const [theme, setTheme] = useState(initialTheme)
+  const [theme, setTheme] = useState<'dark' | 'light'>(initialTheme)
 
-  useEffect(() => {
-    setTheme(initialTheme)
-    document.documentElement.classList.toggle('dark', initialTheme === 'dark')
-  }, [initialTheme])
+  const onThemeChange = (val: 'dark' | 'light') => {
+    setTheme(val)
+    document.documentElement.classList.toggle('dark', val === 'dark')
 
-  const toggleTheme = () => {
-    const nextTheme = theme == 'light' ? 'dark' : 'light'
-
-    try {
-      localStorage.setItem('theme', nextTheme)
-      document.documentElement.classList.toggle('dark', nextTheme === 'dark')
-      setTheme(nextTheme)
-    } catch (e) {
-      console.log('Error in localStorage:', e)
+    if (val === 'dark') {
+      document.cookie = 'theme=dark; path=/;'
+    } else {
+      document.cookie = 'theme=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;'
     }
   }
 
   return (
     <DarkModeTogglerContainer>
-      <input type="checkbox" id="toggle_checkbox" onChange={toggleTheme} checked={theme == 'dark'} />
+      <input
+        type="checkbox"
+        id="toggle_checkbox"
+        onChange={(e) => onThemeChange(e.target.checked ? 'dark' : 'light')}
+        checked={theme === 'dark'}
+      />
 
       <label htmlFor="toggle_checkbox">
         <div id="star">

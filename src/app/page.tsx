@@ -17,20 +17,20 @@ export default function Home() {
             />
           </div>
 
-          <div className="w-[90%]  sm:w-[80%] md:w-[70%] lg:w-[70%]  xl:w-[80%] flex flex-col items-center justify-center mx-auto h-full md:pl-10">
+          <div className="w-[90%] sm:w-[80%] md:w-[70%] lg:w-[70%] xl:w-[80%] flex flex-col items-center justify-center mx-auto h-full md:pl-10">
             <div className="text-center">
               <p className="text-3xl pr-10 font-bold text-gray-600 mb-8 ">Order your favorite meals quickly.</p>
             </div>
 
-            <div className="container  relative shadow sm:rounded-4xl    p-6  top-[10%] ">
+            <div className="container relative shadow dark:border border-solid border-(--border-color) sm:rounded-4xl p-6 top-[10%] ">
               <div className="w-full flex flex-col items-center text-center">
-                <div className=" rounded-lg  w-full  m flex items-center">
+                <div className=" rounded-lg w-full m flex items-center">
                   <input
                     type="text"
                     placeholder="Enter your address..."
                     className="w-full min-h-16 py-3 px-4 outline-none rounded-lg border border-gray-300 text-xl placeholder-gray-500 "
                   />
-                  <button className="rounded-l-none whitespace-nowrap bg-primary text-white min-h-16  rounded-r-2xl hover:bg-primary/90 transition ml-2">
+                  <button className="rounded-l-none whitespace-nowrap bg-primary text-white min-h-16 rounded-r-2xl hover:bg-primary/90 transition -ml-2">
                     Search
                   </button>
                 </div>
@@ -38,7 +38,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="sm:block hidden absolute right-0 top-[10%]  [@media(min-width:1920px)]:w-[400px]  [@media(max-width:1920px)]:w-[20%]   ">
+          <div className="sm:block hidden absolute right-0 top-[10%] [@media(min-width:1920px)]:w-[400px] [@media(max-width:1920px)]:w-[20%]">
             <Image
               src="/images/home_burger.png"
               alt="Burger"
@@ -59,7 +59,7 @@ export default function Home() {
             {categories.map((category) => (
               <div
                 key={category.name}
-                className=" p-4 rounded-lg  shadow  hover:shadow-lg transition cursor-pointer text-center"
+                className=" p-4 rounded-lg shadow dark:border border-solid border-(--border-color) hover:shadow-lg transition cursor-pointer text-center"
               >
                 <div className="w-16 h-16 mx-auto mb-2 relative">
                   <Image src={category.icon} alt={category.name} fill className="object-contain" />
@@ -79,7 +79,7 @@ export default function Home() {
             {restaurants.map((restaurant) => (
               <div
                 key={restaurant.name}
-                className=" rounded-lg shadow overflow-hidden hover:shadow-lg transition cursor-pointer"
+                className=" rounded-lg shadow dark:border border-solid border-(--border-color) overflow-hidden hover:shadow-lg transition cursor-pointer"
               >
                 <div className="relative h-48">
                   <Image src={restaurant.image} alt={restaurant.name} fill className="object-cover" />
