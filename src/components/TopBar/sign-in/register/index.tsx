@@ -1,5 +1,3 @@
-'use client'
-
 import { useFormState, useFormStatus } from 'react-dom'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
@@ -15,6 +13,7 @@ export default function Register({ setLoginContent }: { setLoginContent: (val: s
     })
     await register(object)
       .then(() => {
+        setLoginContent('login')
         toast.success('Registered successfully!')
         router.replace('/auth/login')
       })
@@ -30,9 +29,9 @@ export default function Register({ setLoginContent }: { setLoginContent: (val: s
       <h1 className="mb-8 text-center">Register</h1>
 
       <div className="flex flex-col gap-4">
-        <input type="firstName" name="firstName" placeholder="First Name" required />
-        <input type="lastName" name="lastName" placeholder="Last Name" required />
-        <input type="email" name="email" placeholder="Email" required />
+        <input type="firstName" name="firstName" placeholder="First Name" required autoComplete="given-name" />
+        <input type="lastName" name="lastName" placeholder="Last Name" required autoComplete="family-name" />
+        <input type="email" name="email" placeholder="Email" required autoComplete="email" />
         <input type="password" name="password" placeholder="Password" required />
       </div>
       <div className="grid gap-4 mt-8">

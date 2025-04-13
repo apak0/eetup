@@ -13,7 +13,7 @@ export const SignInButton = () => {
         Sign In
       </button>
 
-      <AuthModal open={authOpen} onOpenChange={(val) => setAuthOpen(val)} />
+      <AuthModal open={authOpen} setAuthOpen={(val) => setAuthOpen(val)} />
     </div>
   )
 }

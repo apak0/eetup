@@ -1,23 +1,33 @@
-'use client'
-
-import { useActionState } from 'react'
+import { useActionState, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import { useRouter } from 'next/navigation'
 
-import SignInPage from './SignInGoogle'
-
 import { login } from '@/lib/services'
 
-export default function Login({ setLoginContent }: { setLoginContent: (val: string) => void }) {
+export default function Login({
+  setLoginContent,
+  setAuthOpen,
+}: {
+  setLoginContent: (val: string) => void
+  setAuthOpen: any
+}) {
   const router = useRouter()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
   const authenticate = async (state: any, formData: FormData) => {
     const object: any = {}
     formData.forEach((value, key) => {
       object[key] = value
     })
     const result = login(object)
-      .then(() => {
-        router.push('/home')
+      .then((res) => {
+        if (res.isCompany) {
+          router.push('/company/admin')
+        } else {
+          router.push('/restaurants')
+        }
+        setAuthOpen(false)
       })
       .catch(console.error)
 
@@ -31,7 +41,16 @@ export default function Login({ setLoginContent }: { setLoginContent: (val: stri
         <h1 className="mb-8 text-center">Login</h1>
 
         <div className="flex flex-col gap-4">
-          <input type="email" name="email" id="email" placeholder="Email" required autoComplete="email" />
+          <input
+            type="email"
+            name="email"
+            id="email"
+            placeholder="Email"
+            required
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
           <input
             type="password"
             name="password"
@@ -39,6 +58,8 @@ export default function Login({ setLoginContent }: { setLoginContent: (val: stri
             placeholder="Password"
             required
             autoComplete="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
         <div className="grid gap-4 mt-8">
@@ -48,7 +69,6 @@ export default function Login({ setLoginContent }: { setLoginContent: (val: stri
           </button>
         </div>
       </form>
-      <SignInPage />
     </div>
   )
 }

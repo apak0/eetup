@@ -2,19 +2,20 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export function middleware(request: NextRequest) {
   const headers = new Headers(request.headers)
+  const currentPath = request.nextUrl.pathname
 
   const accessToken = request.cookies.get('accessToken')?.value
-  const authRoute = request.nextUrl.pathname.startsWith('/auth')
-  const publicRoute = request.nextUrl.pathname.startsWith('/public') || request.nextUrl.pathname === ''
+  const authRoute = currentPath.startsWith('/auth') || currentPath === '/'
+  const publicRoute = currentPath.startsWith('/open')
 
-  headers.set('current-path', request.nextUrl.pathname)
+  headers.set('current-path', currentPath)
 
   if (accessToken && authRoute) {
-    return NextResponse.redirect(new URL('/home', request.url))
+    return NextResponse.redirect(new URL('/restaurants', request.url))
   }
 
   if (!accessToken && !authRoute && !publicRoute) {
-    return NextResponse.redirect(new URL('/auth/login', request.url))
+    return NextResponse.redirect(new URL('/', request.url))
   }
 
   return NextResponse.next({ headers })

@@ -6,21 +6,26 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import { JWT_SECRET } from '@/constants'
 import { db } from '@/lib/database/db'
-import { user } from '@/lib/database/schema'
+import { company, CompanyWithPassword, user, UserWithPassword } from '@/lib/database/schema'
 
 export async function POST(req: NextRequest) {
   const { email, password } = await req.json()
   const [foundUser] = await db.select().from(user).where(eq(user.email, email))
 
-  if (!foundUser) {
+  let entery: UserWithPassword | CompanyWithPassword = foundUser
+  if (!entery) {
+    entery = (await db.select().from(company).where(eq(company.email, email)))[0]
+  }
+
+  if (!entery) {
     return NextResponse.json({ message: 'Invalid credentials' }, { status: 400 })
   }
 
-  const isPasswordValid = await bcrypt.compare(password, foundUser.password)
-  if (!isPasswordValid) {
+  const isPasswordValid = entery.password && (await bcrypt.compare(password, entery.password))
+  if (!isPasswordValid && entery.password) {
     return NextResponse.json({ message: 'Invalid credentials' }, { status: 400 })
   }
-  const { password: _, ...userWithoutPassword } = foundUser
+  const { password: _, ...userWithoutPassword } = entery
 
   const accessToken = jsonwebtoken.sign(userWithoutPassword, JWT_SECRET, { expiresIn: '1d' })
   const refreshToken = jsonwebtoken.sign({}, JWT_SECRET, { expiresIn: '1w' })
@@ -40,5 +45,5 @@ export async function POST(req: NextRequest) {
     path: '/',
   })
 
-  return NextResponse.json({ message: 'Login Successful' }, { status: 200 })
+  return NextResponse.json({ message: 'Login Successful', isCompany: !foundUser }, { status: 200 })
 }
