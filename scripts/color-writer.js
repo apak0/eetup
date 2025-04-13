@@ -11,7 +11,7 @@ const generateCSSVariables = (obj, prefix = '') => {
     if (typeof value === 'object') {
       cssVariables += generateCSSVariables(value, `${prefix}${key}-`)
     } else {
-      cssVariables += `--color-${prefix}${key}: ${value};\n`
+      cssVariables += `  --color-${prefix}${key}: ${value};\n`
     }
   }
   return cssVariables
@@ -19,7 +19,7 @@ const generateCSSVariables = (obj, prefix = '') => {
 
 const convertedColors = generateCSSVariables(colors)
 
-const fileContent = `@theme inline { ${convertedColors} }`
+const fileContent = `@theme inline {${convertedColors}}\n`
 
 fs.writeFileSync(path.resolve(path.dirname('./'), './src/styles/colors/generated-colors.css'), fileContent)
 console.log('✅ CSS variables generated!')

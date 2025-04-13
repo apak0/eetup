@@ -4,9 +4,9 @@ import jsonwebtoken from 'jsonwebtoken'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
+import { JWT_SECRET } from '@/constants'
 import { db } from '@/lib/database/db'
 import { user } from '@/lib/database/schema'
-import { JWT_SECRET } from '@/constants'
 
 export async function POST(req: NextRequest) {
   const { email, password } = await req.json()
