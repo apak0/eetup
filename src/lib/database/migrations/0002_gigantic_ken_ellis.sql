@@ -1,0 +1,2 @@
+ALTER TABLE "eetup-dev"."company" ADD COLUMN "emailVerified" boolean DEFAULT false NOT NULL;--> statement-breakpoint
+ALTER TABLE "eetup-dev"."user" ADD COLUMN "emailVerified" boolean DEFAULT false NOT NULL;

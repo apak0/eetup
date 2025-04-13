@@ -26,7 +26,7 @@ export function AuthModal({ open, setAuthOpen }: { open: boolean; setAuthOpen: (
                 Login
               </button>
               <button
-                className="w-full"
+                className="w-full btn-default"
                 aria-disabled={false}
                 type="button"
                 onClick={() => setLoginContent('register')}
@@ -43,7 +43,7 @@ export function AuthModal({ open, setAuthOpen }: { open: boolean; setAuthOpen: (
           )}
           {loginContent === 'register' && (
             <div>
-              <Register setLoginContent={setLoginContent} />
+              <Register setLoginContent={setLoginContent} setAuthOpen={setAuthOpen} />
             </div>
           )}
         </div>

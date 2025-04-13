@@ -15,4 +15,7 @@
   .link:hover {
     @apply text-orange-2 shadow-none;
   }
+  button.btn-default {
+    @apply bg-(--bg) border border-(--color-orange-3);
+  }
 }

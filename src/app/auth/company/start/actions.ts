@@ -17,7 +17,7 @@ export const startCompanyRegister = async (formData: FormData) => {
 
   const [foundCompany] = await db.select().from(company).where(eq(company.email, email))
 
-  if (foundCompany?.password) {
+  if (foundCompany?.emailVerified) {
     return {
       error: true,
       title: 'Company already exists!',

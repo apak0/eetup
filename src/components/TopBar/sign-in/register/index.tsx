@@ -4,8 +4,15 @@ import { useRouter } from 'next/navigation'
 
 import { register } from '@/lib/services'
 
-export default function Register({ setLoginContent }: { setLoginContent: (val: string) => void }) {
+export default function Register({
+  setLoginContent,
+  setAuthOpen,
+}: {
+  setLoginContent: (val: string) => void
+  setAuthOpen: any
+}) {
   const router = useRouter()
+
   const authenticate = async (state: any, formData: FormData) => {
     const object: any = {}
     formData.forEach((value, key) => {
@@ -13,9 +20,14 @@ export default function Register({ setLoginContent }: { setLoginContent: (val: s
     })
     await register(object)
       .then(() => {
-        setLoginContent('login')
-        toast.success('Registered successfully!')
-        router.replace('/auth/login')
+        setAuthOpen(false)
+        router.push('/restaurants')
+        toast.success(
+          <div>
+            <h3>Registered successfully!</h3>Verify your email in order to be able to finish your orders.
+          </div>,
+          { duration: 5000 },
+        )
       })
       .catch(() => {
         toast.error('Could not register, please try again')

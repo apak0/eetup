@@ -60,7 +60,16 @@ export const registerCompany = async (formData: FormData) => {
 
   await db
     .update(company)
-    .set({ password: hashedPassword, cocId, postcode, city, street, houseNumber, houseNumberAddition })
+    .set({
+      password: hashedPassword,
+      cocId,
+      postcode,
+      city,
+      street,
+      houseNumber,
+      houseNumberAddition,
+      emailVerified: true,
+    })
     .where(eq(company.email, decodedToken.email))
 
   return { message: 'Company is registered successfully. Now you can login and start your service.' }
@@ -69,8 +78,6 @@ export const registerCompany = async (formData: FormData) => {
 export const updateCompany = async (formData: FormData) => {
   const cookieStore = await cookies()
   const token = cookieStore.get('token')?.value
-
-  console.log('ahoy1', token)
 
   const tel = formData.get('tel')?.toString() || ''
   const bannedPostcodes = (formData.get('bannedPostcodes') as unknown as string[]) || []
