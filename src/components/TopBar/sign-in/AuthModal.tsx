@@ -1,16 +1,17 @@
 import { useState } from 'react'
 
+import SignInPage from './login/SignInGoogle'
 import Login from './login'
 import Register from './register'
 
 import Modal from '@/reusables/Modal'
 
-export function AuthModal({ open, onOpenChange }: { open: boolean; onOpenChange: (val: boolean) => void }) {
+export function AuthModal({ open, setAuthOpen }: { open: boolean; setAuthOpen: (val: boolean) => void }) {
   const [loginContent, setLoginContent] = useState('initial')
 
   return (
     <Modal
-      title="Welcome!"
+      title={loginContent === 'initial' ? 'Welcome!' : ''}
       okClick={() => {
         console.log('submit')
       }}
@@ -21,7 +22,6 @@ export function AuthModal({ open, onOpenChange }: { open: boolean; onOpenChange:
         <div className="w-full p-8">
           {loginContent === 'initial' && (
             <div className="flex flex-col gap-4">
-              <div className="h-0.5 bg-gray-2 w-full" />
               <button className="w-full " aria-disabled={false} type="button" onClick={() => setLoginContent('login')}>
                 Login
               </button>
@@ -33,11 +33,12 @@ export function AuthModal({ open, onOpenChange }: { open: boolean; onOpenChange:
               >
                 Register
               </button>
+              <SignInPage />
             </div>
           )}
           {loginContent === 'login' && (
             <div>
-              <Login setLoginContent={setLoginContent} />
+              <Login setLoginContent={setLoginContent} setAuthOpen={setAuthOpen} />
             </div>
           )}
           {loginContent === 'register' && (
@@ -47,7 +48,12 @@ export function AuthModal({ open, onOpenChange }: { open: boolean; onOpenChange:
           )}
         </div>
       }
-      onOpenChange={onOpenChange}
+      setAuthOpen={(val) => {
+        setAuthOpen(val)
+        if (!val) {
+          setLoginContent('initial')
+        }
+      }}
     />
   )
 }

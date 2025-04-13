@@ -38,4 +38,5 @@ export const company = cs1.table('company', {
 export type UserWithPassword = InferSelectModel<typeof user>
 export type User = Omit<UserWithPassword, 'password'>
 
-export type Company = InferSelectModel<typeof company>
+export type CompanyWithPassword = InferSelectModel<typeof company>
+export type Company = Omit<CompanyWithPassword, 'password'>

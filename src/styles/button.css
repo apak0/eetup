@@ -10,9 +10,9 @@
   }
 
   button.link {
-    @apply bg-transparent text-orange-1 underline;
+    @apply bg-transparent text-orange-1 underline shadow-none;
   }
   .link:hover {
-    @apply text-orange-2;
+    @apply text-orange-2 shadow-none;
   }
 }

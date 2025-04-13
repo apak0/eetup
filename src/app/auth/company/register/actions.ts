@@ -1,4 +1,5 @@
 'use server'
+import bcrypt from 'bcrypt'
 import { eq } from 'drizzle-orm'
 import jwt from 'jsonwebtoken'
 import { cookies } from 'next/headers'
@@ -55,9 +56,11 @@ export const registerCompany = async (formData: FormData) => {
     }
   }
 
+  const hashedPassword = await bcrypt.hash(password, 10)
+
   await db
     .update(company)
-    .set({ password, cocId, postcode, city, street, houseNumber, houseNumberAddition })
+    .set({ password: hashedPassword, cocId, postcode, city, street, houseNumber, houseNumberAddition })
     .where(eq(company.email, decodedToken.email))
 
   return { message: 'Company is registered successfully. Now you can login and start your service.' }
