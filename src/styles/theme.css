@@ -17,6 +17,6 @@
     --border-color: var(--color-gray-4);
   }
   ::selection {
-    @apply bg-pink-200 ;
+    @apply bg-pink-200;
   }
 }

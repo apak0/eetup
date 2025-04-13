@@ -19,7 +19,9 @@
     text-decoration: none !important;
   }
   .dark .drop-shadow,
-  .dark .shadow, .dark .shadow-md , .dark .shadow-lg {
+  .dark .shadow,
+  .dark .shadow-md,
+  .dark .shadow-lg {
     @apply drop-shadow-none shadow-none border border-solid border-(--border-color);
   }
 }
