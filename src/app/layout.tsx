@@ -5,13 +5,11 @@ import { Inter } from 'next/font/google'
 import { cookies } from 'next/headers'
 
 import { Footer } from '../components/Footer'
-import { TopBar } from '../components/TopBar'
+import { TopBar } from '../components/Header'
 
 import { Providers } from './Providers'
 
 import './globals.css'
-
-import { ToastFirer } from '@/components/ToastFirer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -41,7 +39,6 @@ export default async function RootLayout({
           <>
             <TopBar />
             <Toaster position="bottom-right" />
-            <ToastFirer />
             <main className="max-w-app mx-auto px-2 lg:px-10">{children}</main>
             <Footer />
           </>
