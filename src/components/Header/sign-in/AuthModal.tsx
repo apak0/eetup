@@ -4,7 +4,7 @@ import SignInPage from './login/SignInGoogle'
 import Login from './login'
 import Register from './register'
 
-import Modal from '@/reusables/Modal'
+import Modal from '@/components/reusables/Modal'
 
 export function AuthModal({ open, setAuthOpen }: { open: boolean; setAuthOpen: (val: boolean) => void }) {
   const [loginContent, setLoginContent] = useState('initial')

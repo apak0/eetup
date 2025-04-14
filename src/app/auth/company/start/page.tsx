@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 import { startCompanyRegister } from './actions'
 
-import { PhoneInput } from '@/components/PhoneInput'
+import { PhoneInput } from '@/components/reusables/PhoneInput'
 
 export default function StartAsCompany() {
   const formAction = async (formData: FormData) => {
