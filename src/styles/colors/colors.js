@@ -3,8 +3,8 @@ export const colors = {
   black: '#0d0d1d',
 
   gray: {
-    1: '#e5e8ed',
-    2: '#d6d9df',
+    1: '#f3f3f3',
+    2: '#e5e8ed',
     3: '#b4b7bd',
     4: '#5f656d',
     5: '#2f3436',

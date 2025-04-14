@@ -26,6 +26,7 @@
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.41.0",
     "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.488.0",
     "next": "15.2.4",
     "next-auth": "^4.24.11",
     "nodemailer": "^6.10.0",

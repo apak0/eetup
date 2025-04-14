@@ -22,7 +22,7 @@ export default function Home() {
               <p className="text-3xl pr-10 font-bold text-gray-600 mb-8 ">Order your favorite meals quickly.</p>
             </div>
 
-            <div className="container relative shadow dark:border border-solid border-(--border-color) sm:rounded-4xl p-6 top-[10%] ">
+            <div className="card relative shadow dark:border border-solid border-(--border-color) sm:rounded-4xl p-6 top-[10%] ">
               <div className="w-full flex flex-col items-center text-center">
                 <div className=" rounded-lg w-full m flex items-center">
                   <input
@@ -53,13 +53,13 @@ export default function Home() {
 
       {/* Categories */}
       <section className="py-16 ">
-        <div className="container mx-auto px-4">
+        <div className="  mx-auto px-4">
           <h2 className="text-3xl font-bold mb-8 text-center">Categories</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {categories.map((category) => (
               <div
                 key={category.name}
-                className=" p-4 rounded-lg shadow dark:border border-solid border-(--border-color) hover:shadow-lg transition cursor-pointer text-center"
+                className="card p-4 shadow dark:border border-solid border-(--border-color) hover:shadow-lg transition cursor-pointer text-center"
               >
                 <div className="w-16 h-16 mx-auto mb-2 relative">
                   <Image src={category.icon} alt={category.name} fill className="object-contain" />
@@ -73,13 +73,13 @@ export default function Home() {
 
       {/* Popular Restaurants */}
       <section className="py-16">
-        <div className="container mx-auto px-4 ">
+        <div className="mx-auto px-4 ">
           <h2 className="text-3xl font-bold mb-8 text-center">Popular Restaurants</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {restaurants.map((restaurant) => (
               <div
                 key={restaurant.name}
-                className=" rounded-lg shadow dark:border border-solid border-(--border-color) overflow-hidden hover:shadow-lg transition cursor-pointer"
+                className=" card shadow dark:border border-solid border-(--border-color) overflow-hidden hover:shadow-lg transition cursor-pointer"
               >
                 <div className="relative h-48">
                   <Image src={restaurant.image} alt={restaurant.name} fill className="object-cover" />
