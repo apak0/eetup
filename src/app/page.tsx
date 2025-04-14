@@ -19,16 +19,16 @@ export default function Home() {
 
           <div className="w-[90%] sm:w-[80%] md:w-[70%] lg:w-[70%] xl:w-[80%] flex flex-col items-center justify-center mx-auto h-full md:pl-10">
             <div className="text-center">
-              <p className="text-3xl pr-10 font-bold text-gray-600 mb-8 ">Order your favorite meals quickly.</p>
+              <p className="text-3xl pr-10 font-bol mb-8 ">Order your favorite meals quickly.</p>
             </div>
 
-            <div className="card relative shadow dark:border border-solid border-(--border-color) sm:rounded-4xl p-6 top-[10%] ">
+            <div className="card w-4/5 relative shadow dark:border border-solid border-(--border-color) sm:rounded-4xl p-6 top-[10%] ">
               <div className="w-full flex flex-col items-center text-center">
                 <div className=" rounded-lg w-full m flex items-center">
                   <input
                     type="text"
                     placeholder="Enter your address..."
-                    className="w-full min-h-16 py-3 px-4 outline-none rounded-lg border border-gray-300 text-xl placeholder-gray-500 "
+                    className="w-full min-h-16 py-3 px-4 outline-none rounded-lg border border-gray-300 text-xl "
                   />
                   <button className="rounded-l-none whitespace-nowrap bg-primary text-white min-h-16 rounded-r-2xl hover:bg-primary/90 transition -ml-2">
                     Search
@@ -86,9 +86,9 @@ export default function Home() {
                 </div>
                 <div className="p-4">
                   <h3 className="font-bold text-xl mb-2">{restaurant.name}</h3>
-                  <p className="text-gray-600 mb-2">{restaurant.cuisine}</p>
+                  <p className="mb-2">{restaurant.cuisine}</p>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">{restaurant.deliveryTime}</span>
+                    <span className="text-sm ">{restaurant.deliveryTime}</span>
                     <div className="flex items-center">
                       <span className="text-yellow-500">★</span>
                       <span className="ml-1">{restaurant.rating}</span>

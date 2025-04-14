@@ -12,11 +12,11 @@
 
   :root.dark {
     --text: var(--color-gray-1);
-    --bg: var(--color-gray-6);
-    --bg-secondary: var(--color-gray-5);
+    --bg: var(--color-gray-5);
+    --bg-secondary: var(--color-gray-6);
     --border-color: var(--color-gray-4);
   }
   ::selection {
-    @apply bg-pink-200;
+    @apply bg-orange-2;
   }
 }

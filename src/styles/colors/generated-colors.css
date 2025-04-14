@@ -1,13 +1,13 @@
 @theme inline {
   --color-white: #fbfbfb;
-  --color-black: #0d0d1d;
+  --color-black: #0d0d0d;
 
   --color-gray-1: #f3f3f3;
-  --color-gray-2: #e5e8ed;
-  --color-gray-3: #b4b7bd;
-  --color-gray-4: #5f656d;
-  --color-gray-5: #2f3436;
-  --color-gray-6: #1c2022;
+  --color-gray-2: #e9ecef;
+  --color-gray-3: #ced4da;
+  --color-gray-4: #6c757d;
+  --color-gray-5: #343a40;
+  --color-gray-6: #212529;
 
   --color-orange-1: #fca87f;
   --color-orange-2: #f87635;

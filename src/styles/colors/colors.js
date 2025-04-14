@@ -1,14 +1,14 @@
 export const colors = {
   white: '#fbfbfb',
-  black: '#0d0d1d',
+  black: '#0d0d0d',
 
   gray: {
     1: '#f3f3f3',
-    2: '#e5e8ed',
-    3: '#b4b7bd',
-    4: '#5f656d',
-    5: '#2f3436',
-    6: '#1c2022',
+    2: '#e9ecef',
+    3: '#ced4da',
+    4: '#6c757d',
+    5: '#343a40',
+    6: '#212529',
   },
 
   orange: {
