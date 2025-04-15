@@ -12,8 +12,18 @@ export default function Login({
   setAuthOpen: any
 }) {
   const router = useRouter()
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState(() => localStorage.getItem('rememberedEmail') || '')
   const [password, setPassword] = useState('')
+  const [rememberMe, setRememberMe] = useState(() => !!localStorage.getItem('rememberedEmail'))
+
+  const handleRememberMe = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRememberMe(e.target.checked)
+    if (e.target.checked) {
+      localStorage.setItem('rememberedEmail', email)
+    } else {
+      localStorage.removeItem('rememberedEmail')
+    }
+  }
 
   const authenticate = async (state: any, formData: FormData) => {
     const object: any = {}
@@ -49,7 +59,12 @@ export default function Login({
             required
             autoComplete="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value)
+              if (rememberMe) {
+                localStorage.setItem('rememberedEmail', e.target.value)
+              }
+            }}
           />
           <input
             type="password"
@@ -61,6 +76,16 @@ export default function Login({
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="rememberMe"
+              checked={rememberMe}
+              onChange={handleRememberMe}
+              className="accent-gray-200"
+            />
+            <label htmlFor="rememberMe">Remember Me</label>
+          </div>
         </div>
         <div className="grid gap-4 mt-8">
           <LoginButton />
