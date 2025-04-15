@@ -22,6 +22,13 @@
       "when": 1744564221904,
       "tag": "0002_gigantic_ken_ellis",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1744746377389,
+      "tag": "0003_round_silver_centurion",
+      "breakpoints": true
     }
   ]
 }
