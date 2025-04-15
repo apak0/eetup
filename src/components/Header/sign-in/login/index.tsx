@@ -33,7 +33,7 @@ export default function Login({
     const result = login(object)
       .then((res) => {
         if (res.isCompany) {
-          router.push('/company/admin')
+          router.push('/company')
         } else {
           router.push('/restaurants')
         }
@@ -89,7 +89,7 @@ export default function Login({
         </div>
         <div className="grid gap-4 mt-8">
           <LoginButton />
-          <button onClick={() => setLoginContent('register')} className="link ml-auto btn-text" type="button">
+          <button onClick={() => setLoginContent('register')} className="btn-link ml-auto btn-text" type="button">
             to register
           </button>
         </div>

@@ -11,3 +11,8 @@ input[disabled] {
     @apply bg-gray-4;
   }
 }
+
+input[type='checkbox'],
+input + label {
+  @apply cursor-pointer;
+}

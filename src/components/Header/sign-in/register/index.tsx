@@ -48,7 +48,7 @@ export default function Register({
       </div>
       <div className="grid gap-4 mt-8">
         <LoginButton />
-        <button onClick={() => setLoginContent('login')} className="link ml-auto" type="button">
+        <button onClick={() => setLoginContent('login')} className="btn-link ml-auto" type="button">
           to login
         </button>
       </div>

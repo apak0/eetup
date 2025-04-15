@@ -1,22 +1,31 @@
 @layer components {
   button,
   .btn {
-    @apply font-semibold h-14 text-white px-4 py-1 cursor-pointer rounded-md border-0 bg-orange-3/90 tracking-wider transition-shadow duration-500 shadow-sm hover:shadow-lg;
+    @apply font-semibold h-14 text-white px-4 py-1 cursor-pointer rounded-md border-0 bg-orange-4/90 tracking-wider transition-shadow duration-500 shadow-sm hover:shadow-lg;
   }
 
   button:hover,
   .btn:hover {
-    @apply bg-orange-3/100;
+    @apply bg-orange-4/100;
   }
 
-  button.link {
-    @apply bg-transparent text-orange-1 underline shadow-none;
+  button.btn-link {
+    @apply bg-transparent text-orange-2 underline shadow-none;
   }
-  .link:hover {
-    @apply text-orange-2 shadow-none;
+  button.btn-link:hover {
+    @apply text-orange-3 shadow-none;
   }
+
+  button.btn-text {
+    @apply bg-transparent text-orange-2 shadow-none;
+  }
+  button.btn-text:hover {
+    @apply text-orange-3 shadow-none;
+  }
+
+
   button.btn-default {
-    @apply bg-(--bg) border border-(--color-orange-3);
+    @apply bg-(--bg) border border-(--color-orange-4) text-orange-4;
   }
   a.btn {
     @apply flex justify-center items-center w-fit;
