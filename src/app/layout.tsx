@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   viewport: 'width=device-width, initial-scale=1.0',
   keywords: 'food delivery, restaurants, delivery, online ordering',
   icons: {
-    icon: '/favicon.ico',
+    icon: '/LOGO.png',
   },
 }
 
