@@ -18,4 +18,7 @@
   button.btn-default {
     @apply bg-(--bg) border border-(--color-orange-3);
   }
+  a.btn {
+    @apply flex justify-center items-center w-fit;
+  }
 }

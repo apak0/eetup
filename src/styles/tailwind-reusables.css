@@ -6,7 +6,7 @@
     border-top: 1px solid var(--border-color);
   }
   .card {
-    @apply rounded-lg bg-(--bg) mb-4;
+    @apply rounded-lg bg-(--bg);
   }
 
   .flagged {
