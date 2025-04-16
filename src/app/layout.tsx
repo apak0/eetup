@@ -5,7 +5,7 @@ import { Inter } from 'next/font/google'
 import { cookies } from 'next/headers'
 
 import { Footer } from '../components/Footer'
-import { TopBar } from '../components/Header'
+import { Header } from '../components/Header'
 
 import { Providers } from './Providers'
 
@@ -41,7 +41,7 @@ export default async function RootLayout({
       <body className={`${inter.className} antialiased`}>
         <Providers>
           <>
-            <TopBar />
+            <Header />
             <Toaster position="bottom-right" />
             <main className="max-w-app mx-auto px-2 lg:px-10">{children}</main>
             <Footer />
