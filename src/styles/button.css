@@ -23,7 +23,6 @@
     @apply text-orange-3 shadow-none;
   }
 
-
   button.btn-default {
     @apply bg-(--bg) border border-(--color-orange-4) text-orange-4;
   }
