@@ -3,7 +3,8 @@ import jsonwebtoken from 'jsonwebtoken'
 import { cookies } from 'next/headers'
 
 import { db } from '../database/db'
-import { company, CompanyWithPassword, User, user, UserWithPassword } from '../database/schema'
+import { company, user } from '../database/schema'
+import { CompanyWithPassword, User, UserWithPassword } from '../database/type'
 
 import { JWT_SECRET } from '@/constants'
 

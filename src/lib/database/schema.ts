@@ -1,5 +1,5 @@
-import { InferSelectModel } from 'drizzle-orm'
-import { boolean, integer, pgSchema, varchar } from 'drizzle-orm/pg-core'
+import { relations } from 'drizzle-orm'
+import { boolean, decimal, integer, pgSchema, varchar } from 'drizzle-orm/pg-core'
 
 export const cs1 = pgSchema('eetup-dev')
 
@@ -35,10 +35,26 @@ export const company = cs1.table('company', {
   houseNumberAddition: varchar({ length: 255 }),
   bannedPostcodes: varchar({ length: 255 }).array(),
   emailVerified: boolean().default(false).notNull(),
+  minEstimatedDeliveryTime: integer().default(0).notNull(),
+  maxEstimatedDeliveryTime: integer().default(0).notNull(),
+  deliveryFee: decimal().default('0').notNull(),
+  score: integer().default(0).notNull(),
 })
 
-export type UserWithPassword = InferSelectModel<typeof user>
-export type User = Omit<UserWithPassword, 'password'>
+export const product = cs1.table('product', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  companyId: integer('company_id').references(() => company.id),
+  name: varchar({ length: 255 }).notNull(),
+  description: varchar({ length: 255 }).notNull(),
+  price: decimal().notNull(),
+  discount_price: decimal().notNull(),
+  image: varchar({ length: 2000 }).notNull(),
+  active: boolean().default(false).notNull(),
+  categories: varchar({ length: 255 }).array(),
+  allergens: varchar({ length: 255 }).array(),
+  dietary: varchar({ length: 255 }).array(),
+})
 
-export type CompanyWithPassword = InferSelectModel<typeof company>
-export type Company = Omit<CompanyWithPassword, 'password'>
+export const productCompanyRelation = relations(company, ({ many }) => ({
+  product: many(product),
+}))

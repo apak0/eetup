@@ -16,11 +16,15 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'Eeetup',
   description: 'Order food from your favorite restaurants',
-  viewport: 'width=device-width, initial-scale=1.0',
   keywords: 'food delivery, restaurants, delivery, online ordering',
   icons: {
     icon: '/LOGO.png',
   },
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
 }
 
 export default async function RootLayout({

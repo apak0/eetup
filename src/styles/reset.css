@@ -27,7 +27,7 @@
     font-family: 'manrope', sans-serif;
     margin: 0;
     padding: 0;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.5;
     scrollbar-color: var(--color-gray-3) transparent;
   }
@@ -50,11 +50,11 @@
   }
 
   a {
-    color: var(--color-orange-1);
+    color: var(--color-orange-3);
     text-decoration: none;
   }
   a:hover {
-    color: var(--color-orange-2);
+    color: var(--color-orange-3);
     text-decoration: underline;
   }
 }

@@ -6,7 +6,8 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import { JWT_SECRET } from '@/constants'
 import { db } from '@/lib/database/db'
-import { company, CompanyWithPassword, user, UserWithPassword } from '@/lib/database/schema'
+import { company, user } from '@/lib/database/schema'
+import { CompanyWithPassword, UserWithPassword } from '@/lib/database/type'
 
 export async function POST(req: NextRequest) {
   const { email, password } = await req.json()
