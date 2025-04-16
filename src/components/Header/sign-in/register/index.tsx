@@ -4,13 +4,7 @@ import { useRouter } from 'next/navigation'
 
 import { register } from '@/lib/services'
 
-export default function Register({
-  setLoginContent,
-  setAuthOpen,
-}: {
-  setLoginContent: (val: string) => void
-  setAuthOpen: any
-}) {
+export default function Register({ setLoginContent, setAuthOpen }: { setLoginContent: (val: string) => void; setAuthOpen: any }) {
   const router = useRouter()
 
   const authenticate = async (state: any, formData: FormData) => {

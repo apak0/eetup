@@ -32,14 +32,7 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "src/styles/colors.js",
-    "src/styles/colors/colors.js"
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   // exclude next js files
   "exclude": ["node_modules", ".next"]
 }

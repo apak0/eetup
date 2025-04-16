@@ -25,12 +25,7 @@ export function AuthModal({ open, setAuthOpen }: { open: boolean; setAuthOpen: (
               <button className="w-full " aria-disabled={false} type="button" onClick={() => setLoginContent('login')}>
                 Login
               </button>
-              <button
-                className="w-full btn-default"
-                aria-disabled={false}
-                type="button"
-                onClick={() => setLoginContent('register')}
-              >
+              <button className="w-full btn-default" aria-disabled={false} type="button" onClick={() => setLoginContent('register')}>
                 Register
               </button>
               <SignInPage />

@@ -13,7 +13,6 @@ export default async function CompanyLayout({ children }: { children: React.Reac
     { name: 'Settings', href: '/company/settings' },
   ]
 
-  
   return (
     <div className="grid grid-cols-4 gap-8 min-h-[calc(100vh-5rem)] py-8">
       <aside className="flex flex-col">

@@ -11,9 +11,7 @@ export default function UserActivated() {
           <CircleCheckBig size={250} color={colors.green[1]} strokeWidth={1} />
         </div>
         <h1 className=" font-bold text-2xl mb-4">Email Verified Successfully!</h1>
-        <p className="text-base mb-8">
-          Your email has been successfully verified. You can now access all features of your account.
-        </p>
+        <p className="text-base mb-8">Your email has been successfully verified. You can now access all features of your account.</p>
         <Link href="/" className="btn mx-auto">
           Continue to Homepage
         </Link>

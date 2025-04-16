@@ -6,9 +6,7 @@ import { DarkModeTogglerContainer } from './styled'
 
 export const DarkModeToggler = ({ preferredTheme }: { preferredTheme: 'dark' | 'light' }) => {
   const initialTheme: any =
-    preferredTheme ||
-    (globalThis.matchMedia && globalThis.matchMedia('(prefers-color-scheme: dark)').matches && 'dark') ||
-    'light'
+    preferredTheme || (globalThis.matchMedia && globalThis.matchMedia('(prefers-color-scheme: dark)').matches && 'dark') || 'light'
 
   const [theme, setTheme] = useState<'dark' | 'light'>(initialTheme)
 
@@ -25,12 +23,7 @@ export const DarkModeToggler = ({ preferredTheme }: { preferredTheme: 'dark' | '
 
   return (
     <DarkModeTogglerContainer>
-      <input
-        type="checkbox"
-        id="toggle_checkbox"
-        onChange={(e) => onThemeChange(e.target.checked ? 'dark' : 'light')}
-        checked={theme === 'dark'}
-      />
+      <input type="checkbox" id="toggle_checkbox" onChange={(e) => onThemeChange(e.target.checked ? 'dark' : 'light')} checked={theme === 'dark'} />
 
       <label htmlFor="toggle_checkbox">
         <div id="star">

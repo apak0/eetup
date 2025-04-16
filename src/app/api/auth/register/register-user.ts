@@ -1,13 +1,7 @@
 import { appName } from '@/constants'
 import { colors } from '@/styles/colors/colors'
 
-export const registerUserEmailTemplate = ({
-  firstName,
-  registrationToken,
-}: {
-  firstName: string
-  registrationToken: string
-}) => `
+export const registerUserEmailTemplate = ({ firstName, registrationToken }: { firstName: string; registrationToken: string }) => `
     <html>
     <body style="font-family: Arial, sans-serif; background-color: ${colors.gray[1]}; margin: 0; padding: 40px;">
       <div style="max-width: 600px; background-color: ${colors.white}; padding: 20px 40px; margin: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
