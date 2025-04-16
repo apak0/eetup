@@ -3,8 +3,8 @@
 export default function TermsOfService() {
   return (
     <main className="max-w-4xl min-h-screen mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold mb-6 text-center text-blue-700">Terms of Service</h1>
-      <hr />
+      <h1 className="text-4xl mb-6 text-center border-bottom pb-5">Terms of Service</h1>
+
       <p className="my-6 text-gray-600">
         These Terms of Service (&ldquo;Agreement&ldquo;) govern your access to and use of the platform as a registered
         restaurant (&ldquo;You&ldquo;, &ldquo;Restaurant&ldquo;) on our food delivery and ordering service

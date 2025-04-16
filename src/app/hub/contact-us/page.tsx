@@ -2,7 +2,7 @@ export default function Contact() {
   return (
     <main className="min-h-screen  p-8 text-gray-800">
       <section className="max-w-3xl mx-auto">
-        <h1 className="text-4xl text-center font-bold mb-6 text-blue-700">Contact Us</h1>
+        <h1 className="text-4xl mb-6 text-center border-bottom pb-5">Contact Us</h1>
         <p className="mb-4">Have questions or feedback? We’d love to hear from you.</p>
         <form className="space-y-4">
           <input className="w-full p-3 border rounded-lg" placeholder="Your Name" />

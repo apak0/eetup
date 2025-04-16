@@ -3,9 +3,7 @@
 export default function PrivacyPolicy() {
   return (
     <main className="max-w-4xl min-h-screen mx-auto px-4 py-12">
-      <h1 className="text-4xl   font-bold mb-6 text-center text-blue-700">Privacy Policy</h1>
-
-      <hr />
+      <h1 className="text-4xl mb-6 text-center border-bottom pb-5">Privacy Policy</h1>
 
       <p className="my-6 text-gray-600">
         This Privacy Policy describes how our platform collects, uses, and protects your personal and business

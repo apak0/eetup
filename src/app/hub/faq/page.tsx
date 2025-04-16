@@ -5,9 +5,8 @@ import Link from 'next/link'
 export default function FAQPage() {
   return (
     <main className="max-w-4xl min-h-screen  mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold mb-6 text-center text-blue-700">Frequently Asked Questions (FAQ)</h1>
+      <h1 className="text-4xl mb-6 text-center border-bottom pb-5">Frequently Asked Questions (FAQ)</h1>
 
-      <hr />
       <section className="my-6">
         <h2 className="text-xl font-semibold text-gray-700 mb-2">1. How do I register my restaurant?</h2>
         <p className="text-gray-600">
