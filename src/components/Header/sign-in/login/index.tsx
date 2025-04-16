@@ -4,13 +4,7 @@ import { useRouter } from 'next/navigation'
 
 import { login } from '@/lib/services'
 
-export default function Login({
-  setLoginContent,
-  setAuthOpen,
-}: {
-  setLoginContent: (val: string) => void
-  setAuthOpen: any
-}) {
+export default function Login({ setLoginContent, setAuthOpen }: { setLoginContent: (val: string) => void; setAuthOpen: any }) {
   const router = useRouter()
   const [email, setEmail] = useState(() => localStorage.getItem('rememberedEmail') || '')
   const [password, setPassword] = useState('')
@@ -77,13 +71,7 @@ export default function Login({
             onChange={(e) => setPassword(e.target.value)}
           />
           <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              id="rememberMe"
-              checked={rememberMe}
-              onChange={handleRememberMe}
-              className="accent-gray-200"
-            />
+            <input type="checkbox" id="rememberMe" checked={rememberMe} onChange={handleRememberMe} className="accent-gray-200" />
             <label htmlFor="rememberMe">Remember Me</label>
           </div>
         </div>

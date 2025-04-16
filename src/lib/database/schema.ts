@@ -47,7 +47,7 @@ export const product = cs1.table('product', {
   name: varchar({ length: 255 }).notNull(),
   description: varchar({ length: 255 }).notNull(),
   price: decimal().notNull(),
-  discount_price: decimal().notNull(),
+  discount_price: decimal(),
   image: varchar({ length: 2000 }).notNull(),
   active: boolean().default(false).notNull(),
   categories: varchar({ length: 255 }).array(),

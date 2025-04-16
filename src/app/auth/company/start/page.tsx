@@ -24,6 +24,7 @@ export default function StartAsCompany() {
     // }
   }
 
+  // TODO: style inputs at global level
   return (
     <form action={formAction} className="flex flex-col items-center justify-center min-h-[calc(100vh-5rem)] py-16">
       <div className="flex flex-col items-center justify-center mb-8">
@@ -32,31 +33,10 @@ export default function StartAsCompany() {
         <p>Your success story starts here</p>
       </div>
       <div className="flex flex-col w-80 gap-4 ">
-        <input
-          type="text"
-          name="organization"
-          id="organization"
-          placeholder="Company Name"
-          required
-          autoComplete="organization"
-        />
+        <input type="text" name="organization" id="organization" placeholder="Company Name" required autoComplete="organization" />
         <input type="text" name="email" id="email" placeholder="Company Email" required autoComplete="email" />
-        <input
-          type="text"
-          name="firstName"
-          id="firstName"
-          placeholder="Owner First Name"
-          required
-          autoComplete="given-name"
-        />
-        <input
-          type="text"
-          name="lastName"
-          id="lastName"
-          placeholder="Owner Last Name"
-          required
-          autoComplete="family-name"
-        />
+        <input type="text" name="firstName" id="firstName" placeholder="Owner First Name" required autoComplete="given-name" />
+        <input type="text" name="lastName" id="lastName" placeholder="Owner Last Name" required autoComplete="family-name" />
         <PhoneInput name="tel" placeholder="Company Phone" />
       </div>
       <div className="grid gap-4 mt-8 w-80">

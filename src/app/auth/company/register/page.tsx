@@ -29,46 +29,16 @@ export default async function RegisterAsCompany({ searchParams }: Props) {
         <p>Your success story starts here</p>
       </div>
       <div className="flex flex-col w-80 gap-4">
-        <input
-          type="text"
-          name="email"
-          id="email"
-          placeholder="User Name"
-          required
-          disabled
-          autoComplete="off"
-          defaultValue={decodedToken?.email}
-        />
+        <input type="text" name="email" id="email" placeholder="User Name" required disabled autoComplete="off" defaultValue={decodedToken?.email} />
         <input type="text" name="cocId" id="cocId" placeholder="Chamber of Commerce ID" required autoComplete="off" />
-        <input
-          type="password"
-          name="password"
-          id="password"
-          placeholder="Password"
-          required
-          autoComplete="new-password"
-        />
-        <input
-          type="password"
-          name="passwordConfirm"
-          id="passwordConfirm"
-          placeholder="Confirm Password"
-          required
-          autoComplete="new-password"
-        />
+        <input type="password" name="password" id="password" placeholder="Password" required autoComplete="new-password" />
+        <input type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Confirm Password" required autoComplete="new-password" />
         <h2 className="text-lg font-semibold">Company Address</h2>
         {/* add address fields with labels and required sign */}
         <input type="text" name="postcode" id="postcode" placeholder="Postcode" required autoComplete="postal-code" />
         <input type="text" name="city" id="city" placeholder="City" required autoComplete="address-level2" />
         <input type="text" name="street" id="street" placeholder="Street" required autoComplete="address-line1" />
-        <input
-          type="text"
-          name="houseNumber"
-          id="houseNumber"
-          placeholder="House Number"
-          required
-          autoComplete="address-line2"
-        />
+        <input type="text" name="houseNumber" id="houseNumber" placeholder="House Number" required autoComplete="address-line2" />
         <input
           type="text"
           name="houseNumberAddition"

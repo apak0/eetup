@@ -22,34 +22,30 @@ export default function FAQPage() {
       <section className="mb-8">
         <h2 className="text-xl font-semibold text-gray-700 mb-2">2. Is there a fee to be listed on the platform?</h2>
         <p className="text-gray-600">
-          We offer flexible commission-based models depending on your location and order volume. Contact our business
-          team for a detailed plan.
+          We offer flexible commission-based models depending on your location and order volume. Contact our business team for a detailed plan.
         </p>
       </section>
 
       <section className="mb-8">
         <h2 className="text-xl font-semibold text-gray-700 mb-2">3. How are orders delivered to customers?</h2>
         <p className="text-gray-600">
-          We offer integrated delivery through our partner logistics companies or you can manage your own delivery. You
-          can choose the option that works best for you during registration.
+          We offer integrated delivery through our partner logistics companies or you can manage your own delivery. You can choose the option that
+          works best for you during registration.
         </p>
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold text-gray-700 mb-2">
-          4. Can I edit my restaurant’s menu after registration?
-        </h2>
+        <h2 className="text-xl font-semibold text-gray-700 mb-2">4. Can I edit my restaurant’s menu after registration?</h2>
         <p className="text-gray-600">
-          Yes, after registration you’ll have access to a restaurant dashboard where you can update your menu, prices,
-          and availability at any time.
+          Yes, after registration you’ll have access to a restaurant dashboard where you can update your menu, prices, and availability at any time.
         </p>
       </section>
 
       <section className="mb-8">
         <h2 className="text-xl font-semibold text-gray-700 mb-2">5. Who should I contact for technical support?</h2>
         <p className="text-gray-600">
-          For technical support, contact us at <span className="underline">{process.env.E_MAIL}</span>. Our team is
-          available 7 days a week to assist you.
+          For technical support, contact us at <span className="underline">{process.env.E_MAIL}</span>. Our team is available 7 days a week to assist
+          you.
         </p>
       </section>
     </main>
