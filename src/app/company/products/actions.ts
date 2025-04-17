@@ -24,6 +24,7 @@ export const createProductAction = async (formData: any) => {
     allergens: allergens.split(','),
     dietary: dietary.split(','),
   }
+  console.log('ahoy1', newProduct)
 
   db.insert(product).values({
     companyId: company.id,
@@ -31,4 +32,22 @@ export const createProductAction = async (formData: any) => {
   })
 
   return { message: 'Product is added to your menu successfully. You can deactivate the product at any time.' }
+}
+
+export const uploadImageKit = async (formData: FormData) => {
+  const file = formData.get('image') as File
+  if (!file) return
+
+  const ikFormData = new FormData()
+  ikFormData.append('file', file)
+  ikFormData.append('publicKey', process.env.IMAGE_KIT_API_KEY!)
+  ikFormData.append('fileName', file.name)
+
+  const res = await fetch('https://ik.imagekit.io/7hymjkd5q', {
+    method: 'POST',
+    body: ikFormData,
+  })
+
+  const data = await res.json()
+  return data?.url
 }

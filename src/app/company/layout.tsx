@@ -28,7 +28,7 @@ export default async function CompanyLayout({ children }: { children: React.Reac
             ))}
           </ul>
         </aside>
-        <section className="col-span-3">{children}</section>
+        <section className="col-span-3 rounded-lg card shadow">{children}</section>
       </div>
     </div>
   )

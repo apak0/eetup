@@ -16,6 +16,9 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        hostname: 'ik.imagekit.io',
+      },
     ],
   },
   reactStrictMode: true,
