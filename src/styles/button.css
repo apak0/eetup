@@ -17,7 +17,7 @@
   }
 
   button.btn-text {
-    @apply bg-transparent text-orange-2 shadow-none;
+    @apply bg-transparent text-orange-2 shadow-none hover:bg-(--bg-secondary) rounded-full p-1;
   }
   button.btn-text:hover {
     @apply text-orange-3 shadow-none;
