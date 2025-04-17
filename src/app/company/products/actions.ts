@@ -7,7 +7,6 @@ import { authenticateRequest } from '@/lib/utils/authenticate'
 export const createProductAction = async (formData: any) => {
   const company = await authenticateRequest()
 
-  console.log('ahoy1', company, formData)
   const name = formData.get('name')?.toString() || ''
   const description = formData.get('description')?.toString() || ''
   const price = parseFloat(formData.get('price')?.toString() || '0') as any
