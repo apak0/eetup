@@ -1,22 +1,22 @@
 import Link from 'next/link'
 
-import { authenticateRequest } from '@/lib/utils/authenticate'
+import { auth } from '@/lib/utils/auth'
 
 export default async function CompanyLayout({ children }: { children: React.ReactNode }) {
-  const company = await authenticateRequest()
-  console.log('ahoy1', company)
+  const session = await auth()
 
   const menu = [
     { name: 'Dashboard', href: '/company' },
     { name: 'Products', href: '/company/products' },
     { name: 'Orders', href: '/company/orders' },
     { name: 'Settings', href: '/company/settings' },
+    { name: 'Profile', href: '/company/profile' },
   ]
 
   return (
     <div className="container mx-auto py-2">
       <div className="flex items-center py-4">
-        <h2 className="col-span-4 text-xl font-semibold">Welcome, {company?.organization}</h2>
+        <h2 className="col-span-4 text-xl font-semibold">Welcome, {session?.user?.name}</h2>
       </div>
       <div className="grid grid-cols-4 gap-4 min-h-[calc(100vh-5rem)]">
         <aside className="flex flex-col">

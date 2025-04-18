@@ -47,5 +47,5 @@ export async function POST(req: NextRequest) {
     path: '/',
   })
 
-  return NextResponse.json({ message: 'Login Successful', isCompany: !foundUser }, { status: 200 })
+  return NextResponse.json({ message: 'Login Successful', isCompany: !foundUser, entery: userWithoutPassword }, { status: 200 })
 }

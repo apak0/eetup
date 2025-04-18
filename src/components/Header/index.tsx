@@ -4,6 +4,7 @@ import Link from 'next/link'
 
 import { DarkModeToggler } from './DarkModeToggler'
 import { SignInButton } from './sign-in'
+import { SignOutButton } from './SignOutButton'
 
 export const Header = async () => {
   const cookieStore = await cookies()
@@ -18,6 +19,7 @@ export const Header = async () => {
         </Link>
 
         <div className="flex items-center gap-6">
+          <SignOutButton />
           <SignInButton />
           <DarkModeToggler preferredTheme={theme} />
         </div>

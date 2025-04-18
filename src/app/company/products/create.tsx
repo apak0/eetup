@@ -1,23 +1,59 @@
 import { useRef, useState } from 'react'
 import toast from 'react-hot-toast'
+import {
+  Image as ImageKitImage,
+  ImageKitAbortError,
+  ImageKitInvalidRequestError,
+  ImageKitServerError,
+  ImageKitUploadNetworkError,
+  upload,
+} from '@imagekit/next'
 import classNames from 'classnames'
 import { ImageUp, Trash2 } from 'lucide-react'
 import Image from 'next/image'
+import { useSession } from 'next-auth/react'
 
-import { createProductAction, uploadImageKit } from './actions'
+import { createProductAction } from './actions'
 import { productAllergens, productCategories, productDietary } from './constants'
 
 import Select from '@/components/reusables/Select'
 import { validateImageFile } from '@/lib/utils/validateImageSize'
 
 export const CreateProduct = () => {
+  const session: any = useSession()
+
   const inputRef = useRef<HTMLInputElement>(null)
-  const [categories, setCategories] = useState([])
-  const [allergens, setAllergens] = useState([])
-  const [dietary, setDietary] = useState([])
+  const [progress, setProgress] = useState(0)
+  const [categories, setCategories] = useState([1])
+  const [allergens, setAllergens] = useState([1])
+  const [dietary, setDietary] = useState([1])
   const [isUploading, setIsUploading] = useState(false)
+  const [previewFile, setPreviewFile] = useState<any>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [finalUrl, setFinalUrl] = useState<string | null>(null)
+
+  const imageKitAuthenticator = async () => {
+    try {
+      // Perform the request to the upload authentication endpoint.
+      const response = await fetch('/api/auth/image-kit')
+      if (!response.ok) {
+        // If the server response is not successful, extract the error text for debugging.
+        const errorText = await response.text()
+        throw new Error(`Request failed with status ${response.status}: ${errorText}`)
+      }
+
+      // Parse and destructure the response JSON for upload credentials.
+      const data = await response.json()
+      const { signature, expire, token, publicKey } = data
+      return { signature, expire, token, publicKey }
+    } catch (_e) {
+      throw new Error('Authentication request failed')
+    }
+  }
+
+  const onProgress = (event: any) => {
+    setProgress((event.loaded / event.total) * 100)
+  }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -27,17 +63,52 @@ export const CreateProduct = () => {
     formData.append('categories', JSON.stringify(categories))
     formData.append('allergens', JSON.stringify(allergens))
     formData.append('dietary', JSON.stringify(dietary))
- 
-    setIsUploading(true)
-    const imageUrl = await uploadImageKit(formData)
-    if (imageUrl) {
-      formData.append('image', imageUrl)
+    const productName = formData.get('name')?.toString() || ''
 
-      await createProductAction(formData)
-      setIsUploading(false)
-    } else {
-      toast.error('Image upload failed. Please try again.')
+    if (!previewUrl) {
+      toast.error('Please select an image for the product')
+      return
     }
+
+    setIsUploading(true)
+
+    const { signature, expire, token, publicKey } = await imageKitAuthenticator()
+
+    try {
+      const uploadResponse = finalUrl
+        ? { url: finalUrl }
+        : await upload({
+            expire,
+            token,
+            signature,
+            publicKey,
+            file: previewFile,
+            fileName: productName?.replaceAll(' ', '_'),
+            folder: `products/${session?.data?.user?.organization}/`,
+            onProgress,
+          })
+
+      if (uploadResponse?.url) {
+        setFinalUrl(uploadResponse?.url)
+        formData.append('image', uploadResponse?.url)
+        await createProductAction(formData)
+      } else {
+        toast.error('Image upload failed. Please try with another image.')
+      }
+    } catch (error) {
+      if (error instanceof ImageKitAbortError) {
+        console.error('Upload aborted:', error.reason)
+      } else if (error instanceof ImageKitInvalidRequestError) {
+        console.error('Invalid request:', error.message)
+      } else if (error instanceof ImageKitUploadNetworkError) {
+        console.error('Network error:', error.message)
+      } else if (error instanceof ImageKitServerError) {
+        console.error('Server error:', error.message)
+      } else {
+        console.error('Upload error:', error)
+      }
+    }
+
     setIsUploading(false)
   }
 
@@ -51,6 +122,7 @@ export const CreateProduct = () => {
       } else {
         const url = URL.createObjectURL(file)
         setPreviewUrl(url)
+        setPreviewFile(file)
       }
     }
   }
@@ -58,7 +130,8 @@ export const CreateProduct = () => {
   const handleClear = () => {
     setPreviewUrl(null)
     setFinalUrl(null)
-    inputRef.current!.value = '' // Reset input
+    setPreviewFile(null)
+    inputRef.current!.value = ''
   }
 
   const imageToShow = finalUrl || previewUrl
@@ -69,9 +142,17 @@ export const CreateProduct = () => {
         <div className="flex gap-8 px-4">
           <div className="flex flex-col items-stretch w-80 gap-4">
             <h2>New Product</h2>
-            <input type="text" name="name" id="name" placeholder="Product Name" required autoComplete="off" />
-            <input type="text" name="description" id="description" placeholder="Description" required autoComplete="off" />
-            <input type="number" name="price" id="price" placeholder="Price" required autoComplete="off" />
+            <input type="text" name="name" id="name" placeholder="Product Name" required autoComplete="off" defaultValue="Burger" />
+            <input
+              type="text"
+              name="description"
+              id="description"
+              placeholder="Description"
+              required
+              autoComplete="off"
+              defaultValue="Burger Description"
+            />
+            <input type="number" name="price" id="price" placeholder="Price" required autoComplete="off" defaultValue="14.00" />
             <Select mode="multiple" options={productCategories} label="Categories" onChange={setCategories} />
             <Select mode="multiple" options={productAllergens} label="Allergens" onChange={setAllergens} />
             <Select mode="multiple" options={productDietary} label="Dietary" onChange={setDietary} />
@@ -80,11 +161,15 @@ export const CreateProduct = () => {
               Create Product
             </button>
           </div>
-          <div className="relative mx-auto my-12 flex">
-            <input ref={inputRef} hidden type="file" id="image" name="image" accept="image/*" required onChange={handleFileChange} />
+          <div className="relative mx-auto my-12 flex flex-col">
+            <input ref={inputRef} hidden type="file" id="image-upload" name="image-upload" accept="image/*" required onChange={handleFileChange} />
             {imageToShow ? (
               <div className="group p-3 rounded-lg border border-solid border-(--border-color) self-start">
-                <Image width={400} height={400} src={imageToShow} alt="Uploaded" className="object-contain" />
+                {finalUrl ? (
+                  <ImageKitImage src={finalUrl} width={400} height={400} alt="Picture of the product" />
+                ) : (
+                  <Image src={imageToShow} width={400} height={400} alt="Picture of the product" />
+                )}
                 <button
                   className="btn-text bg-(--bg) absolute text-sm z-10 top-1 right-1 size-12 hidden group-hover:flex hover:bg-red-1 hover:text-white group/1"
                   type="button"
@@ -104,10 +189,18 @@ export const CreateProduct = () => {
                   },
                 )}
               >
-                <label htmlFor="image">{!imageToShow && <ImageUp size={48} absoluteStrokeWidth className="size-60" />}</label>
-                {isUploading && <p className="relative text-sm z-10">Uploading...</p>}
+                <label htmlFor="image-upload">{!imageToShow && <ImageUp size={48} absoluteStrokeWidth className="size-60" />}</label>
               </div>
             )}
+            <div>
+              {/* TODO: Add progress UI */}
+              {isUploading && !!progress && (
+                <p className="relative text-sm z-10">
+                  Upload progress: <progress value={progress} max={100}></progress>
+                </p>
+              )}
+              {!!progress && <span>{progress}%</span>}
+            </div>
           </div>
         </div>
       </form>
