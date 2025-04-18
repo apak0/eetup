@@ -1,11 +1,15 @@
 'use client'
 
 import { useState } from 'react'
+import { useSession } from 'next-auth/react'
 
 import { AuthModal } from './AuthModal'
 
 export const SignInButton = () => {
+  const session = useSession()
   const [authOpen, setAuthOpen] = useState(false)
+
+  if (session?.data) return null
 
   return (
     <div>

@@ -1,8 +1,7 @@
 import { useActionState, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import { useRouter } from 'next/navigation'
-
-import { login } from '@/lib/services'
+import { signIn } from 'next-auth/react'
 
 export default function Login({ setLoginContent, setAuthOpen }: { setLoginContent: (val: string) => void; setAuthOpen: any }) {
   const router = useRouter()
@@ -24,18 +23,16 @@ export default function Login({ setLoginContent, setAuthOpen }: { setLoginConten
     formData.forEach((value, key) => {
       object[key] = value
     })
-    const result = login(object)
+
+    signIn('credentials', { redirect: false, username: object.email, password: object.password })
       .then((res) => {
-        if (res.isCompany) {
-          router.push('/company')
-        } else {
-          router.push('/restaurants')
+        // TODO: redirect to relative page of the user or company
+        if (res?.ok) {
+          router.push(res?.url || '/')
         }
         setAuthOpen(false)
       })
       .catch(console.error)
-
-    return result
   }
   const [, dispatch] = useActionState(authenticate, undefined)
 

@@ -1,0 +1,1 @@
+ALTER TABLE "eetup-dev"."product" ADD CONSTRAINT "product_name_unique" UNIQUE("name");

@@ -2,99 +2,101 @@
 
 import { useState } from 'react'
 import { Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
-import { CheckIcon, ChevronsUpDownIcon } from 'lucide-react'
+import classNames from 'classnames'
+import { CheckIcon, ChevronDown, X } from 'lucide-react'
 
-const people = [
-  {
-    id: 1,
-    name: 'Wade Cooper',
-    avatar:
-      'https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-  {
-    id: 2,
-    name: 'Arlene Mccoy',
-    avatar: 'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-  {
-    id: 3,
-    name: 'Devon Webb',
-    avatar:
-      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80',
-  },
-  {
-    id: 4,
-    name: 'Tom Cook',
-    avatar:
-      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-  {
-    id: 5,
-    name: 'Tanya Fox',
-    avatar:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-  {
-    id: 6,
-    name: 'Hellen Schmidt',
-    avatar:
-      'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-  {
-    id: 7,
-    name: 'Caroline Schultz',
-    avatar:
-      'https://images.unsplash.com/photo-1568409938619-12e139227838?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-  {
-    id: 8,
-    name: 'Mason Heaney',
-    avatar:
-      'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-  {
-    id: 9,
-    name: 'Claudie Smitham',
-    avatar:
-      'https://images.unsplash.com/photo-1584486520270-19eca1efcce5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-  {
-    id: 10,
-    name: 'Emil Schaefer',
-    avatar:
-      'https://images.unsplash.com/photo-1561505457-3bcad021f8ee?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-]
+type SelectItem = {
+  value: string | number
+  label: string
+}
 
-export default function Select() {
-  const [selected, setSelected] = useState(people[3])
+export default function Select({
+  placeholder = 'Select an option',
+  mode,
+  options,
+  label,
+  value,
+  onChange,
+}: {
+  placeholder?: string
+  mode?: 'multiple'
+  options: { value: any; label: any }[]
+  label: string
+  value?: any
+  onChange?: (value: any) => void
+}) {
+  const [selected, setSelected] = useState<SelectItem | SelectItem[]>(value || (mode === 'multiple' ? [] : null))
+
+  const handleChange = (value: any) => {
+    setSelected(value)
+    if (onChange) {
+      if (mode === 'multiple') {
+        onChange(value?.map((item: SelectItem) => item.value))
+      } else {
+        onChange(value.value)
+      }
+    }
+  }
 
   return (
-    <Listbox value={selected} onChange={setSelected}>
-      <Label className="block text-sm/6 font-medium text-gray-900">Assigned to</Label>
-      <div className="relative mt-2">
-        <ListboxButton className="grid w-full cursor-default grid-cols-1 rounded-md bg-white py-1.5 pr-2 pl-3 text-left text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-          <span className="col-start-1 row-start-1 flex items-center gap-3 pr-6">
-            <span className="block truncate">{selected.name}</span>
+    <Listbox as="div" value={selected} onChange={handleChange} multiple={mode === 'multiple'}>
+      <Label className="block text-sm/6 font-medium">{label}</Label>
+      <div className="relative mt-1">
+        <ListboxButton
+          className={classNames(
+            'group bg-(--bg) text-(--text) w-full grid grid-cols-1 rounded-md py-1 px-2 text-left outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-orange-3 sm:text-sm/6',
+            { 'px-4': mode !== 'multiple' },
+          )}
+        >
+          <span className={classNames('col-start-1 row-start-1 flex-1 flex items-center gap-3 pr-4', { 'pr-8': mode === 'multiple' })}>
+            {(mode === 'multiple' ? (selected as SelectItem[])?.length : !!selected) ? (
+              <span className="truncate block items-center gap-1">
+                {mode === 'multiple' ? (
+                  (selected as SelectItem[]).map((item) => (
+                    <div key={item.value} className="inline-block bg-(--bg-secondary) px-2 py-1 mr-1 rounded">
+                      {item.label}
+                    </div>
+                  ))
+                ) : (
+                  <div>{(selected as SelectItem).label}</div>
+                )}
+              </span>
+            ) : (
+              <div className={classNames('opacity-50', { 'pl-2': mode === 'multiple' })}>{placeholder}</div>
+            )}
           </span>
-          <ChevronsUpDownIcon aria-hidden="true" className="col-start-1 row-start-1 size-5 self-center justify-self-end text-gray-500 sm:size-4" />
+          {mode === 'multiple' && (selected as SelectItem[])?.length > 0 && (
+            <div
+              className="btn-text col-start-1 row-start-1 justify-self-end self-center mr-4 hover:bg-(--bg-secondary) rounded-full p-1"
+              onClick={(e) => {
+                e.stopPropagation()
+                handleChange(mode === 'multiple' ? [] : null)
+              }}
+            >
+              <X className="size-5 sm:size-4" />
+            </div>
+          )}
+          <ChevronDown
+            aria-hidden="true"
+            className="col-start-1 row-start-1 self-center justify-self-end size-5 sm:size-4 transition-transform duration-200 group-data-[open]:rotate-180"
+          />
         </ListboxButton>
 
         <ListboxOptions
           transition
-          className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-hidden data-leave:transition data-leave:duration-100 data-leave:ease-in data-closed:data-leave:opacity-0 sm:text-sm"
+          className="absolute bg-(--bg) z-10 mt-1 max-h-56 w-full overflow-auto rounded-md py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-hidden data-leave:transition data-leave:duration-100 data-leave:ease-in data-closed:data-leave:opacity-0 sm:text-sm"
         >
-          {people.map((person) => (
+          {options.map((item) => (
             <ListboxOption
-              key={person.id}
-              value={person}
-              className="group relative cursor-default py-2 pr-9 pl-3 text-gray-900 select-none data-focus:bg-indigo-600 data-focus:text-white data-focus:outline-hidden"
+              key={item.value}
+              value={item}
+              className="group relative cursor-default py-2 pr-9 pl-3 select-none data-focus:bg-orange-3 data-focus:text-white data-focus:outline-hidden"
             >
               <div className="flex items-center">
-                <span className="ml-3 block truncate font-normal group-data-selected:font-semibold">{person.name}</span>
+                <span className="ml-2 block truncate font-normal group-data-selected:font-semibold">{item.label}</span>
               </div>
 
-              <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600 group-not-data-selected:hidden group-data-focus:text-white">
+              <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-orange-3 group-not-data-selected:hidden group-data-focus:text-white">
                 <CheckIcon aria-hidden="true" className="size-5" />
               </span>
             </ListboxOption>

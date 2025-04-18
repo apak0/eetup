@@ -1,5 +1,5 @@
 input {
-  @apply h-10 py-2 px-2 rounded-md bg-(--bg-secondary);
+  @apply h-12 py-2 px-2 rounded-md bg-(--bg-secondary);
   .dark & {
     @apply bg-gray-5;
   }

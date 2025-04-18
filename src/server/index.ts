@@ -7,6 +7,7 @@ import { Server } from 'socket.io'
 import { SocketType } from './types'
 
 import { JWT_SECRET } from '@/constants'
+
 dotenv.config()
 
 const dev = process.env.NODE_ENV !== 'production'

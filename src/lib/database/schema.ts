@@ -44,7 +44,7 @@ export const company = cs1.table('company', {
 export const product = cs1.table('product', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   companyId: integer('company_id').references(() => company.id),
-  name: varchar({ length: 255 }).notNull(),
+  name: varchar({ length: 255 }).notNull().unique(),
   description: varchar({ length: 255 }).notNull(),
   price: decimal().notNull(),
   discount_price: decimal(),
