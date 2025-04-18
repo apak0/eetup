@@ -36,6 +36,13 @@
       "when": 1745011242694,
       "tag": "0004_equal_thunderball",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1745012643524,
+      "tag": "0005_free_maggott",
+      "breakpoints": true
     }
   ]
 }

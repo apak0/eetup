@@ -71,10 +71,9 @@ export const CreateProduct = () => {
     }
 
     setIsUploading(true)
-
-    const { signature, expire, token, publicKey } = await imageKitAuthenticator()
-
     try {
+      const { signature, expire, token, publicKey } = await imageKitAuthenticator()
+
       const uploadResponse = finalUrl
         ? { url: finalUrl }
         : await upload({
@@ -93,20 +92,22 @@ export const CreateProduct = () => {
         formData.append('image', uploadResponse?.url)
         await createProductAction(formData)
       } else {
-        toast.error('Image upload failed. Please try with another image.')
+        throw new Error('Image upload failed. Please try with another image.')
       }
     } catch (error) {
+      let errorMesssage = ''
       if (error instanceof ImageKitAbortError) {
-        console.error('Upload aborted:', error.reason)
+        errorMesssage = 'Upload aborted: ' + error.reason
       } else if (error instanceof ImageKitInvalidRequestError) {
-        console.error('Invalid request:', error.message)
+        errorMesssage = 'Invalid request: ' + error.message
       } else if (error instanceof ImageKitUploadNetworkError) {
-        console.error('Network error:', error.message)
+        errorMesssage = 'Network error: ' + error.message
       } else if (error instanceof ImageKitServerError) {
-        console.error('Server error:', error.message)
+        errorMesssage = 'Server error: ' + error.message
       } else {
-        console.error('Upload error:', error)
+        errorMesssage = 'Upload failed: ' + error
       }
+      toast.error(errorMesssage)
     }
 
     setIsUploading(false)
