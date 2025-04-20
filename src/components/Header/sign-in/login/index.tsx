@@ -68,7 +68,7 @@ export default function Login({ setLoginContent, setAuthOpen }: { setLoginConten
             onChange={(e) => setPassword(e.target.value)}
           />
           <div className="flex items-center gap-2">
-            <input type="checkbox" id="rememberMe" checked={rememberMe} onChange={handleRememberMe} className="accent-gray-200" />
+            <input type="checkbox" id="rememberMe" checked={rememberMe} onChange={handleRememberMe} className="accent-gray-200 " />
             <label htmlFor="rememberMe">Remember Me</label>
           </div>
         </div>
