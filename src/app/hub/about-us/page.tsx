@@ -13,7 +13,8 @@ export default function AboutUsPage() {
           alt="Restaurant interior"
           width={1380}
           height={600}
-          className="w-full h-auto object-cover"
+          className="w-full h-auto object-cover rounded-md"
+          priority
         />
       </div>
 
