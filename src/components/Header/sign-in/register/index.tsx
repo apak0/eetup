@@ -54,7 +54,7 @@ export default function Register({ setLoginContent, setAuthOpen }: { setLoginCon
             required
           />
           <label htmlFor="privacyPolicy" className="text-sm">
-            I agree the{' '}
+            I agree to the{' '}
             <Link href="/hub/privacy-policy" className="hover:underline" target="_blank">
               Privacy Policy
             </Link>

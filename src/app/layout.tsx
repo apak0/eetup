@@ -19,6 +19,7 @@ export const metadata: Metadata = {
   keywords: 'food delivery, restaurants, delivery, online ordering',
   icons: {
     icon: '/LOGO.png',
+   
   },
 }
 
