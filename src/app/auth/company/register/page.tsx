@@ -22,7 +22,7 @@ export default async function RegisterAsCompany({ searchParams }: Props) {
   const decodedToken = jwt.decode(token) as { email: string }
 
   return (
-    <form action={formAction} className="flex flex-col items-center justify-center min-h-[calc(100vh-5rem)] py-16">
+    <form action={formAction} className="card shadow-md dark:shadow-none flex flex-col items-center justify-center my-16 p-16 min-w-1/2">
       <div className="flex flex-col items-center justify-center mb-8">
         <h1 className="mb-4">Register Your Company</h1>
         <p>Partner with us to reach more customers, make more money and grow your business online</p>
