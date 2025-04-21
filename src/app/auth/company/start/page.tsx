@@ -26,11 +26,11 @@ export default function StartAsCompany() {
 
   // TODO: style inputs at global level
   return (
-    <form action={formAction} className="flex flex-col items-center justify-center min-h-[calc(100vh-5rem)] py-16">
-      <div className="flex flex-col items-center justify-center mb-8">
-        <h1 className="mb-4">Start As Company</h1>
-        <p>Partner with us to reach more customers, make more money and grow your business online</p>
-        <p>Your success story starts here</p>
+    <form action={formAction} className="card shadow-md dark:shadow-none flex flex-col items-center justify-center my-16 p-16 min-w-1/2">
+      <div className="flex flex-col items-center justify-center mb-8 text-center">
+        <h1 className="mb-4">Start as Company</h1>
+        <p>Partner with us to reach more customers, make more money and grow your business online.</p>
+        <p>Your success story starts here.</p>
       </div>
       <div className="flex flex-col w-80 gap-4 ">
         <input

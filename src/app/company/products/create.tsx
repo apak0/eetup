@@ -95,6 +95,10 @@ export const CreateProduct = () => {
       } else {
         throw new Error('Image upload failed. Please try with another image.')
       }
+
+      toast.success('Product created successfully!')
+      setIsUploading(false)
+      // TODO: redirect to the products overview tab here
     } catch (error) {
       let errorMesssage = ''
       if (error instanceof ImageKitAbortError) {
@@ -109,9 +113,8 @@ export const CreateProduct = () => {
         errorMesssage = 'Upload failed: ' + error
       }
       toast.error(errorMesssage)
+      setIsUploading(false)
     }
-
-    setIsUploading(false)
   }
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -185,7 +188,7 @@ export const CreateProduct = () => {
               <label htmlFor="image-upload" className={classNames({ 'cursor-pointer': !isUploading })}>
                 <div
                   className={classNames(
-                    'flex items-center justify-center size-[300px] rounded-xl outline-dashed outline-2 bg-orange-1 dark:bg-gray-800',
+                    'flex items-center justify-center size-[300px] rounded-xl outline-dashed outline-2 bg-orange-1 dark:bg-slate-700',
                   )}
                 >
                   {!imageToShow && <ImageUp size={48} absoluteStrokeWidth className="size-60" />}
