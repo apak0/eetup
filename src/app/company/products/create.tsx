@@ -1,3 +1,4 @@
+'use client'
 import { useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import {
@@ -20,7 +21,7 @@ import Select from '@/components/reusables/Select'
 import { validateImageFile } from '@/lib/utils/validateImageSize'
 
 export const CreateProduct = () => {
-  const session: any = useSession()
+  const session = useSession()
 
   const inputRef = useRef<HTMLInputElement>(null)
   const [progress, setProgress] = useState(0)
@@ -138,9 +139,9 @@ export const CreateProduct = () => {
   const imageToShow = finalUrl || previewUrl
 
   return (
-    <div className=" py-8">
+    <div className="card rounded-ss-none py-8">
       <form onSubmit={handleSubmit}>
-        <div className="flex gap-8 px-4">
+        <div className="flex gap-8 px-6">
           <div className="flex flex-col items-stretch w-80 gap-4">
             <h2>New Product</h2>
             <input type="text" name="name" id="name" placeholder="Product Name" required autoComplete="off" defaultValue="Burger" />
@@ -181,17 +182,15 @@ export const CreateProduct = () => {
                 </button>
               </div>
             ) : (
-              <div
-                className={classNames(
-                  'flex items-center justify-center size-[300px] rounded-xl outline-dashed outline-2 bg-orange-1 dark:bg-gray-800',
-                  {
-                    'opacity-80': isUploading,
-                    'cursor-pointer': !isUploading,
-                  },
-                )}
-              >
-                <label htmlFor="image-upload">{!imageToShow && <ImageUp size={48} absoluteStrokeWidth className="size-60" />}</label>
-              </div>
+              <label htmlFor="image-upload" className={classNames({ 'cursor-pointer': !isUploading })}>
+                <div
+                  className={classNames(
+                    'flex items-center justify-center size-[300px] rounded-xl outline-dashed outline-2 bg-orange-1 dark:bg-gray-800',
+                  )}
+                >
+                  {!imageToShow && <ImageUp size={48} absoluteStrokeWidth className="size-60" />}
+                </div>
+              </label>
             )}
             <div>
               {/* TODO: Add progress UI */}

@@ -43,8 +43,9 @@ export async function validateImageFile(file: File, options: ValidateImageOption
       resolve({ valid: true, width, height })
     }
 
-    img.onerror = () => {
+    img.onerror = (e) => {
       URL.revokeObjectURL(imageUrl)
+      console.error('Image loading error:', e)
       resolve({ valid: false, reason: 'Failed to load image.' })
     }
 

@@ -1,5 +1,3 @@
-'use client'
-
 import { PlusIcon } from 'lucide-react'
 
 import { CreateProduct } from './create'
@@ -11,9 +9,5 @@ export default function ProductsPage() {
     { key: '', label: 'Overview', content: <div>Overview Content</div> },
     { key: 'tab2', label: 'Create Product', content: <CreateProduct />, icon: <PlusIcon /> },
   ]
-  return (
-    <div>
-      <Tabs tabs={tabs} />
-    </div>
-  )
+  return <Tabs tabs={tabs} />
 }

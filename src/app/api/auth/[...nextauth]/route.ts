@@ -14,6 +14,8 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }: { token: any; user: User | Company }) {
       if (user) {
         token.id = user.id
+        token.firstName = user.firstName
+        token.lastName = user.lastName
         token.organization = user.organization
         token.isCompany = user.isCompany
       }
@@ -22,6 +24,8 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }: any) {
       if (token) {
         session.user.id = token.id
+        session.user.firstName = token.firstName
+        session.user.lastName = token.lastName
         session.user.organization = token.organization
         session.user.isCompany = token.isCompany
         return session
