@@ -34,5 +34,5 @@
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   // exclude next js files
-  "exclude": ["node_modules", ".next"]
+  "exclude": ["node_modules", ".next", "./src/declarations/*"]
 }

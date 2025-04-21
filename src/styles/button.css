@@ -17,7 +17,7 @@
   }
 
   button.btn-text {
-    @apply bg-transparent text-orange-2 shadow-none hover:bg-(--bg-secondary) rounded-full p-1;
+    @apply bg-transparent text-orange-3 shadow-none hover:bg-(--bg-secondary) rounded-full p-1 font-normal tracking-normal;
   }
   button.btn-text:hover {
     @apply text-orange-3 shadow-none;
@@ -26,7 +26,9 @@
   button.btn-default {
     @apply bg-(--bg) border border-(--color-orange-4) text-orange-4;
   }
-  a.btn {
-    @apply flex justify-center items-center w-fit;
+
+  a.btn,
+  a.btn-text {
+    @apply no-underline;
   }
 }
