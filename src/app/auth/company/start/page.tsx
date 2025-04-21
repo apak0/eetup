@@ -69,7 +69,7 @@ export default function StartAsCompany() {
           autoComplete="family-name"
           className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-200 placeholder-gray-400 text-sm"
         />
-        <PhoneInput name="tel" placeholder="Company Phone"  />
+        <PhoneInput name="tel" placeholder="Company Phone" />
       </div>
       <div className="grid gap-4 mt-8 w-80">
         {/* add privacy-policy checkbox */}
