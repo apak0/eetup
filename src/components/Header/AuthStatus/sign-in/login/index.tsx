@@ -25,16 +25,26 @@ export default function Login({ setLoginContent, setAuthOpen }: { setLoginConten
     })
 
     signIn('credentials', { redirect: false, username: object.email, password: object.password })
-      .then((res) => {
-        // TODO: redirect to relative page of the user or company
-        if (res?.ok) {
-          router.push(res?.url || '/')
+      .then(async (res) => {
+      if (res?.ok) {
+        // Fetch user data or role from API
+        const response = await fetch('/api/user/me')
+        const userData = await response.json()
+        
+        // Redirect based on user role
+        if (userData.role === 'company') {
+        router.push('/dashboard/company')
+        } else if (userData.role === 'admin') {
+        router.push('/dashboard/admin')
+        } else {
+        router.push('/dashboard') // default user dashboard
         }
         setAuthOpen(false)
+      }
       })
       .catch(console.error)
-  }
-  const [, dispatch] = useActionState(authenticate, undefined)
+    }
+    const [, dispatch] = useActionState(authenticate, undefined)
 
   return (
     <div>

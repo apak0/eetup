@@ -14,6 +14,7 @@ export default function Home() {
               height={400}
               className="object-contain w-full h-auto"
               priority
+              sizes="(min-width: 1536px) 400px, 30vw"
             />
           </div>
 
@@ -39,14 +40,22 @@ export default function Home() {
           </div>
 
           <div className="sm:block hidden absolute right-0 top-[10%] [@media(min-width:1920px)]:w-[400px] [@media(max-width:1920px)]:w-[20%]">
-            <Image src="/images/home_burger.png" alt="Burger" width={400} height={400} className="object-contain w-full h-auto" priority />
+            <Image
+              src="/images/home_burger.png"
+              alt="Burger"
+              width={400}
+              height={400}
+              className="object-contain w-full h-auto"
+              priority
+              sizes="(min-width: 1920px) 400px, 20vw"
+            />
           </div>
         </div>
       </section>
 
       {/* Categories */}
       <section className="py-16 ">
-        <div className="  mx-auto px-4">
+        <div className="mx-auto px-4">
           <h2 className="text-3xl font-bold mb-8 text-center">Categories</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {categories.map((category) => (
@@ -55,9 +64,9 @@ export default function Home() {
                 className="card p-4 shadow dark:border border-solid border-(--border-color) hover:shadow-lg transition cursor-pointer text-center"
               >
                 <div className="w-16 h-16 mx-auto mb-2 relative">
-                  <Image src={category.icon} alt={category.name} fill className="object-contain" />
+                  <Image src={category.icon} alt={category.name} fill sizes="4rem" className="object-contain" />
                 </div>
-                <span className="font-medium">{category.name}</span>
+                <h3>{category.name}</h3>
               </div>
             ))}
           </div>
@@ -66,16 +75,22 @@ export default function Home() {
 
       {/* Popular Restaurants */}
       <section className="py-16">
-        <div className="mx-auto px-4 ">
+        <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-8 text-center">Popular Restaurants</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {restaurants.map((restaurant) => (
               <div
                 key={restaurant.name}
-                className=" card shadow dark:border border-solid border-(--border-color) overflow-hidden hover:shadow-lg transition cursor-pointer"
+                className="card shadow dark:border border-solid border-(--border-color) hover:shadow-lg transition cursor-pointer"
               >
-                <div className="relative h-48">
-                  <Image src={restaurant.image} alt={restaurant.name} fill className="object-cover" />
+                <div className="relative h-48 w-full">
+                  <Image
+                    src={restaurant.image}
+                    alt={restaurant.name}
+                    fill
+                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                    className="object-cover rounded-t-lg"
+                  />
                 </div>
                 <div className="p-4">
                   <h3 className="font-bold text-xl mb-2">{restaurant.name}</h3>
