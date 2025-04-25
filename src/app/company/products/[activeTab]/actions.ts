@@ -1,5 +1,7 @@
 'use server'
 
+import { eq } from 'drizzle-orm'
+
 import { db } from '@/lib/database/db'
 import { product } from '@/lib/database/schema'
 import { auth } from '@/lib/utils/auth'
@@ -31,4 +33,12 @@ export const createProductAction = async (formData: any) => {
   })
 
   return { message: 'Product is added to your menu successfully. You can deactivate the product at any time.' }
+}
+
+export const getProductsAction = async () => {
+  const session = await auth()
+
+  const products = session?.user?.id ? await db.select().from(product).where(eq(product.companyId, session?.user?.id)) : []
+
+  return products
 }

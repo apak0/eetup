@@ -12,6 +12,7 @@ import {
 import classNames from 'classnames'
 import { ImageUp, Trash2 } from 'lucide-react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 
 import { createProductAction } from './actions'
@@ -21,13 +22,15 @@ import Select from '@/components/reusables/Select'
 import { validateImageFile } from '@/lib/utils/validateImageSize'
 
 export const CreateProduct = () => {
+  const router = useRouter()
+
   const session = useSession()
 
   const inputRef = useRef<HTMLInputElement>(null)
   const [progress, setProgress] = useState(0)
-  const [categories, setCategories] = useState([1])
-  const [allergens, setAllergens] = useState([1])
-  const [dietary, setDietary] = useState([1])
+  const [categories, setCategories] = useState()
+  const [allergens, setAllergens] = useState()
+  const [dietary, setDietary] = useState()
   const [isUploading, setIsUploading] = useState(false)
   const [previewFile, setPreviewFile] = useState<any>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
@@ -98,6 +101,8 @@ export const CreateProduct = () => {
 
       toast.success('Product created successfully!')
       setIsUploading(false)
+      router.refresh()
+      router.push('/company/products/overview')
       // TODO: redirect to the products overview tab here
     } catch (error) {
       let errorMesssage = ''
@@ -147,17 +152,9 @@ export const CreateProduct = () => {
         <div className="flex gap-8 px-6">
           <div className="flex flex-col items-stretch w-80 gap-4">
             <h2>New Product</h2>
-            <input type="text" name="name" id="name" placeholder="Product Name" required autoComplete="off" defaultValue="Burger" />
-            <input
-              type="text"
-              name="description"
-              id="description"
-              placeholder="Description"
-              required
-              autoComplete="off"
-              defaultValue="Burger Description"
-            />
-            <input type="number" name="price" id="price" placeholder="Price" required autoComplete="off" defaultValue="14.00" />
+            <input type="text" name="name" id="name" placeholder="Product Name" required autoComplete="off" />
+            <input type="text" name="description" id="description" placeholder="Description" required autoComplete="off" />
+            <input type="number" name="price" id="price" placeholder="Price" required autoComplete="off" />
             <Select mode="multiple" options={productCategories} label="Categories" onChange={setCategories} />
             <Select mode="multiple" options={productAllergens} label="Allergens" onChange={setAllergens} />
             <Select mode="multiple" options={productDietary} label="Dietary" onChange={setDietary} />

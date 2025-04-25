@@ -43,17 +43,16 @@ export default function Select({
       <Label className="block text-sm/6 font-medium">{label}</Label>
       <div className="relative mt-1">
         <ListboxButton
-          className={classNames(
-            'group bg-(--bg) text-(--text) w-full grid grid-cols-1 rounded-md py-1 px-2 text-left outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-orange-3 sm:text-sm/6',
-            { 'px-4': mode !== 'multiple' },
-          )}
+          className={classNames('field group text-(--text) w-full grid grid-cols-1 rounded-md py-1 px-2 text-left sm:text-sm/6', {
+            'px-4': mode !== 'multiple',
+          })}
         >
           <span className={classNames('col-start-1 row-start-1 flex-1 flex items-center gap-3 pr-4', { 'pr-8': mode === 'multiple' })}>
             {(mode === 'multiple' ? (selected as SelectItem[])?.length : !!selected) ? (
               <span className="truncate block items-center gap-1">
                 {mode === 'multiple' ? (
                   (selected as SelectItem[]).map((item) => (
-                    <div key={item.value} className="inline-block bg-(--bg-secondary) px-2 py-1 mr-1 rounded">
+                    <div key={item.value} className="inline-block bg-(--bg-secondary) px-2 py-0.5 mr-1 rounded">
                       {item.label}
                     </div>
                   ))
