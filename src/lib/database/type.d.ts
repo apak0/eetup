@@ -7,3 +7,15 @@ export type CompanyWithPassword = InferSelectModel<typeof company>
 export type Company = Omit<CompanyWithPassword, 'password'>
 
 export type Product = InferSelectModel<typeof product>
+
+export type UserSession = {
+  user: {
+    id: number
+    firstName: string
+    lastName: string
+    organization: string
+    isCompany: boolean
+    email: string
+    image: string
+  }
+}
