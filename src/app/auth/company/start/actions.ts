@@ -1,3 +1,4 @@
+'use server'
 import { eq } from 'drizzle-orm'
 import jwt from 'jsonwebtoken'
 import nodemailer from 'nodemailer'
@@ -8,12 +9,20 @@ import { appName, JWT_SECRET } from '@/constants'
 import { db } from '@/lib/database/db'
 import { company } from '@/lib/database/schema'
 
-export const startCompanyRegister = async (formData: FormData) => {
+export const startCompanyAction = async (_prevState: any, formData: FormData) => {
   const email = formData.get('email')?.toString() || ''
   const firstName = formData.get('firstName')?.toString() || ''
   const lastName = formData.get('lastName')?.toString() || ''
   const organization = formData.get('organization')?.toString() || ''
   const tel = formData.get('tel')?.toString() || ''
+
+  const values = {
+    email,
+    firstName,
+    lastName,
+    organization,
+    tel,
+  }
 
   const [foundCompany] = await db.select().from(company).where(eq(company.email, email))
 
@@ -21,7 +30,8 @@ export const startCompanyRegister = async (formData: FormData) => {
     return {
       error: true,
       title: 'Company already exists!',
-      message: 'Your company already exists. If you forgot your passwor, use forgot password to reset your password.',
+      message: 'This email is already used. If you forgot your password, use forgot password flow.',
+      values,
     }
   }
 
@@ -49,15 +59,17 @@ export const startCompanyRegister = async (formData: FormData) => {
   }
 
   // Send the email
-  transporter.sendMail(mailOptions, async (error) => {
-    if (error) {
-      return console.error('Error sending email:', error)
+  const res = await transporter.sendMail(mailOptions)
+
+  if (res.rejected.length > 0) {
+    return {
+      error: true,
+      message: 'Error sending email. Please try again later.',
+      values,
     }
+  }
 
-    const newCompany = { email, firstName, lastName, organization, tel }
-
-    await db.insert(company).values(newCompany)
-  })
+  await db.insert(company).values(values)
 
   return { message: 'Company registration email sent succesfully! Check your email.' }
 }
