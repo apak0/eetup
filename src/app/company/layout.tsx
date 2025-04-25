@@ -7,7 +7,7 @@ export default async function CompanyLayout({ children }: { children: React.Reac
 
   const menu = [
     { name: 'Dashboard', href: '/company' },
-    { name: 'Products', href: '/company/products' },
+    { name: 'Products', href: '/company/products/overview' },
     { name: 'Orders', href: '/company/orders' },
     { name: 'Settings', href: '/company/settings' },
     { name: 'Profile', href: '/company/profile' },
