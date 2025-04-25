@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 export function middleware(request: NextRequest) {
-  const headers = new Headers(request.headers)
-  const currentPath = request.nextUrl.pathname
-
-  headers.set('current-path', currentPath)
-
   // const accessToken = request.cookies.get('accessToken')?.value
   // const authRoute = currentPath.startsWith('/auth') || currentPath === '/'
   // const publicRoute = currentPath.startsWith('/hub')
@@ -18,7 +13,15 @@ export function middleware(request: NextRequest) {
   //   return NextResponse.redirect(new URL('/', request.url))
   // }
 
-  return NextResponse.next({ headers })
+  const response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  })
+
+  response.headers.set('current-path', request.nextUrl.pathname)
+
+  return response
 }
 
 export const config = {
