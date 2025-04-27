@@ -25,6 +25,7 @@ const eslintConfig = tseslint.config(
     rules: {
       // Own rules:
       'no-param-reassign': ['error', { props: true, ignorePropertyModificationsForRegex: ['_$'] }],
+      'react-hooks/exhaustive-deps': 'off',
 
       // Overwritten extended rules:
       '@typescript-eslint/no-non-null-assertion': 'off',

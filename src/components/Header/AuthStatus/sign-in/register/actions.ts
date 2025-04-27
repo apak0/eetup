@@ -1,9 +1,7 @@
+'use server'
 import bcrypt from 'bcrypt'
 import { eq } from 'drizzle-orm'
 import jwt from 'jsonwebtoken'
-import jsonwebtoken from 'jsonwebtoken'
-import { cookies } from 'next/headers'
-import { NextRequest, NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
 
 import { registerUserEmailTemplate } from './register-user'
@@ -12,13 +10,25 @@ import { appName, JWT_SECRET } from '@/constants'
 import { db } from '@/lib/database/db'
 import { user } from '@/lib/database/schema'
 
-export async function POST(req: NextRequest) {
-  const { email, firstName, lastName, password } = await req.json()
+export const registerUserAction = async (_prevState: any, formData: FormData) => {
+  const email = formData.get('email')?.toString() || ''
+  const firstName = formData.get('firstName')?.toString() || ''
+  const lastName = formData.get('lastName')?.toString() || ''
+  const password = formData.get('password')?.toString() || ''
+
+  const values = {
+    email,
+    firstName,
+    lastName,
+  }
 
   const [foundUser] = await db.select().from(user).where(eq(user.email, email))
-
   if (foundUser && foundUser.emailVerified) {
-    return NextResponse.json({ message: 'User already exists' }, { status: 400 })
+    return {
+      error: true,
+      message: 'User already exists',
+      values,
+    }
   }
 
   const transporter = nodemailer.createTransport({
@@ -44,32 +54,28 @@ export async function POST(req: NextRequest) {
   }
 
   // Send the email
-  await transporter.sendMail(mailOptions)
+  const res = await transporter.sendMail(mailOptions)
+
+  if (res.rejected.length > 0) {
+    return {
+      error: true,
+      message: 'Error sending email. Please try again later.',
+      values,
+    }
+  }
 
   const hashedPassword = await bcrypt.hash(password, 10)
   const newUser = { email, firstName, lastName, password: hashedPassword }
 
-  await db.insert(user).values(newUser)
+  try {
+    await db.insert(user).values(newUser)
+  } catch (e: any) {
+    return {
+      error: true,
+      message: e?.detail || 'Error registering user. Please try again.',
+      values,
+    }
+  }
 
-  const { password: _, ...userWithoutPassword } = newUser
-
-  const accessToken = jsonwebtoken.sign(userWithoutPassword, JWT_SECRET, { expiresIn: '1d' })
-  const refreshToken = jsonwebtoken.sign({}, JWT_SECRET, { expiresIn: '1w' })
-
-  const cookieStore = await cookies()
-
-  cookieStore.set('accessToken', accessToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    maxAge: 60 * 60 * 24, // One day
-    path: '/',
-  })
-  cookieStore.set('refreshToken', refreshToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    maxAge: 60 * 60 * 24 * 7, // One week
-    path: '/',
-  })
-
-  return NextResponse.json({ message: 'User created successfully' }, { status: 200 })
+  return { message: 'User created successfully' }
 }

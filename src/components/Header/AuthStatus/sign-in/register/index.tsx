@@ -1,46 +1,34 @@
-import { useState } from 'react'
-import { useFormState, useFormStatus } from 'react-dom'
+import { useActionState, useEffect, useState } from 'react'
+import { useFormStatus } from 'react-dom'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 
-import { register } from '@/lib/services'
+import { registerUserAction } from './actions'
 
 export default function Register({ setLoginContent, setAuthOpen }: { setLoginContent: (val: string) => void; setAuthOpen: any }) {
-  const router = useRouter()
+  const [formState, formAction] = useActionState<{ values?: any; error?: any; message?: any }, any>(registerUserAction, { values: {} })
+
   const [policyAccepted, setPolicyAccepted] = useState(false)
 
-  const authenticate = async (state: any, formData: FormData) => {
-    const object: any = {}
-    formData.forEach((value, key) => {
-      object[key] = value
-    })
-    await register(object)
-      .then(() => {
-        setAuthOpen(false)
-        router.push('/restaurants')
-        toast.success(
-          <div>
-            <h3>Registered successfully!</h3>Verify your email in order to be able to finish your orders.
-          </div>,
-          { duration: 5000 },
-        )
-      })
-      .catch(() => {
-        toast.error('Could not register, please try again')
-      })
-  }
+  useEffect(() => {
+    if (formState?.error) {
+      toast.error(formState.message, { duration: 5000 })
+    } else if (formState?.message) {
+      setAuthOpen(false)
+      toast.success('Check your email to verify your account', { duration: 5000 })
+    }
+  }, [formState])
 
-  const [, dispatch] = useFormState(authenticate, undefined)
+  const values = formState?.values || {}
 
   return (
-    <form action={dispatch}>
+    <form action={formAction}>
       <h1 className="mb-8 text-center">Register</h1>
 
       <div className="flex flex-col gap-4">
-        <input type="firstName" name="firstName" placeholder="First Name" required autoComplete="given-name" />
-        <input type="lastName" name="lastName" placeholder="Last Name" required autoComplete="family-name" />
-        <input type="email" name="email" placeholder="Email" required autoComplete="email" />
+        <input type="firstName" name="firstName" placeholder="First Name" required autoComplete="given-name" defaultValue={values?.firstName} />
+        <input type="lastName" name="lastName" placeholder="Last Name" required autoComplete="family-name" defaultValue={values?.lastName} />
+        <input type="email" name="email" placeholder="Email" required autoComplete="email" defaultValue={values?.email} />
         <input type="password" name="password" placeholder="Password" required />
 
         <div className="flex items-center gap-2 mt-2">
