@@ -1,6 +1,6 @@
 import { getProductsAction } from '../actions'
 
-import { ProductItem } from './ProductItem'
+import { ProductItem } from '@/components/ProductItem'
 
 export const ProductsOverview = async () => {
   const products = await getProductsAction()
