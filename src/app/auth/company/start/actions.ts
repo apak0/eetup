@@ -69,7 +69,15 @@ export const startCompanyAction = async (_prevState: any, formData: FormData) =>
     }
   }
 
-  await db.insert(company).values(values)
+  try {
+    await db.insert(company).values(values)
+  } catch (e: any) {
+    return {
+      error: true,
+      message: e?.detail || 'Error inserting company. Please try again later.',
+      values,
+    }
+  }
 
   return { message: 'Company registration email sent succesfully! Check your email.' }
 }

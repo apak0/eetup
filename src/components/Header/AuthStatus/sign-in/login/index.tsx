@@ -1,8 +1,10 @@
 import { useActionState, useState } from 'react'
 import { useFormStatus } from 'react-dom'
+import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 
+// TODO: add eye icon to show/hide password
 export default function Login({ setLoginContent, setAuthOpen }: { setLoginContent: (val: string) => void; setAuthOpen: any }) {
   const router = useRouter()
   const [email, setEmail] = useState(() => localStorage.getItem('rememberedEmail') || '')
@@ -26,13 +28,17 @@ export default function Login({ setLoginContent, setAuthOpen }: { setLoginConten
 
     signIn('credentials', { redirect: false, username: object.email, password: object.password })
       .then((res) => {
-        // TODO: redirect to relative page of the user or company
         if (res?.ok) {
           router.push(res?.url || '/')
+          toast.success('Login successful!')
+        } else if (res?.error) {
+          toast.error(res?.error, { duration: 5000 })
         }
         setAuthOpen(false)
       })
-      .catch(console.error)
+      .catch(() => {
+        toast.error('Invalid email or password', { duration: 5000 })
+      })
   }
   const [, dispatch] = useActionState(authenticate, undefined)
 

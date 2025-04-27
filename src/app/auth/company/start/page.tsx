@@ -2,21 +2,24 @@
 import { useActionState, useEffect } from 'react'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 import { startCompanyAction } from './actions'
 
 import { PhoneInput } from '@/components/reusables/PhoneInput'
 
 export default function StartAsCompany() {
+  const router = useRouter()
   const [formState, formAction] = useActionState<{ values?: any; error?: any; message?: any }, any>(startCompanyAction, { values: {} })
 
   useEffect(() => {
     if (formState?.error) {
-      toast.error(formState?.message || 'Something went wrong. Please try again.')
+      toast.error(formState?.message, { duration: 15000 })
     } else if (formState?.message) {
-      toast.success(formState?.message)
+      router.push('/')
+      toast.success(formState?.message, { duration: 15000 })
     }
-  }, [formState?.error, formState?.message])
+  }, [formState])
 
   const values = formState?.values || {}
   return (

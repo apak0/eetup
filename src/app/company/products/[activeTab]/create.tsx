@@ -103,7 +103,6 @@ export const CreateProduct = () => {
       setIsUploading(false)
       router.refresh()
       router.push('/company/products/overview')
-      // TODO: redirect to the products overview tab here
     } catch (error) {
       let errorMesssage = ''
       if (error instanceof ImageKitAbortError) {

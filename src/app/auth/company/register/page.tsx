@@ -3,21 +3,25 @@ import { useActionState, useEffect } from 'react'
 import toast from 'react-hot-toast'
 import jwt from 'jsonwebtoken'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 import { registerCompanyAction } from './actions'
 
 export default function RegisterAsCompany() {
+  const router = useRouter()
+
   const searchParams = new URLSearchParams(window.location.search)
 
   const [formState, formAction] = useActionState<{ values?: any; error?: any; message?: any }, any>(registerCompanyAction, { values: {} })
 
   useEffect(() => {
     if (formState?.error) {
-      toast.error(formState?.message || 'Something went wrong. Please try again.')
+      toast.error(formState?.message, { duration: 15000 })
     } else if (formState?.message) {
-      toast.success(formState?.message)
+      router.push('/')
+      toast.success(formState?.message, { duration: 15000 })
     }
-  }, [formState?.error, formState?.message])
+  }, [formState])
 
   const values = formState?.values || {}
   const token = searchParams.get('token') || ''

@@ -19,8 +19,6 @@ const port = parseInt(process.env.PORT || '', 10) || 3000
 const app = next({ dev, hostname, port })
 const handler = app.getRequestHandler()
 
-// TODO: Move to environment variable
-
 // Middleware for token authentication
 const authenticateToken = (socket_: SocketType, next: any) => {
   const token = socket_.handshake.auth.token

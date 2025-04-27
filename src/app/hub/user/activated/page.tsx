@@ -6,7 +6,7 @@ import { colors } from '@/styles/colors/colors'
 export default function UserActivated() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <div className=" p-8 rounded-lg shadow-lg text-center max-w-md w-full">
+      <div className=" p-8 rounded-lg shadow-lg text-center max-w-md w-full bg-(--bg)">
         <div className="flex justify-center items-center mb-4">
           <CircleCheckBig size={250} color={colors.green[1]} strokeWidth={1} />
         </div>

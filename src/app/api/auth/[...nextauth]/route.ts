@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import bcrypt from 'bcrypt'
-import { eq } from 'drizzle-orm'
+import { and, eq } from 'drizzle-orm'
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
@@ -59,20 +59,28 @@ export const authOptions: NextAuthOptions = {
           const email = credentials.username
           const password = credentials.password
 
-          const [foundUser] = await db.select().from(user).where(eq(user.email, email))
+          const [foundUser] = await db
+            .select()
+            .from(user)
+            .where(and(eq(user.email, email), eq(user.emailVerified, true)))
 
           let entery: UserWithPassword | CompanyWithPassword = foundUser
           if (!entery) {
-            entery = (await db.select().from(company).where(eq(company.email, email)))[0]
+            entery = (
+              await db
+                .select()
+                .from(company)
+                .where(and(eq(company.email, email), eq(company.emailVerified, true)))
+            )[0]
           }
 
           if (!entery) {
-            return null
+            throw new Error('User not found or not verified')
           }
 
           const isPasswordValid = entery.password && (await bcrypt.compare(password, entery.password))
           if (!isPasswordValid && entery.password) {
-            return null
+            throw new Error('Invalid credentials')
           }
 
           const { password: _, ...userWithoutPassword } = entery
@@ -80,7 +88,7 @@ export const authOptions: NextAuthOptions = {
           if (userWithoutPassword) {
             return { ...userWithoutPassword, isCompany: !foundUser }
           } else {
-            return null
+            throw new Error('Invalid credentials')
           }
         }
       },
