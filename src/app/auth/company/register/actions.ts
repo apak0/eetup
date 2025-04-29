@@ -74,7 +74,6 @@ export const registerCompanyAction = async (_prevState: any, formData: FormData)
   try {
     const { lat, lon } = await getLatLon({ postalcode: postcode, city, street })
 
-    console.log('ahoy021', lat, lon)
     await db
       .update(company)
       .set({
@@ -86,7 +85,6 @@ export const registerCompanyAction = async (_prevState: any, formData: FormData)
       })
       .where(eq(company.email, decodedToken.email))
   } catch (e: any) {
-    console.log('ahoy00', e)
     return {
       error: true,
       message: e?.detail || 'Error registering company. Please try again later.',
