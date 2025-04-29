@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm'
-import { boolean, decimal, integer, pgSchema, varchar } from 'drizzle-orm/pg-core'
+import { boolean, decimal, doublePrecision, integer, pgSchema, varchar } from 'drizzle-orm/pg-core'
 
 export const cs1 = pgSchema('eetup-dev')
 
@@ -39,6 +39,8 @@ export const company = cs1.table('company', {
   maxEstimatedDeliveryTime: integer().default(0).notNull(),
   deliveryFee: decimal().default('0').notNull(),
   score: integer().default(0).notNull(),
+  lat: doublePrecision('lat'),
+  lon: doublePrecision('lon'),
 })
 
 export const product = cs1.table('product', {

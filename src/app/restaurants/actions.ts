@@ -1,11 +1,27 @@
+import { and, between } from 'drizzle-orm'
+import { redirect } from 'next/navigation'
+
 import { db } from '@/lib/database/db'
-import { product } from '@/lib/database/schema'
-import { auth } from '@/lib/utils/auth'
+import { company } from '@/lib/database/schema'
+import { getLatLon } from '@/lib/utils/getLatLon'
 
-export const getProductsAction = async () => {
-  const session = await auth()
+export async function getNearbyCompanies(address: string) {
+  const { lat, lon } = await getLatLon({ q: address })
+  const delta = 0.05 // ~3 km
 
-  const products = session?.user?.id ? await db.select().from(product) : []
+  if (!lat || !lon) {
+    return redirect('/')
+  }
 
-  return products
+  const latMin = lat - delta
+  const latMax = lat + delta
+  const lonMin = lon - delta
+  const lonMax = lon + delta
+
+  const results = await db
+    .select()
+    .from(company)
+    .where(and(between(company.lat, latMin, latMax), between(company.lon, lonMin, lonMax)))
+
+  return results
 }

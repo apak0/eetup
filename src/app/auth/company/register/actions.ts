@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from '@/constants'
 import { db } from '@/lib/database/db'
 import { company } from '@/lib/database/schema'
+import { getLatLon } from '@/lib/utils/getLatLon'
 
 export const registerCompanyAction = async (_prevState: any, formData: FormData) => {
   const postcode = formData.get('postcode')?.toString() || ''
@@ -71,15 +72,21 @@ export const registerCompanyAction = async (_prevState: any, formData: FormData)
   const hashedPassword = await bcrypt.hash(password, 10)
 
   try {
+    const { lat, lon } = await getLatLon({ postalcode: postcode, city, street })
+
+    console.log('ahoy021', lat, lon)
     await db
       .update(company)
       .set({
         ...values,
+        lat,
+        lon,
         password: hashedPassword,
         emailVerified: true,
       })
       .where(eq(company.email, decodedToken.email))
   } catch (e: any) {
+    console.log('ahoy00', e)
     return {
       error: true,
       message: e?.detail || 'Error registering company. Please try again later.',

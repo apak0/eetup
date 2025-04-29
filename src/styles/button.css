@@ -17,10 +17,10 @@
   }
 
   button.btn-text {
-    @apply bg-transparent text-orange-3 shadow-none hover:bg-(--bg-secondary) rounded-full p-1 font-normal tracking-normal;
+    @apply bg-transparent text-orange-3 shadow-none rounded-full p-1 font-normal tracking-normal;
   }
   button.btn-text:hover {
-    @apply text-orange-3 shadow-none;
+    @apply text-orange-3 shadow-none bg-(--bg-orange-2);
   }
 
   button.btn-default {
