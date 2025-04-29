@@ -87,7 +87,7 @@ export const CreateProduct = () => {
             publicKey,
             file: previewFile,
             fileName: productName?.replaceAll(' ', '_'),
-            folder: `products/${session?.data?.user?.organization}/`,
+            folder: `products/${session?.data?.user?.organization?.replaceAll(' ', '_')}/`,
             onProgress,
           })
 

@@ -43,6 +43,13 @@
       "when": 1745012643524,
       "tag": "0005_free_maggott",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1745955957697,
+      "tag": "0006_tidy_energizer",
+      "breakpoints": true
     }
   ]
 }

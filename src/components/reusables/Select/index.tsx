@@ -52,7 +52,7 @@ export default function Select({
               <span className="truncate block items-center gap-1">
                 {mode === 'multiple' ? (
                   (selected as SelectItem[]).map((item) => (
-                    <div key={item.value} className="inline-block bg-(--bg-secondary) px-2 py-0.5 mr-1 rounded">
+                    <div key={item.value} className="inline-block text-white bg-orange-3 px-2 py-0.5 mr-1 rounded dark:bg-orange-3">
                       {item.label}
                     </div>
                   ))
@@ -66,7 +66,7 @@ export default function Select({
           </span>
           {mode === 'multiple' && (selected as SelectItem[])?.length > 0 && (
             <div
-              className="btn-text col-start-1 row-start-1 justify-self-end self-center mr-4 hover:bg-(--bg-secondary) rounded-full p-1"
+              className="btn-text col-start-1 row-start-1 justify-self-end self-center mr-4 hover:bg-orange-1 dark:hover:bg-orange-2 rounded-full p-1"
               onClick={(e) => {
                 e.stopPropagation()
                 handleChange(mode === 'multiple' ? [] : null)
@@ -83,7 +83,7 @@ export default function Select({
 
         <ListboxOptions
           transition
-          className="absolute bg-(--bg) z-10 mt-1 max-h-56 w-full overflow-auto rounded-md py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-hidden data-leave:transition data-leave:duration-100 data-leave:ease-in data-closed:data-leave:opacity-0 sm:text-sm"
+          className="absolute bg-(--bg) dark:border z-10 mt-1 max-h-56 w-full overflow-auto rounded-md py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-hidden data-leave:transition data-leave:duration-100 data-leave:ease-in data-closed:data-leave:opacity-0 sm:text-sm"
         >
           {options.map((item) => (
             <ListboxOption
