@@ -15,7 +15,8 @@ export const getLatLon = async (address: { q?: string; postalcode?: string; city
       return [e]
     })
 
-  const { lat, lon } = data
+  const lat = data?.lat || null
+  const lon = data?.lon || null
   return {
     lat: lat ? parseFloat(lat) : null,
     lon: lon ? parseFloat(lon) : null,

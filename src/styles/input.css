@@ -1,21 +1,23 @@
-input,
-.field {
-  @apply h-12 py-2 px-2 rounded-lg bg-slate-100/50 border border-slate-300 text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-slate-400 focus:border-slate-400 transition duration-200 ease-in-out;
-  .dark & {
-    @apply text-white bg-(--bg-secondary);
+@layer components {
+  input,
+  .field {
+    @apply h-12 py-1 px-2 rounded-lg bg-slate-100/50 border border-slate-300 text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-slate-400 focus:border-slate-400 transition duration-200 ease-in-out;
+    .dark & {
+      @apply text-white bg-(--bg-secondary);
+    }
   }
-}
 
-input[disabled],
-.field[disabled] {
-  @apply bg-gray-3 cursor-not-allowed;
-  .dark & {
-    @apply bg-gray-4;
+  input[disabled],
+  .field[disabled] {
+    @apply bg-gray-3 cursor-not-allowed;
+    .dark & {
+      @apply bg-gray-4;
+    }
   }
-}
 
-input[type='checkbox'],
-input + label,
-.field + label {
-  @apply cursor-pointer;
+  input[type='checkbox'],
+  input + label,
+  .field + label {
+    @apply cursor-pointer;
+  }
 }
