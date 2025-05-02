@@ -2,6 +2,8 @@ import Image from 'next/image'
 
 import { Search } from './Search'
 
+import { Cover } from '@/components/ui/cover'
+
 export default function Home() {
   return (
     <div className="min-h-screen">
@@ -21,7 +23,9 @@ export default function Home() {
 
           <div className="w-[90%] sm:w-[80%] md:w-[70%] lg:w-[70%] xl:w-[80%] flex flex-col items-center justify-center mx-auto h-full md:pl-10">
             <div className="text-center">
-              <p className="text-3xl pr-10 font-bol mb-8 ">Order your favorite meals quickly.</p>
+              <p className="text-3xl pr-10 font-bol mb-8 ">
+                Order your favorite meals <Cover>quickly</Cover>
+              </p>
             </div>
             <Search />
           </div>
