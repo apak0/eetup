@@ -1,7 +1,7 @@
 'use client'
 
-import { signIn } from 'next-auth/react'
 import Image from 'next/image'
+import { signIn } from 'next-auth/react'
 
 export default function SignInPage() {
   return (
@@ -22,11 +22,11 @@ export default function SignInPage() {
           onClick={() => signIn('google')}
           className="relative flex w-full items-center justify-between px-3 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 rounded-md bg-white"
         >
-          <div className="relative w-6 h-6">
+          <span className="relative w-6 h-6">
             <Image src="/google-logo.png" alt="Google Logo" width={24} height={24} className="object-contain" priority />
-          </div>
+          </span>
           <span className="text-lg flex-grow text-center">Google</span>
-          <div className="w-6"></div> {/* Empty div for spacing balance */}
+          <span className="w-6"></span>
         </button>
       </div>
     </div>
