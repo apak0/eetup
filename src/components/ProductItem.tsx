@@ -1,5 +1,5 @@
 'use client'
-import { useOptimistic, useState } from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { Switch } from '@headlessui/react'
 import { Image as ImageKitImage } from '@imagekit/next'
@@ -8,64 +8,30 @@ import { updateProductActivationAction } from '@/app/company/products/[activeTab
 
 export const ProductItem = ({
   item,
-  onToggleActive,
-  isActive = item?.active !== false,
-  isLoading: externalLoading = false,
   showToggle = false,
   showEdit = false,
 }: {
   item: any
-  onToggleActive?: (id: string, isActive: boolean, success: boolean) => void
-  isActive?: boolean
-  isLoading?: boolean
+
   showToggle?: boolean
   showEdit?: boolean
 }) => {
   const [isLoading, setIsLoading] = useState(false)
 
-  const [optimisticActiveState, setOptimisticActiveState] = useOptimistic(isActive, (state, newState: boolean) => newState)
+  const [isActive, setIsActive] = useState(item.active !== false)
 
   const handleToggleActive = async (newActiveState: boolean) => {
-    if (isLoading || externalLoading) return
-
+    setIsActive(!isActive)
     setIsLoading(true)
-
-    setOptimisticActiveState(newActiveState)
-
-    try {
-      const result = await updateProductActivationAction(Number(item.id), newActiveState)
-
-      if (result.error) {
-        setOptimisticActiveState(!newActiveState)
-
-        toast.error(result.message || 'Failed to update product status')
-
-        if (onToggleActive) {
-          onToggleActive(item.id, !newActiveState, false)
-        }
-      } else {
-        toast.success(result.message || 'Product status updated successfully')
-
-        if (onToggleActive) {
-          onToggleActive(item.id, newActiveState, true)
-        }
-      }
-    } catch (error: any) {
-      setOptimisticActiveState(!newActiveState)
-
-      toast.error('An error occurred while updating product status')
-      console.error('Error toggling product status:', error)
-
-      if (onToggleActive) {
-        onToggleActive(item.id, !newActiveState, false)
-      }
-    } finally {
-      setIsLoading(false)
+    const response = await updateProductActivationAction(item.id, newActiveState)
+    setIsLoading(false)
+    if (response.error) {
+      setIsActive(isActive)
+      toast.error(response.message)
+    } else {
+      toast.success(response.message)
     }
   }
-
-  const isLoadingState = isLoading || externalLoading
-
   return (
     <div className="card p-4 shadow dark:border border-solid border-(--border-color) hover:shadow-lg transition cursor-pointer flex flex-col h-full">
       <div className="relative h-48 mb-4 overflow-hidden rounded-lg">
@@ -77,24 +43,24 @@ export const ProductItem = ({
           <div className="absolute top-2 right-2 z-10">
             <div className="relative">
               <Switch
-                checked={optimisticActiveState}
+                checked={isActive}
                 onChange={handleToggleActive}
-                disabled={isLoadingState}
+                disabled={isLoading} //
                 className={`${
-                  optimisticActiveState ? 'bg-green-500' : 'bg-gray-400'
+                  isActive ? 'bg-green-500' : 'bg-gray-400'
                 } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 ${
-                  isLoadingState ? 'opacity-70 cursor-not-allowed' : ''
+                  isLoading ? 'opacity-70 cursor-not-allowed' : ''
                 }`}
               >
-                <span className="sr-only">{optimisticActiveState ? 'Active' : 'Inactive'}</span>
+                <span className="sr-only">{isActive ? 'Active' : 'Inactive'}</span>
                 <span
                   className={`${
-                    optimisticActiveState ? 'translate-x-3' : '-translate-x-3'
+                    isActive ? 'translate-x-3' : '-translate-x-3'
                   } inline-block h-4 w-4 transform rounded-3xl bg-white transition-transform`}
                 />
               </Switch>
 
-              {isLoadingState && (
+              {isLoading && (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="animate-spin h-4 w-4 border-2 border-white rounded-full border-t-transparent"></div>
                 </div>
@@ -132,8 +98,8 @@ export const ProductItem = ({
         {(showToggle || showEdit) && (
           <div className="flex justify-between items-center mt-2">
             {showToggle && (
-              <div className={`mt-2 text-xs font-medium ${optimisticActiveState ? 'text-green-600' : 'text-gray-500'}`}>
-                Status: {optimisticActiveState ? 'Active' : 'Inactive'} {isLoadingState && '(updating...)'}
+              <div className={`mt-2 text-xs font-medium ${isActive ? 'text-green-600' : 'text-gray-500'}`}>
+                Status: {isActive ? 'Active' : 'Inactive'} {isLoading && '(updating...)'}
               </div>
             )}
             {showEdit && (

@@ -54,7 +54,6 @@ export const updateProductActivationAction = async (productId: number, isActive:
       }
     }
 
-    // Verify product ownership
     const productExists = await db
       .select()
       .from(product)
@@ -68,7 +67,6 @@ export const updateProductActivationAction = async (productId: number, isActive:
       }
     }
 
-    // Update product active status
     await db.update(product).set({ active: isActive }).where(eq(product.id, productId))
 
     return {
