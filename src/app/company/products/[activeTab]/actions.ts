@@ -1,6 +1,6 @@
 'use server'
 
-import { eq } from 'drizzle-orm'
+import { and, eq } from 'drizzle-orm'
 
 import { db } from '@/lib/database/db'
 import { product } from '@/lib/database/schema'
@@ -41,4 +41,42 @@ export const getProductsAction = async () => {
   const products = session?.user?.id ? await db.select().from(product).where(eq(product.companyId, session?.user?.id)) : []
 
   return products
+}
+
+export const updateProductActivationAction = async (productId: number, isActive: boolean) => {
+  try {
+    const session = await auth()
+
+    if (!session?.user?.id) {
+      return {
+        error: true,
+        message: 'Authentication required',
+      }
+    }
+
+    const productExists = await db
+      .select()
+      .from(product)
+      .where(and(eq(product.id, productId), eq(product.companyId, session.user.id)))
+      .then((results) => results.length > 0)
+
+    if (!productExists) {
+      return {
+        error: true,
+        message: "Product not found or you don't have permission to update it",
+      }
+    }
+
+    await db.update(product).set({ active: isActive }).where(eq(product.id, productId))
+
+    return {
+      message: `Product has been ${isActive ? 'activated' : 'deactivated'} successfully`,
+    }
+  } catch (error: any) {
+    console.error('Error updating product activation status:', error)
+    return {
+      error: true,
+      message: error.message || 'Failed to update product status',
+    }
+  }
 }
