@@ -16,9 +16,9 @@ import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 
 import { createProductAction } from './actions'
-import { productAllergens, productCategories, productDietary } from './constants'
 
 import Select from '@/components/reusables/Select'
+import { productAllergens, productCategories, productDietary } from '@/lib/database/constants'
 import { validateImageFile } from '@/lib/utils/validateImageSize'
 
 export const CreateProduct = () => {

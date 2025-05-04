@@ -1,0 +1,1 @@
+ALTER TABLE "eetup-dev"."product" ALTER COLUMN "company_id" SET NOT NULL;

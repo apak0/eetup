@@ -21,6 +21,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  devIndicators: false,
   reactStrictMode: true,
 }
 

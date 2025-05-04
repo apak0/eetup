@@ -3,6 +3,7 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { Switch } from '@headlessui/react'
 import { Image as ImageKitImage } from '@imagekit/next'
+import { Plus } from 'lucide-react'
 
 import { updateProductActivationAction } from '@/app/company/products/[activeTab]/actions'
 
@@ -10,11 +11,12 @@ export const ProductItem = ({
   item,
   showToggle = false,
   showEdit = false,
+  onAdd,
 }: {
   item: any
-
   showToggle?: boolean
   showEdit?: boolean
+  onAdd?: () => void
 }) => {
   const [isLoading, setIsLoading] = useState(false)
 
@@ -33,7 +35,14 @@ export const ProductItem = ({
     }
   }
   return (
-    <div className="card p-4 shadow dark:border border-solid border-(--border-color) hover:shadow-lg transition cursor-pointer flex flex-col h-full">
+    <div
+      className="relative group card p-4 shadow dark:border border-solid border-(--border-color) hover:shadow-lg transition cursor-pointer flex flex-col h-full"
+      onClick={() => {
+        if (onAdd) {
+          onAdd()
+        }
+      }}
+    >
       <div className="relative h-48 mb-4 overflow-hidden rounded-lg">
         {item.image && (
           <ImageKitImage src={item.image} width={400} height={400} alt={item.name || 'Product'} className="object-cover w-full h-full" />
@@ -110,6 +119,11 @@ export const ProductItem = ({
           </div>
         )}
       </div>
+      {onAdd && (
+        <div className="btn-default absolute bottom-6 right-6 z-10 group-hover:bg-orange-4/100 group-hover:text-white">
+          <Plus />
+        </div>
+      )}
     </div>
   )
 }
