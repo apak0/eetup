@@ -49,8 +49,8 @@ export const updateProductActivationAction = async (productId: number, isActive:
 
     if (!session?.user?.id) {
       return {
-        success: false,
-        error: 'Authentication required',
+        error: true,
+        message: 'Authentication required',
       }
     }
 
@@ -63,8 +63,8 @@ export const updateProductActivationAction = async (productId: number, isActive:
 
     if (!productExists) {
       return {
-        success: false,
-        error: "Product not found or you don't have permission to update it",
+        error: true,
+        message: "Product not found or you don't have permission to update it",
       }
     }
 
@@ -72,14 +72,13 @@ export const updateProductActivationAction = async (productId: number, isActive:
     await db.update(product).set({ active: isActive }).where(eq(product.id, productId))
 
     return {
-      success: true,
       message: `Product has been ${isActive ? 'activated' : 'deactivated'} successfully`,
     }
   } catch (error: any) {
     console.error('Error updating product activation status:', error)
     return {
-      success: false,
-      error: error.message || 'Failed to update product status',
+      error: true,
+      message: error.message || 'Failed to update product status',
     }
   }
 }

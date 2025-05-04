@@ -38,12 +38,12 @@ export const ProductItem = ({
       // Call the server action to update the database
       const result = await updateProductActivationAction(Number(item.id), newActiveState)
 
-      if (!result.success) {
+      if (result.error) {
         // ROLLBACK the optimistic update if request fails
         setActiveState(!newActiveState)
 
         // Show error toast
-        toast.error(result.error || 'Failed to update product status')
+        toast.error(result.message || 'Failed to update product status')
 
         // Notify parent with status
         if (onToggleActive) {
