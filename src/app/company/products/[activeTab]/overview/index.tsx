@@ -6,13 +6,10 @@ import { getProductsAction } from '../actions'
 import { ProductItem } from '@/components/ProductItem'
 
 export const ProductsOverview = () => {
-  // Function to load products
   const [products, setProducts] = useState<any[]>([])
 
-  // Track active status in parent component for synchronization across components
   const [activeProducts, setActiveProducts] = useState<Record<string, boolean>>({})
 
-  // Load products on mount
   useEffect(() => {
     const loadProducts = async () => {
       const fetchedProducts = await getProductsAction()
@@ -29,9 +26,7 @@ export const ProductsOverview = () => {
     loadProducts()
   }, [])
 
-  // This function will be called by ProductItem when toggling is complete
   const handleToggleResult = (productId: string, isActive: boolean, success: boolean) => {
-    // Update parent state only to keep it in sync with the actual product state
     if (success) {
       setActiveProducts((prev) => ({
         ...prev,
