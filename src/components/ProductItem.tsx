@@ -31,15 +31,15 @@ export const ProductItem = ({
     // Set loading state
     setIsLoading(true)
 
-    try {
-      // Optimistically update the UI state
-      setActiveState(newActiveState)
+    // Immediately apply OPTIMISTIC UPDATE - change UI before the request completes
+    setActiveState(newActiveState)
 
+    try {
       // Call the server action to update the database
       const result = await updateProductActivationAction(Number(item.id), newActiveState)
 
       if (!result.success) {
-        // If the update failed, revert the UI state
+        // ROLLBACK the optimistic update if request fails
         setActiveState(!newActiveState)
 
         // Show error toast
@@ -50,6 +50,8 @@ export const ProductItem = ({
           onToggleActive(item.id, !newActiveState, false)
         }
       } else {
+        // The optimistic update was correct - keep UI as is
+
         // Show success toast
         toast.success(result.message || 'Product status updated successfully')
 
@@ -59,7 +61,7 @@ export const ProductItem = ({
         }
       }
     } catch (error: any) {
-      // Revert the UI state on error
+      // ROLLBACK the optimistic update on error
       setActiveState(!newActiveState)
 
       // Show error toast
@@ -155,7 +157,7 @@ export const ProductItem = ({
           <div className="flex justify-between items-center mt-2">
             {showToggle && (
               <div className={`mt-2 text-xs font-medium ${activeState ? 'text-green-600' : 'text-gray-500'}`}>
-                Status: {activeState ? 'Active' : 'Inactive'} {isLoadingState && '(updating...)'}
+                Status: {activeState ? 'Active' : 'Inactive'}
               </div>
             )}
             {showEdit && (
