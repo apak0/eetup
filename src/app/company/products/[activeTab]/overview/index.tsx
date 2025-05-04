@@ -12,11 +12,6 @@ export const ProductsOverview = () => {
     const loadProducts = async () => {
       const fetchedProducts = await getProductsAction()
       setProducts(fetchedProducts || [])
-
-      const initialActiveState: Record<string, boolean> = {}
-      fetchedProducts?.forEach((product: any) => {
-        initialActiveState[product.id] = product.active !== false
-      })
     }
 
     loadProducts()
