@@ -43,7 +43,7 @@ export function AuthModal({ open, setAuthOpen }: { open: boolean; setAuthOpen: (
           )}
         </div>
       }
-      setAuthOpen={(val) => {
+      setOpen={(val) => {
         setAuthOpen(val)
         if (!val) {
           setLoginContent('initial')

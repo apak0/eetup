@@ -1,13 +1,19 @@
-import { eq } from 'drizzle-orm'
-
 import { db } from '@/lib/database/db'
-import { product } from '@/lib/database/schema'
 import { auth } from '@/lib/utils/auth'
 
-export const getProductsAction = async (companyId: number) => {
+export const getProductsAction = async (companyId: number): Promise<{ error?: any; data?: any }> => {
   const session = await auth()
 
-  const products = session?.user?.id ? await db.select().from(product).where(eq(product.companyId, companyId)) : []
+  if (!session?.user?.id) return { error: 'Unauthorized' }
 
-  return products
+  const companyWithProducts = await db.query.company.findFirst({
+    where: (company, { eq }) => eq(company.id, companyId),
+    with: {
+      product: true,
+    },
+  })
+
+  if (!companyWithProducts) return { error: 'Company not found' }
+
+  return { data: companyWithProducts }
 }

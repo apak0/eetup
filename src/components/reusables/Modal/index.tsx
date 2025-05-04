@@ -11,7 +11,7 @@ export default function Modal({
   cancelText = 'Cancel',
   content,
   footer,
-  setAuthOpen,
+  setOpen,
 }: {
   className?: string
   title: string
@@ -21,16 +21,16 @@ export default function Modal({
   okText?: string
   cancelText?: string
   footer?: JSX.Element | false
-  setAuthOpen: (val: boolean) => void
+  setOpen: (val: boolean) => void
 }) {
-  const [isOpen, setIsOpen] = useState(false)
+  const [openInner, setOpenInner] = useState(false)
 
   useEffect(() => {
-    ;(setAuthOpen ?? setIsOpen)(open ?? isOpen)
-  }, [isOpen, setAuthOpen, open])
+    ;(setOpen ?? setOpenInner)(open ?? openInner)
+  }, [openInner, setOpen, open])
 
   return (
-    <Dialog open={open ?? isOpen} onClose={setAuthOpen ?? setIsOpen} className="relative z-10">
+    <Dialog open={open ?? openInner} onClose={setOpen ?? setOpenInner} className="relative z-10">
       <DialogBackdrop
         transition
         className="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"
@@ -45,7 +45,7 @@ export default function Modal({
               className,
             )}
           >
-            {title && <DialogTitle className="font-semibold p-8 pb-0">{title}</DialogTitle>}
+            {title && <DialogTitle className="font-semibold p-6 pb-0">{title}</DialogTitle>}
             <div className="mt-2">{content}</div>
             {footer ?? (
               <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-4">
@@ -53,7 +53,7 @@ export default function Modal({
                   type="button"
                   onClick={() => {
                     okClick()
-                    ;(setAuthOpen ?? setIsOpen)(false)
+                    ;(setOpen ?? setOpenInner)(false)
                   }}
                 >
                   {okText}
@@ -62,7 +62,7 @@ export default function Modal({
                   type="button"
                   data-autofocus
                   onClick={() => {
-                    ;(setAuthOpen ?? setIsOpen)(false)
+                    ;(setOpen ?? setOpenInner)(false)
                   }}
                 >
                   {cancelText}

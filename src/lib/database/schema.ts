@@ -45,7 +45,9 @@ export const company = cs1.table('company', {
 
 export const product = cs1.table('product', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  companyId: integer('company_id').references(() => company.id),
+  companyId: integer('company_id')
+    .notNull()
+    .references(() => company.id),
   name: varchar({ length: 255 }).notNull().unique(),
   description: varchar({ length: 255 }).notNull(),
   price: decimal().notNull(),
@@ -57,6 +59,13 @@ export const product = cs1.table('product', {
   dietary: varchar({ length: 255 }).array(),
 })
 
-export const productCompanyRelation = relations(company, ({ many }) => ({
+export const companyRelations = relations(company, ({ many }) => ({
   product: many(product),
+}))
+
+export const productRelations = relations(product, ({ one }) => ({
+  company: one(company, {
+    fields: [product.companyId],
+    references: [company.id],
+  }),
 }))
