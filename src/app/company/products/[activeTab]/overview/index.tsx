@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { redirect } from 'next/navigation'
 
 import { getProductsAction } from '../actions'
 
@@ -18,8 +19,12 @@ export const ProductsOverview = () => {
   }, [])
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-8">
-      {products?.map((product) => <ProductItem key={product.id} item={product} showToggle={true} showEdit={true} />)}
+    <div className="card rounded-ss-none py-8">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 p-4">
+        {products?.map((product) => (
+          <ProductItem key={product.id} item={product} showToggle={true} onEdit={() => redirect(`/company/products/edit?productId=${product.id}`)} />
+        ))}
+      </div>
     </div>
   )
 }

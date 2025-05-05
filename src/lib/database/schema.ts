@@ -54,9 +54,9 @@ export const product = cs1.table('product', {
   discount_price: decimal(),
   image: varchar({ length: 2000 }).notNull(),
   active: boolean().default(false).notNull(),
-  categories: varchar({ length: 255 }).array(),
-  allergens: varchar({ length: 255 }).array(),
-  dietary: varchar({ length: 255 }).array(),
+  categories: integer().array(),
+  allergens: integer().array(),
+  dietary: integer().array(),
 })
 
 export const companyRelations = relations(company, ({ many }) => ({

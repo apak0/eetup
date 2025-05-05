@@ -25,15 +25,17 @@ export default function Select({
   value?: any
   onChange?: (value: any) => void
 }) {
-  const [selected, setSelected] = useState<SelectItem | SelectItem[]>(value || (mode === 'multiple' ? [] : null))
+  const defaultValue = options.filter((item) => (mode === 'multiple' ? value?.includes(item.value) : item.value === value)) || null
 
-  const handleChange = (value: any) => {
-    setSelected(value)
+  const [selected, setSelected] = useState<SelectItem | SelectItem[]>(defaultValue)
+
+  const handleChange = (val: any) => {
+    setSelected(val)
     if (onChange) {
       if (mode === 'multiple') {
-        onChange(value?.map((item: SelectItem) => item.value))
+        onChange(val?.map((item: SelectItem) => item.value))
       } else {
-        onChange(value.value)
+        onChange(val.value)
       }
     }
   }
@@ -43,9 +45,12 @@ export default function Select({
       <Label className="block text-sm/6 font-medium">{label}</Label>
       <div className="relative mt-1">
         <ListboxButton
-          className={classNames('field group text-(--text) w-full grid grid-cols-1 rounded-md py-1 px-2 text-left sm:text-sm/6', {
-            'px-4': mode !== 'multiple',
-          })}
+          className={classNames(
+            'field group text-(--text) w-full grid grid-cols-1 rounded-md py-1 px-2 text-left sm:text-sm/6 hover:bg-transparent',
+            {
+              'px-4': mode !== 'multiple',
+            },
+          )}
         >
           <span className={classNames('col-start-1 row-start-1 flex-1 flex items-center gap-3 pr-4', { 'pr-8': mode === 'multiple' })}>
             {(mode === 'multiple' ? (selected as SelectItem[])?.length : !!selected) ? (
@@ -66,7 +71,7 @@ export default function Select({
           </span>
           {mode === 'multiple' && (selected as SelectItem[])?.length > 0 && (
             <div
-              className="btn-text col-start-1 row-start-1 justify-self-end self-center mr-4 hover:bg-orange-1 dark:hover:bg-orange-2 rounded-full p-1"
+              className="btn-text col-start-1 row-start-1 justify-self-end self-center mr-4 rounded-full p-1"
               onClick={(e) => {
                 e.stopPropagation()
                 handleChange(mode === 'multiple' ? [] : null)
