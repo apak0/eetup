@@ -13,13 +13,13 @@ export default async function RestaurantsPage({ searchParams }: RestaurantsPageP
   const companies = await getNearbyCompanies(address as string)
 
   return (
-    <div className="max-w-7xl min-h-screen  px-4 py-8 ">
+    <div className="max-w-7xl min-h-screen px-4 py-8">
       <div className="text-center mb-12">
         <h1 className="text-3xl font-bold mb-4">Welcome to eetup</h1>
         <p className="text-gray-600">Discover local restaurants and order your favorite meals</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-6 ">
+      <div className="grid grid-cols-3 gap-6">
         {companies?.map((item) => (
           <Link key={item.id} href={`/restaurants/${item.id}`} className="block no-underline">
             <CompanyItem item={item} />
