@@ -1,7 +1,7 @@
 'use client'
 import { useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import { Input } from '@headlessui/react'
+import { Input, Textarea } from '@headlessui/react'
 import {
   Image as ImageKitImage,
   ImageKitAbortError,
@@ -44,7 +44,7 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
     dietary: productData?.dietary || [],
   })
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const name = event.target.name
     const value = event.target.value
     if (name === 'price') {
@@ -109,10 +109,11 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
 
       if (uploadResponse?.url) {
         handleChange('image', uploadResponse?.url)
+        const body = { ...formValues, image: uploadResponse?.url }
         if (isEdit) {
-          await editProductAction(formValues, productData.id)
+          await editProductAction(body, productData.id)
         } else {
-          await createProductAction(formValues)
+          await createProductAction(body)
         }
       } else {
         throw new Error('Image upload failed. Please try with another image.')
@@ -180,8 +181,9 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
               onChange={handleInputChange}
               value={formValues.name}
             />
-            <Input
-              type="text"
+            <Textarea
+              rows={3}
+              className="h-22"
               name="description"
               id="description"
               placeholder="Description"

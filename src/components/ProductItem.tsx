@@ -6,6 +6,8 @@ import { Image as ImageKitImage } from '@imagekit/next'
 import classNames from 'classnames'
 import { Edit, Plus } from 'lucide-react'
 
+import { OverflowingText } from './reusables/OverflowingText'
+
 import { updateProductActivationAction } from '@/app/company/products/[activeTab]/actions'
 import { productCategories } from '@/lib/database/constants'
 
@@ -36,6 +38,7 @@ export const ProductItem = ({
       toast.success(response.message)
     }
   }
+
   return (
     <div
       className="group card p-4 border border-solid border-(--border-color) transition cursor-pointer flex gap-2 h-full"
@@ -50,7 +53,9 @@ export const ProductItem = ({
     >
       <div className="flex flex-col gap-1 flex-1">
         <h3 className="font-medium">{item.name}</h3>
-        <h6>{item.description || 'There is not any order description.'}</h6>
+        <h6>
+          <OverflowingText className="line-clamp-3">{item.description || 'There is not any order description.'}</OverflowingText>
+        </h6>
         <div>
           {item.categories && item.categories.length > 0 && (
             <div className="flex flex-wrap gap-1 mb-3">
@@ -81,7 +86,7 @@ export const ProductItem = ({
           )}
         </div>
       </div>
-      <div className="relative flex-1 h-48 overflow-hidden rounded-lg">
+      <div className="relative flex-1 h-40 overflow-hidden rounded-lg">
         {item.image && (
           <ImageKitImage src={item.image} width={400} height={400} alt={item.name || 'Product'} className="object-cover w-full h-full" />
         )}
@@ -93,7 +98,7 @@ export const ProductItem = ({
                 checked={isActive}
                 onClick={(e) => e.stopPropagation()}
                 onChange={handleToggleActive}
-                disabled={isLoading} //
+                disabled={isLoading}
                 className={classNames('relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2', {
                   'bg-green-500': isActive,
                   'bg-gray-400': !isActive,
