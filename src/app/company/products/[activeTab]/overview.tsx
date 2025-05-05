@@ -5,14 +5,18 @@ import { redirect } from 'next/navigation'
 import { getProductsAction } from './actions'
 
 import { ProductItem } from '@/components/ProductItem'
+import Loading from '@/components/reusables/Loading'
 
 export const ProductsOverview = () => {
   const [products, setProducts] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const loadProducts = async () => {
+      setLoading(true)
       const fetchedProducts = await getProductsAction()
       setProducts(fetchedProducts || [])
+      setLoading(false)
     }
 
     loadProducts()
@@ -25,6 +29,7 @@ export const ProductsOverview = () => {
           <ProductItem key={product.id} item={product} showToggle={true} onEdit={() => redirect(`/company/products/edit?productId=${product.id}`)} />
         ))}
       </div>
+      <Loading show={loading} />
     </div>
   )
 }
