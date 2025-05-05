@@ -1,3 +1,4 @@
+import { Button } from '@headlessui/react'
 import { redirect } from 'next/navigation'
 
 export const Search = () => {
@@ -19,12 +20,9 @@ export const Search = () => {
               placeholder="Enter your address..."
               className="w-full min-h-16 py-3 px-4 outline-none rounded-lg border border-gray-300 text-xl"
             />
-            <button
-              type="submit"
-              className="rounded-l-none whitespace-nowrap bg-primary text-white min-h-16 rounded-r-2xl hover:bg-primary/90 transition -ml-2"
-            >
+            <Button type="submit" className="rounded-l-none bg-orange-4 whitespace-nowrap min-h-16 rounded-r-2xl -ml-2">
               Search
-            </button>
+            </Button>
           </div>
         </div>
       </div>
