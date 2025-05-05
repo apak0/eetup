@@ -10,23 +10,25 @@
   }
 
   button.btn-link {
-    @apply bg-transparent text-orange-2 underline shadow-none;
+    @apply bg-transparent text-orange-2 underline;
   }
-  button.btn-link:hover {
-    @apply text-orange-3 shadow-none;
+  button.btn-link:hover,
+  .btn-link:hover {
+    @apply text-orange-3;
   }
 
   button.btn-text,
   .btn-text {
-    @apply bg-transparent text-orange-3 shadow-none rounded-full p-1 font-normal tracking-normal;
+    @apply bg-transparent text-orange-3 rounded-full p-1 font-normal tracking-normal;
   }
-  button.btn-text:hover {
-    @apply text-orange-3 shadow-none bg-(--bg-orange-2);
+  button.btn-text:hover,
+  .btn-text:hover {
+    @apply text-orange-3 bg-orange-1;
   }
 
   button.btn-default,
   .btn-default {
-    @apply bg-(--bg) border border-(--color-orange-4) text-orange-4 rounded-md;
+    @apply bg-transparent border border-orange-4 text-orange-4 rounded-md;
   }
 
   a.btn,

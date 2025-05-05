@@ -6,26 +6,10 @@ import { db } from '@/lib/database/db'
 import { product } from '@/lib/database/schema'
 import { auth } from '@/lib/utils/auth'
 
-export const createProductAction = async (formData: any) => {
-  const session: any = await auth()
+export const createProductAction = async (formValues: any) => {
+  const session = await auth()
 
-  const name = formData.get('name')?.toString() || ''
-  const description = formData.get('description')?.toString() || ''
-  const price = parseFloat(formData.get('price')?.toString() || '0') as any
-  const image = formData.get('image')?.toString() || ''
-  const categories = JSON.parse(formData.get('categories'))
-  const allergens = JSON.parse(formData.get('allergens'))
-  const dietary = JSON.parse(formData.get('dietary'))
-
-  const newProduct = {
-    name,
-    description,
-    price,
-    image,
-    categories: categories,
-    allergens: allergens,
-    dietary: dietary,
-  }
+  const newProduct = formValues
 
   await db.insert(product).values({
     companyId: session?.user?.id,
@@ -79,4 +63,32 @@ export const updateProductActivationAction = async (productId: number, isActive:
       message: error.message || 'Failed to update product status',
     }
   }
+}
+
+export const getProductDataAction = async (productId: number) => {
+  const session = await auth()
+
+  const productData = session?.user?.id
+    ? await db.query.product.findFirst({
+        where: and(eq(product.companyId, session?.user?.id), eq(product.id, productId)),
+      })
+    : null
+
+  return productData
+}
+
+export const editProductAction = async (formValues: any, productId: number) => {
+  const session = await auth()
+
+  const newProduct = formValues
+
+  await db
+    .update(product)
+    .set({
+      companyId: session?.user?.id,
+      ...newProduct,
+    })
+    .where(eq(product.id, productId))
+
+  return { message: 'Product is updated successfully.' }
 }

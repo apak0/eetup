@@ -3,19 +3,23 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { Switch } from '@headlessui/react'
 import { Image as ImageKitImage } from '@imagekit/next'
-import { Plus } from 'lucide-react'
+import classNames from 'classnames'
+import { Edit, Plus } from 'lucide-react'
+
+import { OverflowingText } from './reusables/OverflowingText'
 
 import { updateProductActivationAction } from '@/app/company/products/[activeTab]/actions'
+import { productCategories } from '@/lib/database/constants'
 
 export const ProductItem = ({
   item,
   showToggle = false,
-  showEdit = false,
+  onEdit,
   onAdd,
 }: {
   item: any
   showToggle?: boolean
-  showEdit?: boolean
+  onEdit?: () => void
   onAdd?: () => void
 }) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -34,16 +38,55 @@ export const ProductItem = ({
       toast.success(response.message)
     }
   }
+
   return (
     <div
-      className="relative group card p-4 shadow dark:border border-solid border-(--border-color) hover:shadow-lg transition cursor-pointer flex flex-col h-full"
+      className="group card p-4 border border-solid border-(--border-color) transition cursor-pointer flex gap-2 h-full"
       onClick={() => {
         if (onAdd) {
           onAdd()
         }
+        if (onEdit) {
+          onEdit()
+        }
       }}
     >
-      <div className="relative h-48 mb-4 overflow-hidden rounded-lg">
+      <div className="flex flex-col gap-1 flex-1">
+        <h3 className="font-medium">{item.name}</h3>
+        <h6>
+          <OverflowingText className="line-clamp-3">{item.description || 'There is not any order description.'}</OverflowingText>
+        </h6>
+        <div>
+          {item.categories && item.categories.length > 0 && (
+            <div className="flex flex-wrap gap-1 mb-3">
+              {item.categories.map((catId: any) => (
+                <span key={catId} className="text-xs py-0.5 px-2 rounded-md bg-orange-1 text-orange-5 ">
+                  {productCategories.find((cat) => cat.value === catId)?.label || 'Unknown'}
+                </span>
+              ))}
+            </div>
+          )}
+
+          <div className="flex justify-between items-center">
+            <div>
+              <span className="text-lg font-bold">{item.price} Є</span>
+            </div>
+          </div>
+        </div>
+        <div className="mt-auto flex gap-2">
+          {onEdit && (
+            <div className="btn-default group-hover:bg-orange-4/100 group-hover:text-white p-1">
+              <Edit size={20} />
+            </div>
+          )}
+          {onAdd && (
+            <div className="btn-default group-hover:bg-orange-4/100 group-hover:text-white p-1">
+              <Plus size={20} />
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="relative flex-1 h-40 overflow-hidden rounded-lg">
         {item.image && (
           <ImageKitImage src={item.image} width={400} height={400} alt={item.name || 'Product'} className="object-cover w-full h-full" />
         )}
@@ -53,19 +96,21 @@ export const ProductItem = ({
             <div className="relative">
               <Switch
                 checked={isActive}
+                onClick={(e) => e.stopPropagation()}
                 onChange={handleToggleActive}
-                disabled={isLoading} //
-                className={`${
-                  isActive ? 'bg-green-500' : 'bg-gray-400'
-                } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 ${
-                  isLoading ? 'opacity-70 cursor-not-allowed' : ''
-                }`}
+                disabled={isLoading}
+                className={classNames('relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2', {
+                  'bg-green-500': isActive,
+                  'bg-gray-400': !isActive,
+                  'opacity-70 cursor-not-allowed': isLoading,
+                })}
               >
                 <span className="sr-only">{isActive ? 'Active' : 'Inactive'}</span>
                 <span
-                  className={`${
-                    isActive ? 'translate-x-3' : '-translate-x-3'
-                  } inline-block h-4 w-4 transform rounded-3xl bg-white transition-transform`}
+                  className={classNames('inline-block h-4 w-4 transform rounded-3xl bg-white transition-transform', {
+                    'translate-x-3': isActive,
+                    '-translate-x-3': !isActive,
+                  })}
                 />
               </Switch>
 
@@ -78,52 +123,6 @@ export const ProductItem = ({
           </div>
         )}
       </div>
-
-      <h3 className="font-medium">{item.name}</h3>
-
-      <h6 className="">{item.description || 'There is not any order description.'}</h6>
-
-      <div className="mt-auto">
-        {item.categories && item.categories.length > 0 && (
-          <div className="flex flex-wrap gap-1 mb-3">
-            {item.categories.map((catId: any) => (
-              <span
-                key={catId}
-                className="text-xs py-0.5 px-2 rounded-md dark:border border-solid border-(--border-color)
-                bg-orange-1 text-orange-5 dark:bg-orange-5/20 dark:text-white dark:border-orange-3/20"
-              >
-                {catId}
-              </span>
-            ))}
-          </div>
-        )}
-
-        <div className="flex justify-between items-center">
-          <div>
-            <span className="text-lg font-bold">{item.price} Є</span>
-          </div>
-        </div>
-
-        {(showToggle || showEdit) && (
-          <div className="flex justify-between items-center mt-2">
-            {showToggle && (
-              <div className={`mt-2 text-xs font-medium ${isActive ? 'text-green-600' : 'text-gray-500'}`}>
-                Status: {isActive ? 'Active' : 'Inactive'} {isLoading && '(updating...)'}
-              </div>
-            )}
-            {showEdit && (
-              <div>
-                <button className="whitespace-nowrap rounded-xl bg-primary text-white min-h-1 hover:bg-primary/90 transition">Edit</button>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-      {onAdd && (
-        <div className="btn-default absolute bottom-6 right-6 z-10 group-hover:bg-orange-4/100 group-hover:text-white">
-          <Plus />
-        </div>
-      )}
     </div>
   )
 }

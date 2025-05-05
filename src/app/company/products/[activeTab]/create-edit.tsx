@@ -1,6 +1,7 @@
 'use client'
 import { useRef, useState } from 'react'
 import toast from 'react-hot-toast'
+import { Input, Textarea } from '@headlessui/react'
 import {
   Image as ImageKitImage,
   ImageKitAbortError,
@@ -15,26 +16,48 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 
-import { createProductAction } from './actions'
+import { createProductAction, editProductAction } from './actions'
 
 import Select from '@/components/reusables/Select'
 import { productAllergens, productCategories, productDietary } from '@/lib/database/constants'
+import { Product } from '@/lib/database/type'
 import { validateImageFile } from '@/lib/utils/validateImageSize'
 
-export const CreateProduct = () => {
+export const CreateEditProduct = ({ productData }: { productData?: Product }) => {
+  const isEdit = !!productData
   const router = useRouter()
-
   const session = useSession()
 
   const inputRef = useRef<HTMLInputElement>(null)
   const [progress, setProgress] = useState(0)
-  const [categories, setCategories] = useState()
-  const [allergens, setAllergens] = useState()
-  const [dietary, setDietary] = useState()
+
   const [isUploading, setIsUploading] = useState(false)
   const [previewFile, setPreviewFile] = useState<any>(null)
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
-  const [finalUrl, setFinalUrl] = useState<string | null>(null)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(productData?.image || null)
+  const [formValues, setFormValues] = useState({
+    name: productData?.name || '',
+    description: productData?.description || '',
+    price: productData?.price || '',
+    image: productData?.image || null,
+    categories: productData?.categories || [],
+    allergens: productData?.allergens || [],
+    dietary: productData?.dietary || [],
+  })
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const name = event.target.name
+    const value = event.target.value
+    if (name === 'price') {
+      if (!/^(\d+(\.\d{0,2})?)?$/.test(value)) return
+    }
+    handleChange(name, value)
+  }
+  const handleChange = (name: string, value: any) => {
+    setFormValues((prevValues: any) => ({
+      ...prevValues,
+      [name]: value,
+    }))
+  }
 
   const imageKitAuthenticator = async () => {
     try {
@@ -62,13 +85,6 @@ export const CreateProduct = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    const formData = new FormData(event.currentTarget)
-
-    formData.append('categories', JSON.stringify(categories))
-    formData.append('allergens', JSON.stringify(allergens))
-    formData.append('dietary', JSON.stringify(dietary))
-    const productName = formData.get('name')?.toString() || ''
-
     if (!previewUrl) {
       toast.error('Please select an image for the product')
       return
@@ -78,23 +94,27 @@ export const CreateProduct = () => {
     try {
       const { signature, expire, token, publicKey } = await imageKitAuthenticator()
 
-      const uploadResponse = finalUrl
-        ? { url: finalUrl }
+      const uploadResponse = formValues.image
+        ? { url: formValues.image }
         : await upload({
             expire,
             token,
             signature,
             publicKey,
             file: previewFile,
-            fileName: productName?.replaceAll(' ', '_'),
+            fileName: formValues.name?.replaceAll(' ', '_'),
             folder: `products/${session?.data?.user?.organization?.replaceAll(' ', '_')}/`,
             onProgress,
           })
 
       if (uploadResponse?.url) {
-        setFinalUrl(uploadResponse?.url)
-        formData.append('image', uploadResponse?.url)
-        await createProductAction(formData)
+        handleChange('image', uploadResponse?.url)
+        const body = { ...formValues, image: uploadResponse?.url }
+        if (isEdit) {
+          await editProductAction(body, productData.id)
+        } else {
+          await createProductAction(body)
+        }
       } else {
         throw new Error('Image upload failed. Please try with another image.')
       }
@@ -138,36 +158,81 @@ export const CreateProduct = () => {
 
   const handleClear = () => {
     setPreviewUrl(null)
-    setFinalUrl(null)
     setPreviewFile(null)
+    handleChange('image', null)
     inputRef.current!.value = ''
   }
 
-  const imageToShow = finalUrl || previewUrl
+  const imageToShow = formValues.image || previewUrl
 
   return (
     <div className="card rounded-ss-none py-8">
       <form onSubmit={handleSubmit}>
         <div className="flex gap-8 px-6">
           <div className="flex flex-col items-stretch w-80 gap-4">
-            <h2>New Product</h2>
-            <input type="text" name="name" id="name" placeholder="Product Name" required autoComplete="off" />
-            <input type="text" name="description" id="description" placeholder="Description" required autoComplete="off" />
-            <input type="number" name="price" id="price" placeholder="Price" required autoComplete="off" />
-            <Select mode="multiple" options={productCategories} label="Categories" onChange={setCategories} />
-            <Select mode="multiple" options={productAllergens} label="Allergens" onChange={setAllergens} />
-            <Select mode="multiple" options={productDietary} label="Dietary" onChange={setDietary} />
+            <h2>{productData ? 'Edit Product' : 'New Product'}</h2>
+            <Input
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Product Name"
+              required
+              autoComplete="off"
+              onChange={handleInputChange}
+              value={formValues.name}
+            />
+            <Textarea
+              rows={3}
+              className="h-22"
+              name="description"
+              id="description"
+              placeholder="Description"
+              required
+              autoComplete="off"
+              onChange={handleInputChange}
+              value={formValues.description}
+            />
+            <Input
+              type="number"
+              name="price"
+              id="price"
+              placeholder="Price"
+              required
+              autoComplete="off"
+              onChange={handleInputChange}
+              value={formValues.price}
+            />
+            <Select
+              mode="multiple"
+              options={productCategories}
+              label="Categories"
+              onChange={(val) => handleChange('categories', val)}
+              value={formValues.categories}
+            />
+            <Select
+              mode="multiple"
+              options={productAllergens}
+              label="Allergens"
+              onChange={(val) => handleChange('allergens', val)}
+              value={formValues.allergens}
+            />
+            <Select
+              mode="multiple"
+              options={productDietary}
+              label="Dietary"
+              onChange={(val) => handleChange('dietary', val)}
+              value={formValues.dietary}
+            />
 
             <button type="submit" className="my-8 w-full">
-              Create Product
+              {productData ? 'Save' : 'Create'}
             </button>
           </div>
           <div className="relative mx-auto my-12 flex flex-col">
-            <input ref={inputRef} hidden type="file" id="image-upload" name="image-upload" accept="image/*" required onChange={handleFileChange} />
             {imageToShow ? (
               <div className="group p-3 rounded-lg border border-solid border-(--border-color) self-start">
-                {finalUrl ? (
-                  <ImageKitImage src={finalUrl} width={400} height={400} alt="Picture of the product" />
+                {formValues.image ? (
+                  <ImageKitImage src={formValues.image} width={400} height={400} alt="Picture of the product" />
                 ) : (
                   <Image src={imageToShow} width={400} height={400} alt="Picture of the product" />
                 )}
@@ -182,6 +247,17 @@ export const CreateProduct = () => {
               </div>
             ) : (
               <label htmlFor="image-upload" className={classNames({ 'cursor-pointer': !isUploading })}>
+                <input
+                  ref={inputRef}
+                  hidden
+                  type="file"
+                  id="image-upload"
+                  name="image-upload"
+                  accept="image/*"
+                  required
+                  onChange={handleFileChange}
+                  defaultValue={formValues.image}
+                />
                 <div
                   className={classNames(
                     'flex items-center justify-center size-[300px] rounded-xl outline-dashed outline-2 bg-orange-1 dark:bg-slate-700',
