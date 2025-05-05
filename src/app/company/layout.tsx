@@ -20,7 +20,7 @@ export default async function CompanyLayout({ children }: { children: React.Reac
           <h2 className="col-span-4 text-xl font-semibold my-4">
             Welcome, <span className="capitalize">{session?.user?.firstName}</span>
           </h2>
-          <ul className="flex flex-col gap-4 text-2xl card shadow p-8">
+          <ul className="flex flex-col gap-4 text-xl card shadow p-6">
             {menu.map((item) => (
               <li key={item.name}>
                 <Link href={item.href}>{item.name}</Link>
@@ -28,7 +28,7 @@ export default async function CompanyLayout({ children }: { children: React.Reac
             ))}
           </ul>
         </aside>
-        <section className="col-span-3 mt-5">{children}</section>
+        <section className="col-span-3 mt-6">{children}</section>
       </div>
     </div>
   )

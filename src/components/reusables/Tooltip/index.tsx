@@ -48,8 +48,6 @@ export default function Tooltip({ title, children, delay = 300, defaultPosition 
     }
   }, [visible, defaultPosition])
 
-  console.log('ahoy22', position, visible)
-
   return (
     <div ref={triggerRef} className="relative" onMouseEnter={showTooltip} onMouseLeave={hideTooltip}>
       {children}

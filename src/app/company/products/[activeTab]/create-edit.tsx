@@ -119,7 +119,7 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
         throw new Error('Image upload failed. Please try with another image.')
       }
 
-      toast.success('Product created successfully!')
+      toast.success(isEdit ? 'Product is updated successfully!' : 'Product is created successfully!')
       setIsUploading(false)
       router.refresh()
       router.push('/company/products/overview')
@@ -228,7 +228,7 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
               {productData ? 'Save' : 'Create'}
             </button>
           </div>
-          <div className="relative mx-auto my-12 flex flex-col">
+          <div className="relative mx-auto py-12 flex flex-col">
             {imageToShow ? (
               <div className="group p-3 rounded-lg border border-solid border-(--border-color) self-start">
                 {formValues.image ? (

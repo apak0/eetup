@@ -41,7 +41,7 @@ export const ProductItem = ({
 
   return (
     <div
-      className="group card p-4 border border-solid border-(--border-color) transition cursor-pointer flex gap-2 h-full"
+      className="group card p-3 border border-solid border-(--border-color) transition cursor-pointer flex gap-2 h-full"
       onClick={() => {
         if (onAdd) {
           onAdd()
@@ -51,14 +51,15 @@ export const ProductItem = ({
         }
       }}
     >
-      <div className="flex flex-col gap-1 flex-1">
-        <h3 className="font-medium">{item.name}</h3>
-        <h6>
-          <OverflowingText className="line-clamp-3">{item.description || 'There is not any order description.'}</OverflowingText>
-        </h6>
+      <div className="flex flex-col gap-0.5 flex-1">
+        <h5 className="font-bold">{item.name}</h5>
+        <div className="flex justify-between items-center">{item.price} €</div>
+        <div className="text-xs">
+          <OverflowingText className="line-clamp-2">{item.description || 'There is not any order description.'}</OverflowingText>
+        </div>
         <div>
           {item.categories && item.categories.length > 0 && (
-            <div className="flex flex-wrap gap-1 mb-3">
+            <div className="flex flex-wrap gap-1">
               {item.categories.map((catId: any) => (
                 <span key={catId} className="text-xs py-0.5 px-2 rounded-md bg-orange-1 text-orange-5 ">
                   {productCategories.find((cat) => cat.value === catId)?.label || 'Unknown'}
@@ -66,12 +67,6 @@ export const ProductItem = ({
               ))}
             </div>
           )}
-
-          <div className="flex justify-between items-center">
-            <div>
-              <span className="text-lg font-bold">{item.price} Є</span>
-            </div>
-          </div>
         </div>
         <div className="mt-auto flex gap-2">
           {onEdit && (
