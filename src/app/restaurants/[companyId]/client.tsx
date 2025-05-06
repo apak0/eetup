@@ -3,15 +3,22 @@
 import { useState } from 'react'
 import { Button } from '@headlessui/react'
 import { Minus, Plus, ShoppingBasket, ShoppingCart, X } from 'lucide-react'
+import { redirect } from 'next/navigation'
 
 import { ProductItem } from '@/components/ProductItem'
 import Modal from '@/components/reusables/Modal'
 import { Company } from '@/lib/database/type'
 
 export function ClientRestaurantDetail({ companyData }: { companyData: Company }) {
-  const [basket, setBasket] = useState<{ [k: string]: number }>({})
+  const savedBasket: any = JSON.parse(localStorage.getItem('savedBaskets') || '{}') || {}
+  const [basket, setBasket] = useState<{ [k: string]: number }>(savedBasket[companyData.id] || {})
 
   const [basketMobileOpen, setBasketMobileOpen] = useState(false)
+
+  const handleBasketChange = (products: any) => {
+    localStorage.setItem('savedBaskets', JSON.stringify({ ...savedBasket, [companyData?.id]: products }))
+    setBasket(products)
+  }
 
   const basketComponent = (
     <div className="xl:sticky flex-1 top-4 max-h-[calc(100vh-173px)] bg-(--bg) shadow-lg border border-(--border-color) overflow-hidden">
@@ -44,12 +51,12 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
                       className="btn-default hover:bg-orange-4/100 hover:text-white p-1"
                       onClick={() => {
                         if (basket[productId] > 1) {
-                          setBasket({ ...basket, [productId]: basket[productId] - 1 })
+                          handleBasketChange({ ...basket, [productId]: basket[productId] - 1 })
                         } else {
                           const newBasket = { ...basket }
                           // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
                           delete newBasket[productId]
-                          setBasket(newBasket)
+                          handleBasketChange(newBasket)
                         }
                       }}
                     >
@@ -60,7 +67,7 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
                       type="button"
                       className="btn-default hover:bg-orange-4/100 hover:text-white p-1"
                       onClick={() => {
-                        setBasket({ ...basket, [productId]: basket[productId] + 1 })
+                        handleBasketChange({ ...basket, [productId]: basket[productId] + 1 })
                       }}
                     >
                       <Plus size={16} />
@@ -92,7 +99,14 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
               Checkout Now
             </button> */}
 
-            <Button className="w-full">Checkout</Button>
+            <Button
+              className="w-full"
+              onClick={() => {
+                redirect(`/restaurants/${companyData?.id}/checkout`)
+              }}
+            >
+              Checkout
+            </Button>
           </div>
         </div>
       ) : (
@@ -123,7 +137,7 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
                     key={product.id}
                     item={product}
                     onAdd={() => {
-                      setBasket({ ...basket, [product.id]: (basket[product.id] || 0) + 1 })
+                      handleBasketChange({ ...basket, [product.id]: (basket[product.id] || 0) + 1 })
                     }}
                   />
                 ))}
