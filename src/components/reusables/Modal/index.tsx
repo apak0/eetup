@@ -46,7 +46,8 @@ export default function Modal({
             )}
           >
             {title && <DialogTitle className="font-semibold p-6 pb-0">{title}</DialogTitle>}
-            <div className="mt-2">{content}</div>
+            <div className="">{content}</div>
+
             {footer ?? (
               <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-4">
                 <button

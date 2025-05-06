@@ -14,21 +14,34 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
   const [basketMobileOpen, setBasketMobileOpen] = useState(false)
 
   const basketComponent = (
-    <div className="xl:sticky flex-1 top-4 max-h-[calc(100vh-173px)] bg-(--bg) rounded-lg shadow">
+    <div className="xl:sticky flex-1 top-4 max-h-[calc(100vh-173px)] bg-(--bg) shadow-lg border border-(--border-color) overflow-hidden">
       {Object.entries(basket)?.length > 0 ? (
-        <div className="flex flex-col h-full gap-4 p-4 rounded-lg">
-          <h2 className="text-lg font-bold">Basket</h2>
-          <ul>
+        <div className="flex flex-col h-full gap-4 p-6 rounded-lg">
+          <div className="flex items-center justify-center mb-2">
+            <h2 className="text-xl w-full font-bold flex justify-center items-center gap-2">
+              <ShoppingBasket className="text-orange-4" size={30} />
+              <span>Your Order</span>
+            </h2>
+          </div>
+
+          <div className="my-2" />
+
+          <ul className="space-y-4 overflow-y-auto flex-1 pr-2 -mr-2">
             {Object.entries(basket)?.map(([productId, productQty]) => {
               const foundProduct = companyData.product.find((item: any) => item.id === Number(productId))
               return (
-                <li key={productId} className="flex justify-between">
-                  <span>{foundProduct.name}</span>
-                  <span className="font-bold">€{foundProduct.price}</span>
-                  <div className="flex items-center justify-end gap-2 w-40">
-                    <Button
+                <li
+                  key={productId}
+                  className="flex items-center justify-between p-3 rounded-xl bg-(--bg-secondary) hover:bg-(--bg-hover) transition-all duration-200 group"
+                >
+                  <div className="flex flex-col">
+                    <span className="font-medium">{foundProduct.name}</span>
+                    <span className="text-orange-5 font-bold">€{foundProduct.price}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
                       type="button"
-                      className="h-6 px-2 btn-default"
+                      className="btn-default hover:bg-orange-4/100 hover:text-white p-1"
                       onClick={() => {
                         if (basket[productId] > 1) {
                           setBasket({ ...basket, [productId]: basket[productId] - 1 })
@@ -41,38 +54,56 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
                       }}
                     >
                       <Minus size={16} />
-                    </Button>
-                    <span className="min-w-6 text-center">{productQty}</span>
-                    <Button
+                    </button>
+                    <span className="w-6 text-center font-semibold">{productQty}</span>
+                    <button
                       type="button"
-                      className="h-6 px-2"
+                      className="btn-default hover:bg-orange-4/100 hover:text-white p-1"
                       onClick={() => {
                         setBasket({ ...basket, [productId]: basket[productId] + 1 })
                       }}
                     >
                       <Plus size={16} />
-                    </Button>
+                    </button>
                   </div>
                 </li>
               )
             })}
           </ul>
-          <div className="flex justify-between items-center mt-auto">
-            <span className="text-lg font-bold">Total</span>
-            <span className="text-lg font-bold">
-              €
-              {Object.entries(basket)?.reduce((acc, [productId, productQty]) => {
-                const foundProduct = companyData.product.find((item: any) => item.id === Number(productId))
-                return acc + foundProduct.price * productQty
-              }, 0)}
-            </span>
+
+          <div className="my-2" />
+
+          <div className="pt-3 space-y-4">
+            <div className="flex justify-between items-center">
+              <span className="text-lg font-bold">Total</span>
+              <span className="text-xl font-bold text-orange-5">
+                €
+                {Object.entries(basket)
+                  ?.reduce((acc, [productId, productQty]) => {
+                    const foundProduct = companyData.product.find((item: any) => item.id === Number(productId))
+                    return acc + foundProduct.price * productQty
+                  }, 0)
+                  .toFixed(2)}
+              </span>
+            </div>
+
+            {/* <button className="w-full py-3 bg-orange-4 hover:bg-orange-5 text-white font-medium rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+              <ShoppingCart size={18} />
+              Checkout Now
+            </button> */}
+
+            <Button className="w-full">Checkout</Button>
           </div>
-          <Button className="w-full">Checkout</Button>
         </div>
       ) : (
-        <div className="p-4 rounded-lg h-full flex flex-col ">
-          <h2 className="text-lg font-bold">Basket is empty</h2>
-          <ShoppingCart size={48} className="m-auto opacity-20" />
+        <div className="p-6 rounded-lg h-full flex flex-col">
+          <h2 className="text-xl text-center font-bold mb-4">Your basket is empty</h2>
+          <div className="flex-1 flex flex-col items-center justify-center gap-4 py-12">
+            <div className="bg-orange-1 p-6 rounded-full">
+              <ShoppingCart size={48} className="text-orange-4" />
+            </div>
+            <p className="text-center font-medium max-w-xs">Add items from the menu to start your order</p>
+          </div>
         </div>
       )}
     </div>
@@ -107,13 +138,13 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
         </Button>
 
         <Modal
-          title="Basket"
+          title=""
           okClick={() => {
             console.log('submit')
           }}
           open={basketMobileOpen}
           footer={false}
-          className="max-w-md"
+          className="max-w-md w"
           content={basketComponent}
           setOpen={(val) => {
             setBasketMobileOpen(val)
