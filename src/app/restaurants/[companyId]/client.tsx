@@ -39,16 +39,16 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
               return (
                 <li
                   key={productId}
-                  className="flex items-center justify-between p-3 rounded-xl bg-(--bg-secondary) hover:bg-(--bg-hover) transition-all duration-200 group"
+                  className="flex items-center justify-between p-3 rounded-xl bg-(--bg-secondary) transition-all duration-200 group"
                 >
                   <div className="flex flex-col">
                     <span className="font-medium">{foundProduct.name}</span>
                     <span className="text-orange-5 font-bold">€{foundProduct.price}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <button
+                    <Button
                       type="button"
-                      className="btn-default hover:bg-orange-4/100 hover:text-white p-1"
+                      className="btn-default hover:bg-orange-4/100 hover:text-white p-1 w-10 h-10 flex items-center justify-center"
                       onClick={() => {
                         if (basket[productId] > 1) {
                           handleBasketChange({ ...basket, [productId]: basket[productId] - 1 })
@@ -61,17 +61,17 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
                       }}
                     >
                       <Minus size={16} />
-                    </button>
+                    </Button>
                     <span className="w-6 text-center font-semibold">{productQty}</span>
-                    <button
+                    <Button
                       type="button"
-                      className="btn-default hover:bg-orange-4/100 hover:text-white p-1"
+                      className="btn-default hover:bg-orange-4/100 hover:text-white p-1 w-10 h-10 flex items-center justify-center"
                       onClick={() => {
                         handleBasketChange({ ...basket, [productId]: basket[productId] + 1 })
                       }}
                     >
                       <Plus size={16} />
-                    </button>
+                    </Button>
                   </div>
                 </li>
               )
