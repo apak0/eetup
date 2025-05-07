@@ -1,7 +1,6 @@
 'use client'
 import { useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import { Input, Textarea } from '@headlessui/react'
 import {
   Image as ImageKitImage,
   ImageKitAbortError,
@@ -18,6 +17,8 @@ import { useSession } from 'next-auth/react'
 
 import { createProductAction, editProductAction } from './actions'
 
+import { FloatingInput } from '@/components/reusables/FloatingInput'
+import FloatingTextarea from '@/components/reusables/FloatingTextarea'
 import Select from '@/components/reusables/Select'
 import { productAllergens, productCategories, productDietary } from '@/lib/database/constants'
 import { Product } from '@/lib/database/type'
@@ -171,17 +172,9 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
         <div className="flex gap-8 px-6">
           <div className="flex flex-col items-stretch w-80 gap-4">
             <h2>{productData ? 'Edit Product' : 'New Product'}</h2>
-            <Input
-              type="text"
-              name="name"
-              id="name"
-              placeholder="Product Name"
-              required
-              autoComplete="off"
-              onChange={handleInputChange}
-              value={formValues.name}
-            />
-            <Textarea
+            <FloatingInput type="text" name="name" label="Product Name" required onChange={handleInputChange} value={formValues.name} />
+
+            <FloatingTextarea
               rows={3}
               className="h-22"
               name="description"
@@ -192,16 +185,9 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
               onChange={handleInputChange}
               value={formValues.description}
             />
-            <Input
-              type="number"
-              name="price"
-              id="price"
-              placeholder="Price"
-              required
-              autoComplete="off"
-              onChange={handleInputChange}
-              value={formValues.price}
-            />
+
+            <FloatingInput type="number" name="price" label="Price" required onChange={handleInputChange} value={formValues.price} />
+
             <Select
               mode="multiple"
               options={productCategories}
