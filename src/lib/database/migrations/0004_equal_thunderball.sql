@@ -1,1 +1,0 @@
-ALTER TABLE "eetup-dev"."product" ALTER COLUMN "discount_price" DROP NOT NULL;

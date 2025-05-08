@@ -2,9 +2,9 @@
   input,
   textarea,
   .field {
-    @apply h-12 py-1 px-2 rounded-lg bg-slate-100/50 border border-(--border-color) text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-slate-400 focus:border-slate-400 transition duration-200 ease-in-out;
+    @apply h-12 py-1 px-2 rounded-lg border border-(--border-color) text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-slate-400 focus:border-slate-400 transition duration-200 ease-in-out;
     .dark & {
-      @apply text-white bg-(--bg-secondary);
+      @apply text-white ;
     }
   }
 
