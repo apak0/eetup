@@ -21,7 +21,7 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
   }
 
   const basketComponent = (
-    <div className="xl:sticky flex-1 top-4 max-h-[calc(100vh-173px)] bg-(--bg) shadow-lg border border-(--border-color) overflow-hidden">
+    <div className="xl:sticky flex-1 top-4 max-h-[calc(100vh-173px)] bg-(--bg) rounded-lg border border-(--border-color) overflow-hidden">
       {Object.entries(basket)?.length > 0 ? (
         <div className="flex flex-col h-full gap-4 p-6 rounded-lg">
           <div className="flex items-center justify-center mb-2">
@@ -37,13 +37,10 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
             {Object.entries(basket)?.map(([productId, productQty]) => {
               const foundProduct = companyData.product.find((item: any) => item.id === Number(productId))
               return (
-                <li
-                  key={productId}
-                  className="flex items-center justify-between p-3 rounded-xl bg-(--bg-secondary) transition-all duration-200 group"
-                >
+                <li key={productId} className="flex items-center justify-between p-3 rounded-xl bg-(--bg-secondary)">
                   <div className="flex flex-col">
                     <span className="font-medium">{foundProduct.name}</span>
-                    <span className="text-orange-5 font-bold">€{foundProduct.price}</span>
+                    <span className="font-bold">€{foundProduct.price}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Button
@@ -62,7 +59,7 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
                     >
                       <Minus size={16} />
                     </Button>
-                    <span className="w-6 text-center font-semibold">{productQty}</span>
+                    <span className="w-6 text-center font-bold">{productQty}</span>
                     <Button
                       type="button"
                       className="btn-default hover:bg-orange-4/100 hover:text-white p-1 w-10 h-10 flex items-center justify-center"
@@ -94,11 +91,6 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
               </span>
             </div>
 
-            {/* <button className="w-full py-3 bg-orange-4 hover:bg-orange-5 text-white font-medium rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-              <ShoppingCart size={18} />
-              Checkout Now
-            </button> */}
-
             <Button
               className="w-full"
               onClick={() => {
@@ -128,7 +120,7 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
         <div className="col-span-2 flex flex-col gap-4">
           <div className="bg-orange-3 rounded-lg h-80"></div>
           <h1 className="px-4">{companyData.organization}</h1>
-          <div className="bg-(--bg) rounded-lg shadow overflow-x-auto flex flex-col gap-4 p-4">
+          <div className="bg-(--bg) rounded-lg border border-(--border-color) overflow-x-auto flex flex-col gap-4 p-4">
             <div className="">
               <h2 className="text-lg font-bold mb-2">Products</h2>
               <div className="grid  xl:grid-cols-2 gap-4">
@@ -145,9 +137,9 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
             </div>
           </div>
         </div>
-        <div className="hidden   col-span-1 xl:flex flex-col">{basketComponent}</div>
+        <div className="hidden col-span-1 xl:flex flex-col">{basketComponent}</div>
 
-        <Button className="xl:hidden fixed bottom-4 left-4 z-30 shadow" onClick={() => setBasketMobileOpen(!basketMobileOpen)}>
+        <Button className="xl:hidden fixed bottom-4 left-4 z-30" onClick={() => setBasketMobileOpen(!basketMobileOpen)}>
           {basketMobileOpen ? <X /> : <ShoppingBasket />}
         </Button>
 
