@@ -2,7 +2,7 @@ import { Image as ImageKitImage } from '@imagekit/next'
 
 export const CompanyItem = ({ item }: { item: any }) => {
   return (
-    <div className="card shadow dark:border border-solid border-(--border-color) overflow-hidden hover:shadow-lg transition cursor-pointer">
+    <div className="card dark:border border-solid border-(--border-color) overflow-hidden hover:shadow-lg transition cursor-pointer">
       <div className="relative h-48">
         <ImageKitImage
           // src={item.image || '/LOGO.png'}
@@ -14,14 +14,14 @@ export const CompanyItem = ({ item }: { item: any }) => {
         />
       </div>
       <div className="p-4">
-        <h3 className="font-bold text-xl mb-2 text-gray-600 dark:text-gray-300">{item.organization}</h3>
-        <p className="mb-2text-(--text)">
+        <h3 className="font-bold text-xl mb-2 text-gray-6 dark:text-gray-3">{item.organization}</h3>
+        <p className="mb-2 text-(--text)">
           {item.street} {item.houseNumber}
           {item.houseNumberAddition && ` ${item.houseNumberAddition}`}
         </p>
         <div className="flex items-center justify-between">
           {item.minEstimatedDeliveryTime >= 0 && (
-            <span className="text-sm text-gray-600 dark:text-gray-300">
+            <span className="text-sm text-gray-6 dark:text-gray-3">
               {item.minEstimatedDeliveryTime}-{item.maxEstimatedDeliveryTime} min
             </span>
           )}
