@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm'
-import { boolean, decimal, doublePrecision, integer, pgSchema, varchar } from 'drizzle-orm/pg-core'
+import { boolean, decimal, doublePrecision, integer, jsonb, pgSchema, varchar } from 'drizzle-orm/pg-core'
 
 export const cs1 = pgSchema('eetup-dev')
 
@@ -57,6 +57,8 @@ export const product = cs1.table('product', {
   categories: integer().array(),
   allergens: integer().array(),
   dietary: integer().array(),
+  add_cart_options_checked: boolean().default(false).notNull(),
+  add_cart_preferences: jsonb('add_cart_preferences').default('[]').notNull(),
 })
 
 export const companyRelations = relations(company, ({ many }) => ({

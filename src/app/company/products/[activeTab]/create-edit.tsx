@@ -1,6 +1,7 @@
 'use client'
 import { useRef, useState } from 'react'
 import toast from 'react-hot-toast'
+import { Button, Input } from '@headlessui/react'
 import {
   Image as ImageKitImage,
   ImageKitAbortError,
@@ -10,7 +11,7 @@ import {
   upload,
 } from '@imagekit/next'
 import classNames from 'classnames'
-import { ImageUp, Trash2 } from 'lucide-react'
+import { ArrowBigDownDash, ArrowRight, ImageUp, Trash2, X } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
@@ -23,6 +24,13 @@ import Select from '@/components/reusables/Select'
 import { productAllergens, productCategories, productDietary } from '@/lib/database/constants'
 import { Product } from '@/lib/database/type'
 import { validateImageFile } from '@/lib/utils/validateImageSize'
+
+type ProductOption = {
+  label: string
+  value: string[]
+  inputValue: string
+  type: 'single selection' | 'multiple selection'
+}
 
 export const CreateEditProduct = ({ productData }: { productData?: Product }) => {
   const isEdit = !!productData
@@ -43,6 +51,8 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
     categories: productData?.categories || [],
     allergens: productData?.allergens || [],
     dietary: productData?.dietary || [],
+    addCartPreferencesChecked: productData?.addCartPreferencesChecked || false,
+    addCartPreferences: productData?.addCartPreferences || [{ type: 'single_selection' }],
   })
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -209,10 +219,6 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
               onChange={(val) => handleChange('dietary', val)}
               value={formValues.dietary}
             />
-
-            <button type="submit" className="my-8 w-full">
-              {productData ? 'Save' : 'Create'}
-            </button>
           </div>
           <div className="relative mx-auto py-12 flex flex-col">
             {imageToShow ? (
@@ -264,6 +270,130 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
             </div>
           </div>
         </div>
+        <div className="flex items-center gap-2 px-6">
+          <input
+            type="checkbox"
+            id="addCartPreferencesChecked"
+            checked={formValues.addCartPreferencesChecked}
+            onChange={(e) => handleChange('addCartPreferencesChecked', e.target.checked)}
+            className="accent-gray-2"
+          />
+          <label htmlFor="addCartPreferencesChecked">Add to Cart Preferences</label>
+        </div>
+        {formValues.addCartPreferencesChecked && (
+          <div className="flex flex-col gap-4 px-6">
+            <h2>Add to Cart Preferences</h2>
+            {formValues.addCartPreferences.map((option: ProductOption, index: number) => (
+              <div key={index} className="flex gap-4 items-end">
+                <div>
+                  <FloatingInput
+                    type="text"
+                    name={`preference-${index}`}
+                    label={`Preference ${index + 1}`}
+                    required
+                    onChange={(e) => {
+                      const newOptions = [...formValues.addCartPreferences]
+                      newOptions[index] = { ...(newOptions[index] || {}), label: e.target.value }
+                      handleChange('addCartPreferences', newOptions)
+                    }}
+                    value={option.label || ''}
+                  />
+                </div>
+                <Select
+                  className="w-70"
+                  options={[
+                    { value: 'single_selection', label: 'Single' },
+                    { value: 'multiple_selection', label: 'Multiple' },
+                  ]}
+                  label="Selection Type"
+                  onChange={(val) => {
+                    const newPreferences = [...formValues.addCartPreferences]
+                    newPreferences[index] = { ...(newPreferences[index] || {}), type: val.value }
+                    handleChange('addCartPreferences', newPreferences)
+                  }}
+                  value={option.type || ''}
+                />
+                <div className="max-w-1/2 w-1/2">
+                  <span className="text-sm text-gray-5">Preference Options</span>
+                  {!!option.value?.length && (
+                    <div className="flex flex-wrap items-center gap-2 rounded-lg border border-solid border-(--border-color) p-2 mb-2">
+                      {option.value?.map((v) => (
+                        <div key={v} className="flex items-center gap-2 bg-(--bg-secondary) rounded-lg px-2 py-1">
+                          {v}
+                          <Button
+                            className="h-6 p-1"
+                            onClick={() => {
+                              const newOptions = [...(formValues.addCartPreferences || [])]
+                              newOptions[index] = {
+                                ...(newOptions[index] || {}),
+                                value: newOptions[index].value.filter((_: any) => _ !== v),
+                              }
+                              handleChange('addCartPreferences', newOptions)
+                            }}
+                          >
+                            <X size={16} />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <div className="w-full flex items-center gap-2">
+                    <Input
+                      className="flex-1"
+                      placeholder="Option Text"
+                      maxLength={40}
+                      onChange={(e) => {
+                        const newOptions = [...(formValues.addCartPreferences || [])]
+                        newOptions[index] = { ...(newOptions[index] || {}), inputValue: e.target.value }
+                        handleChange('addCartPreferences', newOptions)
+                      }}
+                    />
+                    <Button
+                      onClick={() => {
+                        if (option.value?.includes(option.inputValue)) {
+                          toast.error('Option already exists')
+                          return
+                        } else if (!option.inputValue) {
+                          toast.error('Please enter an option')
+                          return
+                        }
+                        const newOptions = [...(formValues.addCartPreferences || [])]
+                        newOptions[index] = { ...(newOptions[index] || {}), value: (option.value || []).concat([option.inputValue]) }
+                        console.log('ahoy000', newOptions)
+                        handleChange('addCartPreferences', newOptions)
+                      }}
+                    >
+                      <ArrowRight />
+                    </Button>
+                  </div>
+                </div>
+                <Button
+                  type="button"
+                  className="btn-text bg-(--bg) text-sm z-10 size-12 text-red-1 hover:bg-red-1 hover:text-white"
+                  onClick={() => {
+                    const newOptions = formValues.addCartPreferences.filter((_: any, i: any) => i !== index)
+                    handleChange('addCartPreferences', newOptions)
+                  }}
+                >
+                  <Trash2 />
+                </Button>
+              </div>
+            ))}
+            <Button
+              type="button"
+              className="btn-default"
+              onClick={() => {
+                handleChange('addCartPreferences', [...(formValues.addCartPreferences || []), { type: 'single_selection' }])
+              }}
+            >
+              <ArrowBigDownDash className="mr-2" size={16} /> Add New Field
+            </Button>
+          </div>
+        )}
+
+        <button type="submit" className="my-8 w-full">
+          {productData ? 'Save' : 'Create'}
+        </button>
       </form>
     </div>
   )

@@ -1,0 +1,2 @@
+ALTER TABLE "eetup-dev"."product" ADD COLUMN "add_cart_options_checked" boolean DEFAULT false NOT NULL;--> statement-breakpoint
+ALTER TABLE "eetup-dev"."product" ADD COLUMN "add_cart_preferences" jsonb DEFAULT '[]' NOT NULL;

@@ -12,6 +12,7 @@ type SelectItem = {
 
 export default function Select({
   placeholder = 'Select an option',
+  className,
   mode,
   options,
   label,
@@ -19,15 +20,16 @@ export default function Select({
   onChange,
 }: {
   placeholder?: string
+  className?: string
   mode?: 'multiple'
   options: { value: any; label: any }[]
   label: string
   value?: any
   onChange?: (value: any) => void
 }) {
-  const defaultValue = options.filter((item) => (mode === 'multiple' ? value?.includes(item.value) : item.value === value)) || null
+  const defaultValue = mode === 'multiple' ? options.filter((item) => value?.includes(item.value)) : options.find((item) => item.value === value)
 
-  const [selected, setSelected] = useState<SelectItem | SelectItem[]>(defaultValue)
+  const [selected, setSelected] = useState<SelectItem | SelectItem[]>(defaultValue!)
 
   const handleChange = (val: any) => {
     setSelected(val)
@@ -41,12 +43,12 @@ export default function Select({
   }
 
   return (
-    <Listbox as="div" value={selected} onChange={handleChange} multiple={mode === 'multiple'}>
+    <Listbox as="div" value={selected} onChange={handleChange} multiple={mode === 'multiple'} className={classNames('', className)}>
       <Label className="block text-sm/6 font-medium">{label}</Label>
       <div className="relative mt-1">
         <ListboxButton
           className={classNames(
-            'field group text-(--text) w-full grid grid-cols-1 rounded-md py-1 px-2 text-left sm:text-sm/6 hover:bg-transparent',
+            'field group text-(--text) w-full grid grid-cols-1 rounded-md py-1 px-2 text-left sm:text-sm/6 bg-transparent hover:bg-transparent',
             {
               'px-4': mode !== 'multiple',
             },
@@ -94,10 +96,13 @@ export default function Select({
             <ListboxOption
               key={item.value}
               value={item}
-              className="group relative cursor-default py-2 pr-9 pl-3 select-none data-focus:bg-orange-3 data-focus:text-white data-focus:outline-hidden"
+              className={classNames(
+                'group relative cursor-default py-2 pl-3 select-none data-focus:bg-orange-3 data-focus:text-white data-focus:outline-hidden',
+                { 'pr-9': mode === 'multiple', 'pr-3': mode !== 'multiple' },
+              )}
             >
               <div className="flex items-center">
-                <span className="ml-2 block truncate font-normal group-data-selected:font-semibold">{item.label}</span>
+                <span className="block truncate font-normal group-data-selected:font-semibold">{item.label}</span>
               </div>
 
               <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-orange-3 group-not-data-selected:hidden group-data-focus:text-white">

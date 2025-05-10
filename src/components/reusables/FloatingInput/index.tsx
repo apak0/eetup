@@ -19,7 +19,7 @@ export const FloatingInput = ({ label, name, value, onChange, type = 'text', req
   const shouldFloat = isFocused || value?.length > 0
 
   return (
-    <div className="relative w-full mt-4">
+    <div className="relative w-full">
       <Input
         id={id}
         name={name}
@@ -30,21 +30,19 @@ export const FloatingInput = ({ label, name, value, onChange, type = 'text', req
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         autoComplete="off"
-        className={classNames(
-          'peer w-full border-(--border) rounded-md px-4 pt-5 pb-2 text-sm outline-none focus:border-(--border)transition-colors',
-        )}
+        className={classNames('peer w-full border-(--border-color) rounded-md text-sm outline-none focus:border-(--border)transition-colors')}
       />
       <label
         htmlFor={id}
         className={classNames(
           'absolute left-4 text-sm transition-all pointer-events-none',
-          shouldFloat ? 'top-1 text-gray-500 text-xs bg-white px-1 -translate-y-1/2' : 'top-1/2 -translate-y-1/2 text-gray-400',
+          shouldFloat ? 'top-0 text-gray-5 dark:text-gray-3 text-xs bg-(--bg) px-1 -translate-y-1/2' : 'top-1/2 -translate-y-1/2 text-gray-4',
         )}
       >
         {label}
       </label>
 
-      {shouldFloat && <div className="absolute left-3 top-0 h-2 w-[calc(100%)] bg-white z-[-1]" />}
+      {shouldFloat && <div className="absolute left-3 top-0 h-2 w-[calc(100%)] bg-(--bg) z-[-1]" />}
     </div>
   )
 }
