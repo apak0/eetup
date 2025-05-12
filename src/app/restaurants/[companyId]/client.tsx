@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Button } from '@headlessui/react'
-import { Minus, Plus, ShoppingBasket, ShoppingCart, X } from 'lucide-react'
+import { Minus, Plus, ShoppingBasket, ShoppingCart, Trash2, X } from 'lucide-react'
 import { redirect } from 'next/navigation'
 
 import { ProductItem } from '@/components/ProductItem'
@@ -46,6 +46,18 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
                     <span className="text-orange-5 font-bold">€{foundProduct.price}</span>
                   </div>
                   <div className="flex items-center gap-2">
+                    <Button
+                      type="button"
+                      className="btn-text bg-(--bg-secondary) text-sm z-10 size-12 text-red-1 hover:bg-red-1 hover:text-white"
+                      onClick={() => {
+                        const newBasket = { ...basket }
+                        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+                        delete newBasket[productId]
+                        handleBasketChange(newBasket)
+                      }}
+                    >
+                      <Trash2 />
+                    </Button>
                     <Button
                       type="button"
                       className="btn-default hover:bg-orange-4/100 hover:text-white p-1 w-10 h-10 flex items-center justify-center"
