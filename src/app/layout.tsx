@@ -43,7 +43,7 @@ export default async function RootLayout({
           <>
             <Header />
             <Toaster position="bottom-right" />
-            <main className="max-w-app mx-auto px-2 lg:px-10">{children}</main>
+            <main className="px-2 lg:px-10">{children}</main>
             <Footer />
           </>
         </Providers>
