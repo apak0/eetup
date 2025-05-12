@@ -290,7 +290,7 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
             />
           </div>
         </div>
-        <div className="flex items-center gap-2 px-6">
+        <div className="flex items-center gap-2 mt-10">
           <input
             type="checkbox"
             id="addCartPreferencesChecked"
