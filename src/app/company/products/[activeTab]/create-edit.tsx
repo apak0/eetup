@@ -450,7 +450,12 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
                       <div className="flex flex-wrap items-center gap-2 rounded-lg border border-solid border-(--border-color) p-2 mb-2">
                         {option.value?.map((v) => (
                           <div key={v.label} className="flex items-center gap-2 bg-(--bg-secondary) rounded-lg px-2 py-1">
-                            {v.label} : <span className="border rounded-lg px-2 ">{v.price} €</span>
+                            {v.label}{' '}
+                            {!!v.price && (
+                              <>
+                                : <span className="border rounded-lg px-2 leading-5">{v.price} €</span>
+                              </>
+                            )}
                             <Button
                               className="h-6 p-1"
                               onClick={() => {
