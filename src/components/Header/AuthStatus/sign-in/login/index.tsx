@@ -75,7 +75,9 @@ export default function Login({ setLoginContent, setAuthOpen }: { setLoginConten
           />
           <div className="flex items-center gap-2">
             <input type="checkbox" id="rememberMe" checked={rememberMe} onChange={handleRememberMe} className="accent-gray-200 " />
-            <label htmlFor="rememberMe">Remember Me</label>
+            <label htmlFor="rememberMe" className="mb-0">
+              Remember Me
+            </label>
           </div>
         </div>
         <div className="grid gap-4 mt-8">

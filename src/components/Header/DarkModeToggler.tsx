@@ -25,7 +25,7 @@ export const DarkModeToggler = ({ preferredTheme }: { preferredTheme: 'dark' | '
     <DarkModeTogglerContainer>
       <input type="checkbox" id="toggle_checkbox" onChange={(e) => onThemeChange(e.target.checked ? 'dark' : 'light')} checked={theme === 'dark'} />
 
-      <label htmlFor="toggle_checkbox">
+      <label htmlFor="toggle_checkbox" className="mb-0">
         <div id="star">
           <div className="star" id="star-1">
             ★

@@ -30,6 +30,10 @@
   .btn-default {
     @apply bg-transparent border border-orange-4 text-orange-4 rounded-md;
   }
+  button.btn-default:hover,
+  .btn-default:hover {
+    @apply bg-orange-4 text-white;
+  }
 
   a.btn,
   a.btn-text {

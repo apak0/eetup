@@ -1,7 +1,7 @@
 'use client'
 import { useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import { Button, Input } from '@headlessui/react'
+import { Button, Field, Fieldset, Input, Label, Switch, Textarea } from '@headlessui/react'
 import {
   Image as ImageKitImage,
   ImageKitAbortError,
@@ -18,8 +18,6 @@ import { useSession } from 'next-auth/react'
 
 import { createProductAction, editProductAction } from './actions'
 
-import { FloatingInput } from '@/components/reusables/FloatingInput'
-import FloatingTextarea from '@/components/reusables/FloatingTextarea'
 import Select from '@/components/reusables/Select'
 import { productAllergens, productCategories, productDietary } from '@/lib/database/constants'
 import { Product } from '@/lib/database/type'
@@ -27,8 +25,10 @@ import { validateImageFile } from '@/lib/utils/validateImageSize'
 
 type ProductOption = {
   label: string
-  value: string[]
-  inputValue: string
+  value: { label: string; price?: string }[]
+  isOptional: boolean
+  optionLabelInput: string
+  optionPriceInput: string
   type: 'single selection' | 'multiple selection'
 }
 
@@ -178,55 +178,16 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
 
   return (
     <div className="card rounded-ss-none py-8">
-      <form onSubmit={handleSubmit}>
-        <div className="flex gap-8 px-6">
-          <div className="flex flex-col items-stretch w-80 gap-4">
-            <h2>{productData ? 'Edit Product' : 'New Product'}</h2>
-            <FloatingInput type="text" name="name" label="Product Name" required onChange={handleInputChange} value={formValues.name} />
-
-            <FloatingTextarea
-              rows={3}
-              className="h-22"
-              name="description"
-              id="description"
-              placeholder="Description"
-              required
-              autoComplete="off"
-              onChange={handleInputChange}
-              value={formValues.description}
-            />
-
-            <FloatingInput type="number" name="price" label="Price" required onChange={handleInputChange} value={formValues.price} />
-
-            <Select
-              mode="multiple"
-              options={productCategories}
-              label="Categories"
-              onChange={(val) => handleChange('categories', val)}
-              value={formValues.categories}
-            />
-            <Select
-              mode="multiple"
-              options={productAllergens}
-              label="Allergens"
-              onChange={(val) => handleChange('allergens', val)}
-              value={formValues.allergens}
-            />
-            <Select
-              mode="multiple"
-              options={productDietary}
-              label="Dietary"
-              onChange={(val) => handleChange('dietary', val)}
-              value={formValues.dietary}
-            />
-          </div>
-          <div className="relative mx-auto py-12 flex flex-col">
+      <form onSubmit={handleSubmit} className="px-6">
+        <h2 className="mb-4">{productData ? 'Edit Product' : 'New Product'}</h2>
+        <div className="flex flex-col xl:flex-row gap-12">
+          <div className="relative flex flex-col">
             {imageToShow ? (
-              <div className="group p-3 rounded-lg border border-solid border-(--border-color) self-start">
+              <div className="group p-3 rounded-lg border border-solid border-(--border-color) self-start ">
                 {formValues.image ? (
-                  <ImageKitImage src={formValues.image} width={400} height={400} alt="Picture of the product" />
+                  <ImageKitImage src={formValues.image} width={276} height={276} alt="Picture of the product" className="object-cover size-[276px]" />
                 ) : (
-                  <Image src={imageToShow} width={400} height={400} alt="Picture of the product" />
+                  <Image src={imageToShow} width={276} height={276} alt="Picture of the product" className="object-cover size-[276px]" />
                 )}
                 <button
                   className="btn-text bg-(--bg) absolute text-sm z-10 top-1 right-1 size-12 hidden group-hover:flex hover:bg-red-1 hover:text-white group/1"
@@ -269,6 +230,65 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
               {!!progress && <span>{progress}%</span>}
             </div>
           </div>
+          <Fieldset className="flex flex-col items-stretch gap-4">
+            <Field>
+              <Label>Product Name</Label>
+              <Input placeholder="Product Name" className="w-80" type="text" name="name" value={formValues.name} onChange={handleInputChange} />
+            </Field>
+
+            <Field>
+              <Label>Price</Label>
+              <Input
+                placeholder="0.00 €"
+                className="w-80"
+                id="price"
+                name="price"
+                type="number"
+                required
+                value={formValues.price}
+                onChange={handleInputChange}
+                autoComplete="off"
+              />
+            </Field>
+            <Field>
+              <Label>Description</Label>
+              <Textarea
+                className="w-80 h-22"
+                id="description"
+                name="description"
+                placeholder="Tell us about your product"
+                rows={3}
+                required
+                value={formValues.description}
+                onChange={handleInputChange}
+                autoComplete="off"
+              />
+            </Field>
+          </Fieldset>
+
+          <div className="flex flex-col items-stretch w-80 gap-4">
+            <Select
+              mode="multiple"
+              options={productCategories}
+              label="Categories"
+              onChange={(val) => handleChange('categories', val)}
+              value={formValues.categories}
+            />
+            <Select
+              mode="multiple"
+              options={productAllergens}
+              label="Allergens"
+              onChange={(val) => handleChange('allergens', val)}
+              value={formValues.allergens}
+            />
+            <Select
+              mode="multiple"
+              options={productDietary}
+              label="Dietary"
+              onChange={(val) => handleChange('dietary', val)}
+              value={formValues.dietary}
+            />
+          </div>
         </div>
         <div className="flex items-center gap-2 px-6">
           <input
@@ -278,110 +298,193 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
             onChange={(e) => handleChange('addCartPreferencesChecked', e.target.checked)}
             className="accent-gray-2"
           />
-          <label htmlFor="addCartPreferencesChecked">Add to Cart Preferences</label>
+          <label htmlFor="addCartPreferencesChecked" className="mb-0">
+            Add to Cart Preferences
+          </label>
         </div>
         {formValues.addCartPreferencesChecked && (
-          <div className="flex flex-col gap-4 px-6">
-            <h2>Add to Cart Preferences</h2>
-            {formValues.addCartPreferences.map((option: ProductOption, index: number) => (
-              <div key={index} className="flex gap-4 items-end">
-                <div>
-                  <FloatingInput
-                    type="text"
-                    name={`preference-${index}`}
-                    label={`Preference ${index + 1}`}
-                    required
-                    onChange={(e) => {
-                      const newOptions = [...formValues.addCartPreferences]
-                      newOptions[index] = { ...(newOptions[index] || {}), label: e.target.value }
-                      handleChange('addCartPreferences', newOptions)
+          <div className="flex flex-col gap-4 border rounded-lg border-(--border-color) p-4 xl:p-8">
+            <h2 className="mb-6">Add to Cart Preferences</h2>
+            <div className="divide-y ">
+              {formValues.addCartPreferences.map((option: ProductOption, index: number) => (
+                <div key={index} className="flex gap-4 pb-6 mb-6 flex-wrap">
+                  <Field className="w-80">
+                    <Label className="">Preference Label {index + 1}</Label>
+                    <Input
+                      placeholder="Enter Label for Preference"
+                      type="text"
+                      className="w-full"
+                      name={`preference-${index}`}
+                      required
+                      onChange={(e) => {
+                        const newOptions = [...formValues.addCartPreferences]
+                        newOptions[index] = { ...(newOptions[index] || {}), label: e.target.value }
+                        handleChange('addCartPreferences', newOptions)
+                      }}
+                      value={option.label || ''}
+                    />
+                  </Field>
+                  <Select
+                    className="w-44"
+                    options={[
+                      { value: 'single_selection', label: 'Single' },
+                      { value: 'multiple_selection', label: 'Multiple' },
+                    ]}
+                    label="Preference Type"
+                    onChange={(val) => {
+                      const newPreferences = [...formValues.addCartPreferences]
+                      newPreferences[index] = { ...(newPreferences[index] || {}), type: val }
+                      handleChange('addCartPreferences', newPreferences)
                     }}
-                    value={option.label || ''}
+                    value={option.type || ''}
                   />
-                </div>
-                <Select
-                  className="w-70"
-                  options={[
-                    { value: 'single_selection', label: 'Single' },
-                    { value: 'multiple_selection', label: 'Multiple' },
-                  ]}
-                  label="Selection Type"
-                  onChange={(val) => {
-                    const newPreferences = [...formValues.addCartPreferences]
-                    newPreferences[index] = { ...(newPreferences[index] || {}), type: val.value }
-                    handleChange('addCartPreferences', newPreferences)
-                  }}
-                  value={option.type || ''}
-                />
-                <div className="max-w-1/2 w-1/2">
-                  <span className="text-sm text-gray-5">Preference Options</span>
-                  {!!option.value?.length && (
-                    <div className="flex flex-wrap items-center gap-2 rounded-lg border border-solid border-(--border-color) p-2 mb-2">
-                      {option.value?.map((v) => (
-                        <div key={v} className="flex items-center gap-2 bg-(--bg-secondary) rounded-lg px-2 py-1">
-                          {v}
-                          <Button
-                            className="h-6 p-1"
-                            onClick={() => {
+                  <Field>
+                    <Label>Is Required?</Label>
+                    <div className="h-12">
+                      <Switch
+                        checked={option.isOptional}
+                        onClick={(e) => e.stopPropagation()}
+                        onChange={(val) => {
+                          const newPreferences = [...formValues.addCartPreferences]
+                          newPreferences[index] = { ...(newPreferences[index] || {}), isOptional: val }
+                          handleChange('addCartPreferences', newPreferences)
+                        }}
+                        className={classNames(
+                          'relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2',
+                          {
+                            'bg-green-500': option.isOptional,
+                            'bg-gray-400': !option.isOptional,
+                          },
+                        )}
+                      >
+                        <span className="sr-only">{option.isOptional ? 'Active' : 'Inactive'}</span>
+                        <span
+                          className={classNames('inline-block h-4 w-4 transform rounded-3xl bg-white transition-transform', {
+                            'translate-x-3': option.isOptional,
+                            '-translate-x-3': !option.isOptional,
+                          })}
+                        />
+                      </Switch>
+                    </div>
+                  </Field>
+
+                  <Field className="flex-1">
+                    <div className="w-full flex items-center gap-2 mb-2 min-w-96">
+                      <Field className="flex-1">
+                        <Label>Option</Label>
+                        <Input
+                          className="w-full"
+                          placeholder="Enter Option"
+                          maxLength={40}
+                          value={option.optionLabelInput || ''}
+                          onChange={(e) => {
+                            const newOptions = [...(formValues.addCartPreferences || [])]
+                            newOptions[index] = { ...(newOptions[index] || {}), optionLabelInput: e.target.value }
+                            handleChange('addCartPreferences', newOptions)
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault()
+                              if (option.value?.find((opt) => opt.label === option.optionLabelInput)) {
+                                toast.error('Option already exists')
+                                return
+                              } else if (!option.optionLabelInput) {
+                                toast.error('Please enter an option')
+                                return
+                              }
                               const newOptions = [...(formValues.addCartPreferences || [])]
                               newOptions[index] = {
                                 ...(newOptions[index] || {}),
-                                value: newOptions[index].value.filter((_: any) => _ !== v),
+                                value: (option.value || []).concat([{ label: option.optionLabelInput, price: option.optionPriceInput }]),
+                                inputValue: '',
                               }
                               handleChange('addCartPreferences', newOptions)
-                            }}
-                          >
-                            <X size={16} />
-                          </Button>
-                        </div>
-                      ))}
+                            }
+                          }}
+                        />
+                      </Field>
+                      <Field className="flex-1">
+                        <Label>Price</Label>
+                        <Input
+                          className="w-full"
+                          placeholder="0.00 €"
+                          id="price"
+                          name="price"
+                          type="number"
+                          value={option.optionPriceInput || ''}
+                          onChange={(e) => {
+                            if (!/^(\d+(\.\d{0,2})?)?$/.test(e.target.value)) return
+                            const newOptions = [...(formValues.addCartPreferences || [])]
+                            newOptions[index] = { ...(newOptions[index] || {}), optionPriceInput: e.target.value }
+                            handleChange('addCartPreferences', newOptions)
+                          }}
+                          autoComplete="off"
+                        />
+                      </Field>
+                      <Button
+                        className="self-end"
+                        title="Add Option"
+                        onClick={() => {
+                          if (option.value?.find((opt) => opt.label === option.optionLabelInput)) {
+                            toast.error('Option already exists')
+                            return
+                          } else if (!option.optionLabelInput) {
+                            toast.error('Please enter an option')
+                            return
+                          }
+                          const newOptions = [...(formValues.addCartPreferences || [])]
+                          newOptions[index] = {
+                            ...(newOptions[index] || {}),
+                            value: (option.value || []).concat([{ label: option.optionLabelInput, price: option.optionPriceInput }]),
+                            optionLabelInput: '',
+                            optionPriceInput: '',
+                          }
+                          handleChange('addCartPreferences', newOptions)
+                        }}
+                      >
+                        <ArrowRight />
+                      </Button>
                     </div>
-                  )}
-                  <div className="w-full flex items-center gap-2">
-                    <Input
-                      className="flex-1"
-                      placeholder="Option Text"
-                      maxLength={40}
-                      onChange={(e) => {
-                        const newOptions = [...(formValues.addCartPreferences || [])]
-                        newOptions[index] = { ...(newOptions[index] || {}), inputValue: e.target.value }
-                        handleChange('addCartPreferences', newOptions)
-                      }}
-                    />
-                    <Button
-                      onClick={() => {
-                        if (option.value?.includes(option.inputValue)) {
-                          toast.error('Option already exists')
-                          return
-                        } else if (!option.inputValue) {
-                          toast.error('Please enter an option')
-                          return
-                        }
-                        const newOptions = [...(formValues.addCartPreferences || [])]
-                        newOptions[index] = { ...(newOptions[index] || {}), value: (option.value || []).concat([option.inputValue]) }
-                        console.log('ahoy000', newOptions)
-                        handleChange('addCartPreferences', newOptions)
-                      }}
-                    >
-                      <ArrowRight />
-                    </Button>
-                  </div>
+                    <Label className="">Preference Options</Label>
+                    {!!option.value?.length && (
+                      <div className="flex flex-wrap items-center gap-2 rounded-lg border border-solid border-(--border-color) p-2 mb-2">
+                        {option.value?.map((v) => (
+                          <div key={v.label} className="flex items-center gap-2 bg-(--bg-secondary) rounded-lg px-2 py-1">
+                            {v.label} : <span className="border rounded-lg px-2 ">{v.price} €</span>
+                            <Button
+                              className="h-6 p-1"
+                              onClick={() => {
+                                const newOptions = [...(formValues.addCartPreferences || [])]
+                                newOptions[index] = {
+                                  ...(newOptions[index] || {}),
+                                  value: newOptions[index].value.filter((_: any) => _ !== v),
+                                }
+                                handleChange('addCartPreferences', newOptions)
+                              }}
+                            >
+                              <X size={16} />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </Field>
+                  <Button
+                    type="button"
+                    className="mt-7 btn-text bg-(--bg) text-sm z-10 size-12 text-red-1 hover:bg-red-1 hover:text-white"
+                    onClick={() => {
+                      const newOptions = formValues.addCartPreferences.filter((_: any, i: any) => i !== index)
+                      handleChange('addCartPreferences', newOptions)
+                    }}
+                  >
+                    <Trash2 />
+                  </Button>
                 </div>
-                <Button
-                  type="button"
-                  className="btn-text bg-(--bg) text-sm z-10 size-12 text-red-1 hover:bg-red-1 hover:text-white"
-                  onClick={() => {
-                    const newOptions = formValues.addCartPreferences.filter((_: any, i: any) => i !== index)
-                    handleChange('addCartPreferences', newOptions)
-                  }}
-                >
-                  <Trash2 />
-                </Button>
-              </div>
-            ))}
+              ))}
+            </div>
             <Button
               type="button"
-              className="btn-default"
+              className="btn-default w-80"
               onClick={() => {
                 handleChange('addCartPreferences', [...(formValues.addCartPreferences || []), { type: 'single_selection' }])
               }}
@@ -391,9 +494,9 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
           </div>
         )}
 
-        <button type="submit" className="my-8 w-full">
+        <Button type="submit" className="my-8 mx-auto w-80">
           {productData ? 'Save' : 'Create'}
-        </button>
+        </Button>
       </form>
     </div>
   )

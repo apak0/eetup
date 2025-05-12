@@ -4,7 +4,7 @@ import { Search } from './Search'
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
+    <div className="max-w-app mx-auto min-h-screen">
       {/* Hero Section */}
       <section className="min-h-[40vh] md:h-[50vh] flex items-center justify-center w-full ">
         <div className="w-full  ">

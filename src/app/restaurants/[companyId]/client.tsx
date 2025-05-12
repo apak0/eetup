@@ -43,12 +43,12 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
                 >
                   <div className="flex flex-col">
                     <span className="font-medium">{foundProduct.name}</span>
-                    <span className="text-orange-5 font-bold">€{foundProduct.price}</span>
+                    <span className="font-bold">€{foundProduct.price}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Button
                       type="button"
-                      className="btn-text bg-(--bg-secondary) text-sm z-10 size-12 text-red-1 hover:bg-red-1 hover:text-white"
+                      className="btn-text bg-(--bg-secondary) text-sm size-8 text-red-1 hover:bg-red-1 hover:text-white"
                       onClick={() => {
                         const newBasket = { ...basket }
                         // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
@@ -56,11 +56,11 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
                         handleBasketChange(newBasket)
                       }}
                     >
-                      <Trash2 />
+                      <Trash2 size={20} />
                     </Button>
                     <Button
                       type="button"
-                      className="btn-default hover:bg-orange-4/100 hover:text-white p-1 w-10 h-10 flex items-center justify-center"
+                      className="btn-default  p-1 size-8 flex items-center justify-center"
                       onClick={() => {
                         if (basket[productId] > 1) {
                           handleBasketChange({ ...basket, [productId]: basket[productId] - 1 })
@@ -77,7 +77,7 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
                     <span className="w-6 text-center font-semibold">{productQty}</span>
                     <Button
                       type="button"
-                      className="btn-default hover:bg-orange-4/100 hover:text-white p-1 w-10 h-10 flex items-center justify-center"
+                      className="btn-default  p-1 size-8 flex items-center justify-center"
                       onClick={() => {
                         handleBasketChange({ ...basket, [productId]: basket[productId] + 1 })
                       }}
@@ -95,7 +95,7 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
           <div className="pt-3 space-y-4">
             <div className="flex justify-between items-center">
               <span className="text-lg font-bold">Total</span>
-              <span className="text-xl font-bold text-orange-5">
+              <span className="text-xl font-bold">
                 €
                 {Object.entries(basket)
                   ?.reduce((acc, [productId, productQty]) => {

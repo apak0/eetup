@@ -76,7 +76,7 @@ export default function StartAsCompany() {
         {/* add privacy-policy checkbox */}
         <div className="flex items-center gap-2">
           <input type="checkbox" name="privacy-policy" id="privacy-policy" required defaultChecked={values?.['privacy-policy'] ? true : false} />
-          <label htmlFor="privacy-policy">
+          <label htmlFor="privacy-policy" className="mb-0">
             I agree to the <Link href="/privacy-policy">privacy policy</Link>
           </label>
         </div>
