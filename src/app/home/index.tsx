@@ -100,10 +100,10 @@ export default function Home() {
 const categories = [
   { name: 'Burger', icon: 'https://cdn-icons-png.flaticon.com/512/877/877951.png' },
   { name: 'Pizza', icon: 'https://cdn-icons-png.flaticon.com/512/3132/3132693.png' },
-  { name: 'Kebab', icon: 'https://cdn-icons-png.flaticon.com/512/2515/2515263.png' },
-  { name: 'Dessert', icon: 'https://cdn-icons-png.flaticon.com/512/3198/3198914.png' },
+  { name: 'Kebab', icon: 'https://cdn-icons-png.flaticon.com/128/4711/4711382.png' },
+  { name: 'Dessert', icon: 'https://cdn-icons-png.flaticon.com/128/8346/8346809.png' },
   { name: 'Drinks', icon: 'https://cdn-icons-png.flaticon.com/512/2738/2738730.png' },
-  { name: 'Breakfast', icon: 'https://cdn-icons-png.flaticon.com/512/1205/1205756.png' },
+  { name: 'Breakfast', icon: 'https://cdn-icons-png.flaticon.com/128/3480/3480823.png' },
 ]
 
 const restaurants = [
