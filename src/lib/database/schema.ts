@@ -51,14 +51,14 @@ export const product = cs1.table('product', {
   name: varchar({ length: 255 }).notNull().unique(),
   description: varchar({ length: 255 }).notNull(),
   price: decimal().notNull(),
-  discount_price: decimal(),
+  discountPrice: decimal(),
   image: varchar({ length: 2000 }).notNull(),
   active: boolean().default(false).notNull(),
   categories: integer().array(),
   allergens: integer().array(),
   dietary: integer().array(),
-  add_cart_options_checked: boolean().default(false).notNull(),
-  add_cart_preferences: jsonb('add_cart_preferences').default('[]').notNull(),
+  addCartPreferencesChecked: boolean().default(false).notNull(),
+  addCartPreferences: jsonb('addCartPreferences').default('[]').notNull(),
 })
 
 export const companyRelations = relations(company, ({ many }) => ({

@@ -44,8 +44,8 @@ export default function Select({
 
   return (
     <Listbox as="div" value={selected} onChange={handleChange} multiple={mode === 'multiple'} className={classNames('', className)}>
-      <Label className="block text-sm/6 font-medium">{label}</Label>
-      <div className="relative mt-1">
+      <Label className="block text-sm/6 font-medium mb-1">{label}</Label>
+      <div className="relative">
         <ListboxButton
           className={classNames(
             'field group text-(--text) w-full grid grid-cols-1 rounded-md py-1 px-2 text-left sm:text-sm/6 bg-transparent hover:bg-transparent',
