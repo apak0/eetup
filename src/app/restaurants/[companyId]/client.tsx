@@ -21,7 +21,7 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
   }
 
   const basketComponent = (
-    <div className="xl:sticky flex-1 top-4 max-h-[calc(100vh-173px)] bg-(--bg) shadow-lg border border-(--border-color) overflow-hidden">
+    <div className="xl:sticky flex-1 top-4 max-h-[calc(100vh-173px)] bg-(--bg) rounded-lg border border-(--border-color) overflow-hidden">
       {Object.entries(basket)?.length > 0 ? (
         <div className="flex flex-col h-full gap-4 p-6 rounded-lg">
           <div className="flex items-center justify-center mb-2">
