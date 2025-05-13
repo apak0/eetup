@@ -11,13 +11,14 @@ import { Company, CompanyWithPassword, User, UserWithPassword } from '@/lib/data
 
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    async jwt({ token, user }: { token: any; user: User | Company }) {
+    async jwt({ token, user }: { token: any; user: any }) {
       if (user) {
-        token.id = user.id
-        token.firstName = user.firstName
-        token.lastName = user.lastName
-        token.organization = user.organization
-        token.isCompany = user.isCompany
+        const typedUser = user as (User | Company) & { isCompany: boolean }
+        token.id = typedUser.id
+        token.firstName = typedUser.firstName
+        token.lastName = typedUser.lastName
+        token.organization = (typedUser as Company).organization
+        token.isCompany = typedUser.isCompany
       }
       return token
     },
@@ -86,10 +87,12 @@ export const authOptions: NextAuthOptions = {
           const { password: _, ...userWithoutPassword } = entery
 
           if (userWithoutPassword) {
-            return { ...userWithoutPassword, isCompany: !foundUser }
+            return { ...userWithoutPassword, id: userWithoutPassword.toString(), isCompany: !foundUser }
           } else {
             throw new Error('Invalid credentials')
           }
+        } else {
+          throw new Error('Invalid credentials')
         }
       },
     }),

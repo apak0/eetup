@@ -17,20 +17,12 @@ import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 
 import { createProductAction, editProductAction } from './actions'
+import { ProductPreference } from './type'
 
 import Select from '@/components/reusables/Select'
 import { productAllergens, productCategories, productDietary } from '@/lib/database/constants'
 import { Product } from '@/lib/database/type'
 import { validateImageFile } from '@/lib/utils/validateImageSize'
-
-type ProductOption = {
-  label: string
-  value: { label: string; price?: string }[]
-  isOptional: boolean
-  optionLabelInput: string
-  optionPriceInput: string
-  type: 'single selection' | 'multiple selection'
-}
 
 export const CreateEditProduct = ({ productData }: { productData?: Product }) => {
   const isEdit = !!productData
@@ -52,7 +44,7 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
     allergens: productData?.allergens || [],
     dietary: productData?.dietary || [],
     addCartPreferencesChecked: productData?.addCartPreferencesChecked || false,
-    addCartPreferences: productData?.addCartPreferences || [{ type: 'single_selection' }],
+    addCartPreferences: (productData?.addCartPreferences as Array<any>) || [{ type: 'single_selection' }],
   })
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -93,8 +85,25 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
     setProgress((event.loaded / event.total) * 100)
   }
 
+  const validateForm = () => {
+    console.log('ahoy44', formValues.addCartPreferences)
+    if (
+      formValues.addCartPreferences.some((preference: ProductPreference, index) =>
+        formValues.addCartPreferences.find((item, idx) => item.label === preference.label && index !== idx),
+      )
+    ) {
+      toast.error('Preference labels need to be unique')
+      return false
+    } else if (formValues.addCartPreferences.some((preference) => !preference.value?.length)) {
+      toast.error('Please add at least one option for each preference')
+      return false
+    }
+    return true
+  }
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    if (!validateForm()) return
 
     if (!previewUrl) {
       toast.error('Please select an image for the product')
@@ -209,7 +218,7 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
                   accept="image/*"
                   required
                   onChange={handleFileChange}
-                  defaultValue={formValues.image}
+                  defaultValue={formValues.image || ''}
                 />
                 <div
                   className={classNames(
@@ -299,14 +308,14 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
             className="accent-gray-2"
           />
           <label htmlFor="addCartPreferencesChecked" className="mb-0">
-            Add to Cart Preferences
+            Has Preferences
           </label>
         </div>
         {formValues.addCartPreferencesChecked && (
           <div className="flex flex-col gap-4 border rounded-lg border-(--border-color) p-4 xl:p-8">
             <h2 className="mb-6">Add to Cart Preferences</h2>
-            <div className="divide-y ">
-              {formValues.addCartPreferences.map((option: ProductOption, index: number) => (
+            <div className="divide-y">
+              {formValues.addCartPreferences.map((option: ProductPreference, index: number) => (
                 <div key={index} className="flex gap-4 pb-6 mb-6 flex-wrap">
                   <Field className="w-80">
                     <Label className="">Preference Label {index + 1}</Label>
@@ -317,7 +326,7 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
                       name={`preference-${index}`}
                       required
                       onChange={(e) => {
-                        const newOptions = [...formValues.addCartPreferences]
+                        const newOptions = [...(formValues.addCartPreferences || [])]
                         newOptions[index] = { ...(newOptions[index] || {}), label: e.target.value }
                         handleChange('addCartPreferences', newOptions)
                       }}
