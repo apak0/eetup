@@ -1,3 +1,5 @@
+import { InferSelectModel } from 'drizzle-orm'
+
 import { company, product, user } from './schema'
 
 export type UserWithPassword = InferSelectModel<typeof user>
@@ -18,4 +20,8 @@ export type UserSession = {
     email: string
     image: string
   }
+}
+
+export type CompanyWithProduct = Company & {
+  product: Product[]
 }

@@ -2,26 +2,39 @@
 
 import { useState } from 'react'
 import { Button } from '@headlessui/react'
+import { Image as ImageKitImage } from '@imagekit/next'
 import { Minus, Plus, ShoppingBasket, ShoppingCart, Trash2, X } from 'lucide-react'
 import { redirect } from 'next/navigation'
 
+import { ProductPreference } from '@/app/company/products/[activeTab]/type'
 import { ProductItem } from '@/components/ProductItem'
 import Modal from '@/components/reusables/Modal'
-import { Company } from '@/lib/database/type'
+import { RadioGroup } from '@/components/reusables/RadioGroup'
+import { Tag } from '@/components/reusables/Tag'
+import { CompanyWithProduct, Product } from '@/lib/database/type'
 
-export function ClientRestaurantDetail({ companyData }: { companyData: Company }) {
+type Preference = Product & {
+  qty: number
+  selections: { preferenceLabel: string; selection: { label: string; price: string } }[]
+}
+
+export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWithProduct }) {
   const savedBasket: any = JSON.parse(localStorage.getItem('savedBaskets') || '{}') || {}
-  const [basket, setBasket] = useState<{ [k: string]: number }>(savedBasket[companyData.id] || {})
+  const [basket, setBasket] = useState<Preference[]>(savedBasket[companyData.id] || [])
 
   const [basketMobileOpen, setBasketMobileOpen] = useState(false)
+  const [addToBasketOpen, setAddToBasketOpen] = useState(false)
+  const [preference, setPreference] = useState<Preference>()
 
   const handleBasketChange = (products: any) => {
     localStorage.setItem('savedBaskets', JSON.stringify({ ...savedBasket, [companyData?.id]: products }))
     setBasket(products)
   }
 
+  console.log('ahoy21 basket', basket)
+
   const basketComponent = (
-    <div className="xl:sticky flex-1 top-4 max-h-[calc(100vh-173px)] bg-(--bg) rounded-lg border border-(--border-color) overflow-hidden">
+    <div className="xl:sticky xl:max-h-[calc(100vh-173px)] h-[calc(100vh-20px)] flex-1 top-4  bg-(--bg) rounded-lg border border-(--border-color)">
       {Object.entries(basket)?.length > 0 ? (
         <div className="flex flex-col h-full gap-4 p-6 rounded-lg">
           <div className="flex items-center justify-center mb-2">
@@ -31,28 +44,31 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
             </h2>
           </div>
 
-          <div className="my-2" />
-
-          <ul className="space-y-4 overflow-y-auto flex-1 pr-2 -mr-2">
-            {Object.entries(basket)?.map(([productId, productQty]) => {
-              const foundProduct = companyData.product.find((item: any) => item.id === Number(productId))
+          <ul className="space-y-4 overflow-y-auto pr-2 -mr-2">
+            {Object.values(basket)?.map((basketItem) => {
               return (
                 <li
-                  key={productId}
+                  key={basketItem.id}
                   className="flex items-center justify-between p-3 rounded-xl bg-(--bg-secondary) transition-all duration-200 group"
                 >
                   <div className="flex flex-col">
-                    <span className="font-medium">{foundProduct.name}</span>
-                    <span className="font-bold">€{foundProduct.price}</span>
+                    <span className="font-medium">{basketItem.name}</span>
+                    <span className="flex flex-col text-sm">
+                      {!!basketItem.selections?.length &&
+                        basketItem.selections.map((item) => (
+                          <span key={item.preferenceLabel} className="text-xs">
+                            {item.preferenceLabel}: {item.selection.label} {item.selection.price ? <>(+€ {item.selection.price})</> : null}
+                          </span>
+                        ))}
+                    </span>
+                    <span className="font-bold">€ {(parseFloat(basketItem.price || '0') * basketItem.qty).toFixed(2)}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Button
                       type="button"
                       className="btn-text bg-(--bg-secondary) text-sm size-8 text-red-1 hover:bg-red-1 hover:text-white"
                       onClick={() => {
-                        const newBasket = { ...basket }
-                        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-                        delete newBasket[productId]
+                        const newBasket = basket.filter((item) => JSON.stringify(item) !== JSON.stringify(basketItem))
                         handleBasketChange(newBasket)
                       }}
                     >
@@ -60,26 +76,32 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
                     </Button>
                     <Button
                       type="button"
-                      className="btn-default  p-1 size-8 flex items-center justify-center"
+                      className="btn-default  p-1 size-8 flex items-center justify-center data-disabled:cursor-not-allowed data-disabled:opacity-30"
+                      disabled={basketItem.qty <= 1}
                       onClick={() => {
-                        if (basket[productId] > 1) {
-                          handleBasketChange({ ...basket, [productId]: basket[productId] - 1 })
-                        } else {
-                          const newBasket = { ...basket }
-                          // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-                          delete newBasket[productId]
-                          handleBasketChange(newBasket)
-                        }
+                        const newBasket = basket.map((item) => {
+                          if (JSON.stringify(item) === JSON.stringify(basketItem)) {
+                            return { ...item, qty: item.qty - 1 }
+                          }
+                          return item
+                        })
+                        handleBasketChange(newBasket)
                       }}
                     >
                       <Minus size={16} />
                     </Button>
-                    <span className="w-6 text-center font-semibold">{productQty}</span>
+                    <span className="w-6 text-center font-semibold">{basketItem.qty}</span>
                     <Button
                       type="button"
                       className="btn-default  p-1 size-8 flex items-center justify-center"
                       onClick={() => {
-                        handleBasketChange({ ...basket, [productId]: basket[productId] + 1 })
+                        const newBasket = basket.map((item) => {
+                          if (JSON.stringify(item) === JSON.stringify(basketItem)) {
+                            return { ...item, qty: item.qty + 1 }
+                          }
+                          return item
+                        })
+                        handleBasketChange(newBasket)
                       }}
                     >
                       <Plus size={16} />
@@ -90,17 +112,14 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
             })}
           </ul>
 
-          <div className="my-2" />
-
-          <div className="pt-3 space-y-4">
+          <div className="space-y-4 mt-auto">
             <div className="flex justify-between items-center">
               <span className="text-lg font-bold">Total</span>
               <span className="text-xl font-bold">
-                €
-                {Object.entries(basket)
-                  ?.reduce((acc, [productId, productQty]) => {
-                    const foundProduct = companyData.product.find((item: any) => item.id === Number(productId))
-                    return acc + foundProduct.price * productQty
+                €{' '}
+                {Object.values(basket)
+                  ?.reduce((acc, basketItem) => {
+                    return acc + parseFloat(basketItem.price || '0') * basketItem.qty
                   }, 0)
                   .toFixed(2)}
               </span>
@@ -134,6 +153,150 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
       )}
     </div>
   )
+
+  const addToBasketComponent = preference && (
+    <div className="flex flex-col">
+      {preference.image && (
+        <ImageKitImage src={preference.image} width={500} height={500} alt={preference.name || 'Product'} className="object-cover w-full h-60" />
+      )}
+      <div className="flex flex-col gap-4 p-4">
+        <h3 className="font-bold">{preference.name}</h3>
+        <div className="flex flex-col divide-y divide-(--border-color) space-y-4">
+          {(preference.addCartPreferences as Array<any>)?.map((item: ProductPreference) => {
+            return (
+              <div key={item.label} className="pb-4">
+                <h4 className="mb-2">
+                  {item.label} {item.isOptional ? <Tag>Optional</Tag> : <Tag className="bg-gray-5">Required</Tag>}
+                </h4>
+                {item.isOptional ? (
+                  <RadioGroup
+                    onChange={(opt: any) => {
+                      const foundSelection = preference.selections?.find((selection) => selection.preferenceLabel === item.label)
+                      if (foundSelection) {
+                        setPreference({
+                          ...preference,
+                          selections: preference.selections.map((selection) => {
+                            if (selection.preferenceLabel === item.label) {
+                              return { ...selection, selection: opt }
+                            }
+                            return selection
+                          }),
+                        })
+                      } else {
+                        setPreference({
+                          ...preference,
+                          selections: [...(preference.selections || []), { preferenceLabel: item.label, selection: opt }],
+                        })
+                      }
+                    }}
+                    options={item.value}
+                    render={(opt: any) => (
+                      <div key={opt.label} className="flex items-center justify-between gap-2 flex-1">
+                        <span className="text-sm">{opt.label}</span>
+                        {opt.price ? <span className="text-sm">+€ {opt.price}</span> : 'Free'}
+                      </div>
+                    )}
+                  />
+                ) : (
+                  <RadioGroup
+                    onChange={(opt: any) => {
+                      const foundSelection = preference.selections.find((selection) => selection.preferenceLabel === item.label)
+                      if (foundSelection) {
+                        setPreference({
+                          ...preference,
+                          selections: preference.selections.map((selection) => {
+                            if (selection.preferenceLabel === item.label) {
+                              return { ...selection, selection: opt }
+                            }
+                            return selection
+                          }),
+                        })
+                      } else {
+                        setPreference({
+                          ...preference,
+                          selections: [...preference.selections, { preferenceLabel: item.label, selection: opt }],
+                        })
+                      }
+                    }}
+                    options={item.value}
+                    render={(opt: any) => (
+                      <div key={opt.label} className="flex items-center justify-between gap-2 flex-1">
+                        <span className="text-sm">{opt.label}</span>
+                        {opt.price ? <span className="text-sm">+€ {opt.price}</span> : 'Free'}
+                      </div>
+                    )}
+                  />
+                )}
+              </div>
+            )
+          })}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Button
+            type="button"
+            disabled={preference.qty <= 1}
+            className="btn-default  p-1 size-8 flex items-center justify-center"
+            onClick={() => {
+              setPreference({
+                ...preference,
+                qty: preference.qty - 1,
+              })
+            }}
+          >
+            <Minus size={16} />
+          </Button>
+          <span className="w-6 text-center font-semibold">{preference.qty}</span>
+          <Button
+            type="button"
+            className="btn-default  p-1 size-8 flex items-center justify-center"
+            onClick={() => {
+              setPreference({
+                ...preference,
+                qty: preference.qty + 1,
+              })
+            }}
+          >
+            <Plus size={16} />
+          </Button>
+
+          <Button
+            className="w-full"
+            onClick={() => {
+              setPreference(undefined)
+              setAddToBasketOpen(false)
+              const foundBasketItem = basket.find((item) => JSON.stringify(item) === JSON.stringify(preference))
+              if (foundBasketItem) {
+                const newBasket = basket.map((item) => {
+                  if (JSON.stringify(item) === JSON.stringify(preference)) {
+                    return { ...item, qty: item.qty + preference.qty }
+                  }
+                  return item
+                })
+                handleBasketChange(newBasket)
+              } else {
+                handleBasketChange([
+                  ...basket,
+                  {
+                    ...preference,
+                    price: (
+                      parseFloat(preference.price || '0') +
+                      preference.selections.reduce((acc, item) => {
+                        return acc + parseFloat(item.selection.price || '0')
+                      }, 0)
+                    ).toFixed(2),
+                  },
+                ])
+              }
+            }}
+          >
+            Add to Basket
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
+
   return (
     <div className="min-h-[calc(100vh-5rem)] py-6">
       <div className="grid grid-cols-2 xl:grid-cols-3 gap-4 w-full">
@@ -149,7 +312,8 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
                     key={product.id}
                     item={product}
                     onAdd={() => {
-                      handleBasketChange({ ...basket, [product.id]: (basket[product.id] || 0) + 1 })
+                      setAddToBasketOpen(true)
+                      setPreference({ ...product, qty: 1 })
                     }}
                   />
                 ))}
@@ -157,23 +321,34 @@ export function ClientRestaurantDetail({ companyData }: { companyData: Company }
             </div>
           </div>
         </div>
-        <div className="hidden   col-span-1 xl:flex flex-col">{basketComponent}</div>
+        <div className="hidden col-span-1 xl:flex flex-col">{basketComponent}</div>
 
         <Button className="xl:hidden fixed bottom-4 left-4 z-30 shadow" onClick={() => setBasketMobileOpen(!basketMobileOpen)}>
           {basketMobileOpen ? <X /> : <ShoppingBasket />}
         </Button>
 
         <Modal
-          title=""
           okClick={() => {
             console.log('submit')
           }}
-          open={basketMobileOpen}
           footer={false}
-          className="max-w-md w"
+          className="max-w-md"
           content={basketComponent}
+          open={basketMobileOpen}
           setOpen={(val) => {
             setBasketMobileOpen(val)
+          }}
+        />
+        <Modal
+          okClick={() => {
+            console.log('submit')
+          }}
+          footer={false}
+          className="max-w-md"
+          content={addToBasketComponent}
+          open={addToBasketOpen}
+          setOpen={(val) => {
+            setAddToBasketOpen(val)
           }}
         />
       </div>
