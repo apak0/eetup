@@ -1,8 +1,10 @@
 'use client'
 
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 import { Button } from '@headlessui/react'
 import { Image as ImageKitImage } from '@imagekit/next'
+import classNames from 'classnames'
 import { Minus, Plus, ShoppingBasket, ShoppingCart, Trash2, X } from 'lucide-react'
 import { redirect } from 'next/navigation'
 
@@ -25,6 +27,7 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
   const [basketMobileOpen, setBasketMobileOpen] = useState(false)
   const [addToBasketOpen, setAddToBasketOpen] = useState(false)
   const [preference, setPreference] = useState<Preference>()
+  const [errorElementId, setErrorElementId] = useState('')
 
   const handleBasketChange = (products: any) => {
     localStorage.setItem('savedBaskets', JSON.stringify({ ...savedBasket, [companyData?.id]: products }))
@@ -174,16 +177,25 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
         <h3 className="font-bold">{preference.name}</h3>
         <div className="flex flex-col ">
           {(preference.addCartPreferences as Array<any>)?.map((item: ProductPreference) => {
+            const optionElId = 'addCartPreferencesOption' + item.label
             return (
               <div key={item.label} className="pb-4">
                 <div className="flex items-center mb-2">
                   <h4 className="font-bold ">{item.label}</h4>
                   <span className="ml-auto">{item.isOptional ? <Tag>Optional</Tag> : <Tag className="bg-gray-5">Required</Tag>}</span>
                 </div>
-                <div className="flex flex-col border rounded-lg border-orange-2 p-2">
+                <div
+                  className={classNames('flex flex-col border rounded-lg border-gray-2 p-2', {
+                    'border-red-1': errorElementId === optionElId,
+                  })}
+                  id={optionElId}
+                >
                   {item.type === 'single selection' ? (
                     <RadioGroup
                       onChange={(opt: any) => {
+                        if (optionElId === errorElementId) {
+                          setErrorElementId('')
+                        }
                         setPreference({
                           ...preference,
                           selections: { ...preference.selections, [item.label]: [opt] },
@@ -203,7 +215,7 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
                         <label
                           key={opt.label}
                           htmlFor={'addCartPreferencesOption' + opt.label}
-                          className="mb-0 cursor-pointer hover:bg-orange-1 px-3 py-2 rounded-lg"
+                          className="mb-0 cursor-pointer hover:bg-orange-1 dark:hover:bg-orange-2 px-3 py-2 rounded-lg"
                         >
                           <div className="flex items-center justify-between gap-2 flex-1">
                             <div className="flex items-center gap-2">
@@ -211,6 +223,10 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
                                 type="checkbox"
                                 id={'addCartPreferencesOption' + opt.label}
                                 onChange={(e) => {
+                                  if (optionElId === errorElementId) {
+                                    setErrorElementId('')
+                                  }
+
                                   if (e.target.checked) {
                                     setPreference({
                                       ...preference,
@@ -274,6 +290,26 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
           <Button
             className="w-full"
             onClick={() => {
+              const isValid = (preference.addCartPreferences as Array<any>).every((item: ProductPreference) => {
+                if (!item.isOptional && !preference.selections?.[item.label]?.length) {
+                  const elId = 'addCartPreferencesOption' + item.label
+                  const el = document.getElementById(elId)
+                  setErrorElementId(elId)
+                  if (!el) return true
+                  scrollTo({
+                    top: el?.offsetTop,
+                    behavior: 'smooth',
+                  })
+                  el.classList.toggle('border-red-1', true)
+                  return false
+                }
+                return true
+              })
+              if (!isValid) {
+                toast.error('Please select all required options')
+                return
+              }
+
               setPreference(undefined)
               setAddToBasketOpen(false)
               const calculatedPreference = {
