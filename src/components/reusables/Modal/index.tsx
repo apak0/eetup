@@ -14,13 +14,13 @@ export default function Modal({
   setOpen,
 }: {
   className?: string
-  title?: string
+  title?: JSX.Element | string
   content?: JSX.Element
   okClick: () => void
   open: boolean
   okText?: string
   cancelText?: string
-  footer?: JSX.Element | false
+  footer?: JSX.Element | string | false
   setOpen: (val: boolean) => void
 }) {
   const [openInner, setOpenInner] = useState(false)
@@ -38,39 +38,40 @@ export default function Modal({
       />
 
       <div className="fixed inset-0 z-10 w-screen">
-        <div className="flex min-h-full h-full justify-center p-4 text-center items-center sm:p-0">
+        <div className="flex min-h-full h-full justify-center xl:p-4 text-center items-center ">
           <DialogPanel
             transition
             className={classNames(
-              'relative overflow-hidden transform rounded-lg bg-(--bg) text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 w-full max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95',
+              'relative overflow-hidden transform rounded-lg bg-(--bg) text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in w-full mx-2 lg:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95',
               className,
             )}
           >
-            {title && <DialogTitle className="font-semibold p-6 pb-0">{title}</DialogTitle>}
-            {content}
-
-            {footer ?? (
-              <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-4">
-                <button
-                  type="button"
-                  onClick={() => {
-                    okClick()
-                    ;(setOpen ?? setOpenInner)(false)
-                  }}
-                >
-                  {okText}
-                </button>
-                <button
-                  type="button"
-                  data-autofocus
-                  onClick={() => {
-                    ;(setOpen ?? setOpenInner)(false)
-                  }}
-                >
-                  {cancelText}
-                </button>
-              </div>
-            )}
+            <div className="flex flex-col max-h-[calc(100vh-50px)]">
+              {title && <DialogTitle className="font-semibold p-6 pb-0">{title}</DialogTitle>}
+              <div className="overflow-y-auto">{content}</div>
+              {footer ?? (
+                <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-4">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      okClick()
+                      ;(setOpen ?? setOpenInner)(false)
+                    }}
+                  >
+                    {okText}
+                  </button>
+                  <button
+                    type="button"
+                    data-autofocus
+                    onClick={() => {
+                      ;(setOpen ?? setOpenInner)(false)
+                    }}
+                  >
+                    {cancelText}
+                  </button>
+                </div>
+              )}
+            </div>
           </DialogPanel>
         </div>
       </div>
