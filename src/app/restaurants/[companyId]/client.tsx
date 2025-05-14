@@ -15,7 +15,7 @@ import { CompanyWithProduct, Product } from '@/lib/database/type'
 
 type Preference = Product & {
   qty: number
-  selections: { preferenceLabel: string; selection: { label: string; price: string } }[]
+  selections: { [k: string]: { label: string; price: string }[] }
 }
 
 export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWithProduct }) {
@@ -31,10 +31,8 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
     setBasket(products)
   }
 
-  console.log('ahoy21 basket', basket)
-
   const basketComponent = (
-    <div className="xl:sticky xl:max-h-[calc(100vh-173px)] h-[calc(100vh-20px)] flex-1 top-4  bg-(--bg) rounded-lg border border-(--border-color)">
+    <div className="xl:sticky xl:max-h-[calc(100vh-173px)] h-[calc(100vh-50px)] flex-1 top-4  bg-(--bg) rounded-lg xl:border border-(--border-color)">
       {Object.entries(basket)?.length > 0 ? (
         <div className="flex flex-col h-full gap-4 p-6 rounded-lg">
           <div className="flex items-center justify-center mb-2">
@@ -49,19 +47,32 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
               return (
                 <li
                   key={basketItem.id}
-                  className="flex items-center justify-between p-3 rounded-xl bg-(--bg-secondary) transition-all duration-200 group"
+                  className="flex items-center justify-between gap-4 p-3 rounded-xl bg-(--bg-secondary) transition-all duration-200 group"
                 >
-                  <div className="flex flex-col">
-                    <span className="font-medium">{basketItem.name}</span>
-                    <span className="flex flex-col text-sm">
-                      {!!basketItem.selections?.length &&
-                        basketItem.selections.map((item) => (
-                          <span key={item.preferenceLabel} className="text-xs">
-                            {item.preferenceLabel}: {item.selection.label} {item.selection.price ? <>(+€ {item.selection.price})</> : null}
-                          </span>
+                  <div className="flex-1 flex flex-col gap-2 w-[calc(100%-160px)]">
+                    <div className="font-medium">{basketItem.name}</div>
+                    {!!Object.values(basketItem.selections).length && (
+                      <div className="flex flex-col gap-2 text-xs">
+                        {Object.entries(basketItem.selections).map(([key, item]) => (
+                          <div key={key} className="flex gap-2">
+                            <div className="w-12 truncate" title={key}>
+                              {key}:
+                            </div>
+                            <div key={key} className="flex-1 flex flex-col truncate">
+                              {item?.map((opt) => (
+                                <div key={opt.label} className="flex items-center gap-2">
+                                  <div className="truncate" title={opt.label}>
+                                    {opt.label}
+                                  </div>
+                                  {opt.price ? <span className="whitespace-nowrap">(+€ {opt.price})</span> : null}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
                         ))}
-                    </span>
-                    <span className="font-bold">€ {(parseFloat(basketItem.price || '0') * basketItem.qty).toFixed(2)}</span>
+                      </div>
+                    )}
+                    <div className="font-bold">€ {(parseFloat(basketItem.price || '0') * basketItem.qty).toFixed(2)}</div>
                   </div>
                   <div className="flex items-center gap-2">
                     <Button
@@ -161,72 +172,72 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
       )}
       <div className="flex flex-col gap-4 p-4">
         <h3 className="font-bold">{preference.name}</h3>
-        <div className="flex flex-col divide-y divide-(--border-color) space-y-4">
+        <div className="flex flex-col ">
           {(preference.addCartPreferences as Array<any>)?.map((item: ProductPreference) => {
             return (
               <div key={item.label} className="pb-4">
-                <h4 className="mb-2">
-                  {item.label} {item.isOptional ? <Tag>Optional</Tag> : <Tag className="bg-gray-5">Required</Tag>}
-                </h4>
-                {item.isOptional ? (
-                  <RadioGroup
-                    onChange={(opt: any) => {
-                      const foundSelection = preference.selections?.find((selection) => selection.preferenceLabel === item.label)
-                      if (foundSelection) {
+                <div className="flex items-center mb-2">
+                  <h4 className="font-bold ">{item.label}</h4>
+                  <span className="ml-auto">{item.isOptional ? <Tag>Optional</Tag> : <Tag className="bg-gray-5">Required</Tag>}</span>
+                </div>
+                <div className="flex flex-col border rounded-lg border-orange-2 p-2">
+                  {item.type === 'single selection' ? (
+                    <RadioGroup
+                      onChange={(opt: any) => {
                         setPreference({
                           ...preference,
-                          selections: preference.selections.map((selection) => {
-                            if (selection.preferenceLabel === item.label) {
-                              return { ...selection, selection: opt }
-                            }
-                            return selection
-                          }),
+                          selections: { ...preference.selections, [item.label]: [opt] },
                         })
-                      } else {
-                        setPreference({
-                          ...preference,
-                          selections: [...(preference.selections || []), { preferenceLabel: item.label, selection: opt }],
-                        })
-                      }
-                    }}
-                    options={item.value}
-                    render={(opt: any) => (
-                      <div key={opt.label} className="flex items-center justify-between gap-2 flex-1">
-                        <span className="text-sm">{opt.label}</span>
-                        {opt.price ? <span className="text-sm">+€ {opt.price}</span> : 'Free'}
-                      </div>
-                    )}
-                  />
-                ) : (
-                  <RadioGroup
-                    onChange={(opt: any) => {
-                      const foundSelection = preference.selections.find((selection) => selection.preferenceLabel === item.label)
-                      if (foundSelection) {
-                        setPreference({
-                          ...preference,
-                          selections: preference.selections.map((selection) => {
-                            if (selection.preferenceLabel === item.label) {
-                              return { ...selection, selection: opt }
-                            }
-                            return selection
-                          }),
-                        })
-                      } else {
-                        setPreference({
-                          ...preference,
-                          selections: [...preference.selections, { preferenceLabel: item.label, selection: opt }],
-                        })
-                      }
-                    }}
-                    options={item.value}
-                    render={(opt: any) => (
-                      <div key={opt.label} className="flex items-center justify-between gap-2 flex-1">
-                        <span className="text-sm">{opt.label}</span>
-                        {opt.price ? <span className="text-sm">+€ {opt.price}</span> : 'Free'}
-                      </div>
-                    )}
-                  />
-                )}
+                      }}
+                      options={item.value}
+                      render={(opt: any) => (
+                        <div key={opt.label} className="flex items-center justify-between gap-2 flex-1">
+                          <span className="text-sm">{opt.label}</span>
+                          <span className="text-sm">{opt.price ? <>+€{opt.price}</> : 'Free'}</span>
+                        </div>
+                      )}
+                    />
+                  ) : (
+                    item.value.map((opt: any) => {
+                      return (
+                        <label
+                          key={opt.label}
+                          htmlFor={'addCartPreferencesOption' + opt.label}
+                          className="mb-0 cursor-pointer hover:bg-orange-1 px-3 py-2 rounded-lg"
+                        >
+                          <div className="flex items-center justify-between gap-2 flex-1">
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="checkbox"
+                                id={'addCartPreferencesOption' + opt.label}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setPreference({
+                                      ...preference,
+                                      selections: { ...preference.selections, [item.label]: [...(preference.selections?.[item.label] || []), opt] },
+                                    })
+                                  } else {
+                                    setPreference({
+                                      ...preference,
+                                      selections: {
+                                        ...preference.selections,
+                                        [item.label]: (preference.selections[item.label] || []).filter((item: any) => item.label !== opt.label),
+                                      },
+                                    })
+                                  }
+                                }}
+                                className="accent-gray-2"
+                              />
+
+                              {opt.label}
+                            </div>
+                            <span className="text-sm">{opt.price ? <>+€{opt.price}</> : 'Free'}</span>
+                          </div>
+                        </label>
+                      )
+                    })
+                  )}
+                </div>
               </div>
             )
           })}
@@ -265,28 +276,28 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
             onClick={() => {
               setPreference(undefined)
               setAddToBasketOpen(false)
-              const foundBasketItem = basket.find((item) => JSON.stringify(item) === JSON.stringify(preference))
+              const calculatedPreference = {
+                ...preference,
+                price: (
+                  parseFloat(preference.price || '0') +
+                  Object.values(preference.selections)
+                    .flat()
+                    .reduce((acc, item) => {
+                      return acc + parseFloat(item.price || '0')
+                    }, 0)
+                ).toFixed(2),
+              }
+              const foundBasketItem = basket.find((item) => JSON.stringify(item) === JSON.stringify(calculatedPreference))
               if (foundBasketItem) {
                 const newBasket = basket.map((item) => {
-                  if (JSON.stringify(item) === JSON.stringify(preference)) {
-                    return { ...item, qty: item.qty + preference.qty }
+                  if (JSON.stringify(item) === JSON.stringify(calculatedPreference)) {
+                    return { ...item, qty: item.qty + calculatedPreference.qty }
                   }
                   return item
                 })
                 handleBasketChange(newBasket)
               } else {
-                handleBasketChange([
-                  ...basket,
-                  {
-                    ...preference,
-                    price: (
-                      parseFloat(preference.price || '0') +
-                      preference.selections.reduce((acc, item) => {
-                        return acc + parseFloat(item.selection.price || '0')
-                      }, 0)
-                    ).toFixed(2),
-                  },
-                ])
+                handleBasketChange([...basket, calculatedPreference])
               }
             }}
           >
@@ -323,16 +334,28 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
         </div>
         <div className="hidden col-span-1 xl:flex flex-col">{basketComponent}</div>
 
-        <Button className="xl:hidden fixed bottom-4 left-4 z-30 shadow" onClick={() => setBasketMobileOpen(!basketMobileOpen)}>
-          {basketMobileOpen ? <X /> : <ShoppingBasket />}
-        </Button>
+        {!basket?.length || basketMobileOpen ? null : (
+          <Button className="xl:hidden fixed right-1/2 top-2 z-30 shadow" onClick={() => setBasketMobileOpen(!basketMobileOpen)}>
+            <ShoppingBasket />
+          </Button>
+        )}
 
         <Modal
           okClick={() => {
             console.log('submit')
           }}
+          title={
+            <div className="flex items-center justify-center mb-2">
+              <h2 className="text-xl w-full font-bold flex justify-center items-center gap-2">
+                <ShoppingBasket className="text-orange-4" size={30} />
+                <span>Your Order</span>
+              </h2>
+              <Button className="xl:hidden ml-auto size-10 p-2" onClick={() => setBasketMobileOpen(!basketMobileOpen)}>
+                <X />
+              </Button>
+            </div>
+          }
           footer={false}
-          className="max-w-md"
           content={basketComponent}
           open={basketMobileOpen}
           setOpen={(val) => {
@@ -344,7 +367,6 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
             console.log('submit')
           }}
           footer={false}
-          className="max-w-md"
           content={addToBasketComponent}
           open={addToBasketOpen}
           setOpen={(val) => {

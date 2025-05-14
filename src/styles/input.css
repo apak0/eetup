@@ -17,7 +17,12 @@
     }
   }
 
+  input[type='checkbox'] {
+    @apply h-auto;
+  }
+
   input[type='checkbox'],
+  input[type='checkbox'] + label,
   input + label,
   textarea + label,
   .field + label {
