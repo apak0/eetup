@@ -351,27 +351,25 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
         <div className="col-span-2 flex flex-col gap-4">
           <div className="bg-orange-3 rounded-lg h-80"></div>
           <h1 className="px-4">{companyData.organization}</h1>
-          <div className="bg-(--bg) rounded-lg shadow overflow-x-auto flex flex-col gap-4 p-4">
-            <div className="">
-              <MenuSearch
-                tabs={
-                  companyData?.category?.map((catItem) => ({
-                    id: catItem.id,
-                    label: catItem.name,
-                    items: catItem?.product.map((product) => (
-                      <ProductItem
-                        key={product.id}
-                        item={product}
-                        onAdd={() => {
-                          setAddToBasketOpen(true)
-                          setPreference({ ...product, selections: {}, qty: 1 })
-                        }}
-                      />
-                    )),
-                  })) || []
-                }
-              />
-            </div>
+          <div className="bg-(--bg) rounded-lg shadow flex flex-col gap-4 p-4">
+            <MenuSearch
+              tabs={
+                companyData?.category?.map((catItem) => ({
+                  id: catItem.id,
+                  label: catItem.name,
+                  items: catItem?.product.map((product) => (
+                    <ProductItem
+                      key={product.id}
+                      item={product}
+                      onAdd={() => {
+                        setAddToBasketOpen(true)
+                        setPreference({ ...product, selections: {}, qty: 1 })
+                      }}
+                    />
+                  )),
+                })) || []
+              }
+            />
           </div>
         </div>
         <div className="hidden col-span-1 xl:flex flex-col">{basketComponent}</div>
