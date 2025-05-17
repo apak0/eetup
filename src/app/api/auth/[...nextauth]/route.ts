@@ -87,7 +87,7 @@ export const authOptions: NextAuthOptions = {
           const { password: _, ...userWithoutPassword } = entery
 
           if (userWithoutPassword) {
-            return { ...userWithoutPassword, id: userWithoutPassword.toString(), isCompany: !foundUser }
+            return { ...userWithoutPassword, id: userWithoutPassword.id.toString(), isCompany: !foundUser }
           } else {
             throw new Error('Invalid credentials')
           }

@@ -11,20 +11,21 @@ import {
   upload,
 } from '@imagekit/next'
 import classNames from 'classnames'
-import { ArrowBigDownDash, ArrowRight, ImageUp, Trash2, X } from 'lucide-react'
+import { ArrowBigDownDash, ArrowRight, BookPlus, ImageUp, Trash2, X } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 
-import { createProductAction, editProductAction } from './actions'
+import { createCategoryAction, createProductAction, editProductAction } from './actions'
 import { ProductPreference } from './type'
 
+import Modal from '@/components/reusables/Modal'
 import Select from '@/components/reusables/Select'
-import { productAllergens, productCategories, productDietary } from '@/lib/database/constants'
-import { Product } from '@/lib/database/type'
+import { productAllergens, productDietary } from '@/lib/database/constants'
+import { Category, Product } from '@/lib/database/type'
 import { validateImageFile } from '@/lib/utils/validateImageSize'
 
-export const CreateEditProduct = ({ productData }: { productData?: Product }) => {
+export const CreateEditProduct = ({ productData, categoryOptions }: { productData?: Product; categoryOptions: Category[] }) => {
   const isEdit = !!productData
   const router = useRouter()
   const session = useSession()
@@ -33,6 +34,8 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
   const [progress, setProgress] = useState(0)
 
   const [isUploading, setIsUploading] = useState(false)
+  const [categoryModalInput, setCategoryModalInput] = useState('')
+  const [categoryModalOpen, setCategoryModalOpen] = useState(false)
   const [previewFile, setPreviewFile] = useState<any>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(productData?.image || null)
   const [formValues, setFormValues] = useState({
@@ -40,7 +43,7 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
     description: productData?.description || '',
     price: productData?.price || '',
     image: productData?.image || null,
-    categories: productData?.categories || [],
+    categoryId: productData?.categoryId || null,
     allergens: productData?.allergens || [],
     dietary: productData?.dietary || [],
     addCartPreferencesChecked: productData?.addCartPreferencesChecked || false,
@@ -86,7 +89,6 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
   }
 
   const validateForm = () => {
-    console.log('ahoy44', formValues.addCartPreferences)
     if (
       formValues.addCartPreferences.some((preference: ProductPreference, index) =>
         formValues.addCartPreferences.find((item, idx) => item.label === preference.label && index !== idx),
@@ -208,7 +210,7 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
                 </button>
               </div>
             ) : (
-              <label htmlFor="image-upload" className={classNames({ 'cursor-pointer': !isUploading })}>
+              <label htmlFor="image-upload" className={classNames({ 'mb-0 cursor-pointer': !isUploading })}>
                 <input
                   ref={inputRef}
                   hidden
@@ -222,7 +224,7 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
                 />
                 <div
                   className={classNames(
-                    'flex items-center justify-center size-[300px] rounded-xl outline-dashed outline-2 bg-orange-1 dark:bg-slate-700',
+                    'flex items-center justify-center size-[300px] rounded-xl border-dashed border-2 box-border bg-orange-1 dark:bg-slate-700',
                   )}
                 >
                   {!imageToShow && <ImageUp size={48} absoluteStrokeWidth className="size-60" />}
@@ -259,10 +261,10 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
                 autoComplete="off"
               />
             </Field>
-            <Field>
+            <Field className="flex-1 flex flex-col">
               <Label>Description</Label>
               <Textarea
-                className="w-80 h-22"
+                className="w-80 flex-1"
                 id="description"
                 name="description"
                 placeholder="Tell us about your product"
@@ -277,11 +279,17 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
 
           <div className="flex flex-col items-stretch w-80 gap-4">
             <Select
-              mode="multiple"
-              options={productCategories}
-              label="Categories"
-              onChange={(val) => handleChange('categories', val)}
-              value={formValues.categories}
+              options={categoryOptions.map((item) => ({ label: item.name, value: item.id }))}
+              label={
+                <div className="flex items-center justify-between">
+                  <div>Category</div>
+                  <Button className="btn-text h-7 font-normal gap-1" type="button" onClick={() => setCategoryModalOpen(true)}>
+                    <BookPlus size={18} /> New
+                  </Button>
+                </div>
+              }
+              onChange={(val) => handleChange('categoryId', val)}
+              value={formValues.categoryId}
             />
             <Select
               mode="multiple"
@@ -512,6 +520,46 @@ export const CreateEditProduct = ({ productData }: { productData?: Product }) =>
           {productData ? 'Save' : 'Create'}
         </Button>
       </form>
+
+      <Modal
+        title={
+          <div className="flex items-center gap-1 justify-center">
+            <BookPlus size={20} /> Create Category
+          </div>
+        }
+        open={categoryModalOpen}
+        setOpen={setCategoryModalOpen}
+        okText="Save"
+        okClick={() => {
+          createCategoryAction({ name: categoryModalInput }).then((res) => {
+            if (res.error) {
+              toast.error(res.error)
+            } else if (res.message) {
+              toast.success(res.message)
+              setCategoryModalOpen(false)
+              router.refresh()
+              handleChange('categoryId', res.data.id)
+            }
+          })
+        }}
+        content={
+          <form className="p-8">
+            <Field>
+              <Label>Category Name</Label>
+              <Input
+                placeholder="Drinks"
+                className="w-full"
+                type="text"
+                name="name"
+                required
+                value={categoryModalInput}
+                onChange={(e) => setCategoryModalInput(e.target.value)}
+                autoComplete="off"
+              />
+            </Field>
+          </form>
+        }
+      />
     </div>
   )
 }

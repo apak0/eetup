@@ -4,5 +4,5 @@ export type ProductPreference = {
   isOptional: boolean
   optionLabelInput: string
   optionPriceInput: string
-  type: 'single selection' | 'multiple selection'
+  type: 'single_selection' | 'multiple_selection'
 }

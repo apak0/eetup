@@ -1,6 +1,6 @@
 import { Edit, Plus } from 'lucide-react'
 
-import { getProductDataAction } from './actions'
+import { getCompanyCategoryOptions, getProductDataAction } from './actions'
 import { CreateEditProduct } from './create-edit'
 import { ProductsOverview } from './overview'
 
@@ -16,14 +16,25 @@ export default async function ProductsPage({
   const { activeTab } = await params
   const { productId: productIdParam } = await searchParams
   const productId = parseInt(productIdParam, 10)
+  const categoryOptions = await getCompanyCategoryOptions()
   const productData = productId ? await getProductDataAction(productId) : null
 
   const tabs = [
     { key: 'overview', label: 'Overview', content: <ProductsOverview /> },
-    { key: 'create', label: 'Create Product', content: <CreateEditProduct />, icon: <Plus size={20} /> },
+    {
+      key: 'create',
+      label: 'Create Product',
+      content: <CreateEditProduct categoryOptions={categoryOptions} />,
+      icon: <Plus size={20} />,
+    },
   ]
   if (productData) {
-    tabs.push({ key: 'edit', label: 'Edit Product', content: <CreateEditProduct productData={productData} />, icon: <Edit size={20} /> })
+    tabs.push({
+      key: 'edit',
+      label: 'Edit Product',
+      content: <CreateEditProduct productData={productData} categoryOptions={categoryOptions} />,
+      icon: <Edit size={20} />,
+    })
   }
   return <Tabs tabs={tabs} selectedTab={activeTab} />
 }

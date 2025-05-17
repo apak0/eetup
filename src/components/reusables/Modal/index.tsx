@@ -1,5 +1,5 @@
 import { JSX, useEffect, useState } from 'react'
-import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
+import { Button, Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import classNames from 'classnames'
 
 export default function Modal({
@@ -29,9 +29,8 @@ export default function Modal({
     ;(setOpen ?? setOpenInner)(open ?? openInner)
   }, [openInner, setOpen, open])
 
-  // TODO: Modal height should not exceed the screen height and should be scrollable if it does
   return (
-    <Dialog open={open ?? openInner} onClose={setOpen ?? setOpenInner} className="relative z-10">
+    <Dialog open={open ?? openInner} onClose={setOpen ?? setOpenInner} className="relative z-50">
       <DialogBackdrop
         transition
         className="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"
@@ -47,28 +46,28 @@ export default function Modal({
             )}
           >
             <div className="flex flex-col max-h-[calc(100vh-50px)]">
-              {title && <DialogTitle className="font-semibold p-6 pb-0">{title}</DialogTitle>}
+              {title && <DialogTitle className="text-xl font-medium p-6 pb-0">{title}</DialogTitle>}
               <div className="overflow-y-auto">{content}</div>
               {footer ?? (
-                <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-4">
-                  <button
+                <div className="px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-4">
+                  <Button
                     type="button"
                     onClick={() => {
                       okClick()
-                      ;(setOpen ?? setOpenInner)(false)
                     }}
                   >
                     {okText}
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     type="button"
+                    className="btn-default"
                     data-autofocus
                     onClick={() => {
                       ;(setOpen ?? setOpenInner)(false)
                     }}
                   >
                     {cancelText}
-                  </button>
+                  </Button>
                 </div>
               )}
             </div>

@@ -70,12 +70,12 @@ export const ProductItem = ({
         </div>
         <div className="mt-auto flex gap-2">
           {onEdit && (
-            <div className="btn-default group-hover:bg-orange-4/100 group-hover:text-white p-1">
+            <div className="btn-default group-hover:bg-orange-4/100 group-hover:text-white p-1" title="Edit">
               <Edit size={20} />
             </div>
           )}
           {onAdd && (
-            <div className="btn-default group-hover:bg-orange-4/100 group-hover:text-white p-1">
+            <div className="btn-default group-hover:bg-orange-4/100 group-hover:text-white p-1" title="Add">
               <Plus size={20} />
             </div>
           )}
