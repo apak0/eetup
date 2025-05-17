@@ -1,7 +1,7 @@
 @layer components {
   button,
   .btn {
-    @apply font-semibold h-12 text-white px-4 py-1 cursor-pointer rounded-md border-0 bg-orange-4/80 tracking-wider duration-500 flex items-center justify-center whitespace-nowrap;
+    @apply font-semibold h-12 text-white px-4 py-1 cursor-pointer rounded-md border-0 bg-orange-4/80 tracking-wider duration-300 flex items-center justify-center whitespace-nowrap;
   }
 
   button:hover,
@@ -19,7 +19,7 @@
 
   button.btn-text,
   .btn-text {
-    @apply bg-transparent text-orange-3 rounded-full p-1 font-normal tracking-normal;
+    @apply bg-transparent text-orange-3 rounded-full py-1 px-2 font-normal tracking-normal;
   }
   button.btn-text:hover,
   .btn-text:hover {

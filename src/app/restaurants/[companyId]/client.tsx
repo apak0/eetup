@@ -9,18 +9,19 @@ import { Minus, Plus, ShoppingBasket, ShoppingCart, Trash2, X } from 'lucide-rea
 import { redirect } from 'next/navigation'
 
 import { ProductPreference } from '@/app/company/products/[activeTab]/type'
+import { MenuSearch } from '@/components/MenuSearch'
 import { ProductItem } from '@/components/ProductItem'
 import Modal from '@/components/reusables/Modal'
 import { RadioGroup } from '@/components/reusables/RadioGroup'
 import { Tag } from '@/components/reusables/Tag'
-import { CompanyWithProduct, Product } from '@/lib/database/type'
+import { CompanyWithConnections, Product } from '@/lib/database/type'
 
 type Preference = Product & {
   qty: number
   selections: { [k: string]: { label: string; price: string }[] }
 }
 
-export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWithProduct }) {
+export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWithConnections }) {
   const savedBasket: any = JSON.parse(localStorage.getItem('savedBaskets') || '{}') || {}
   const [basket, setBasket] = useState<Preference[]>(savedBasket[companyData.id] || [])
 
@@ -57,13 +58,13 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
                     {!!Object.values(basketItem.selections).length && (
                       <div className="flex flex-col gap-2 text-xs">
                         {Object.entries(basketItem.selections).map(([key, item]) => (
-                          <div key={key} className="flex gap-2">
-                            <div className="w-12 truncate" title={key}>
+                          <div key={key} className="flex gap-1">
+                            <div className="w-16 truncate" title={key}>
                               {key}:
                             </div>
                             <div key={key} className="flex-1 flex flex-col truncate">
                               {item?.map((opt) => (
-                                <div key={opt.label} className="flex items-center gap-2">
+                                <div key={opt.label} className="flex items-center gap-1">
                                   <div className="truncate" title={opt.label}>
                                     {opt.label}
                                   </div>
@@ -190,7 +191,7 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
                   })}
                   id={optionElId}
                 >
-                  {item.type === 'single selection' ? (
+                  {item.type === 'single_selection' ? (
                     <RadioGroup
                       onChange={(opt: any) => {
                         if (optionElId === errorElementId) {
@@ -352,19 +353,24 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
           <h1 className="px-4">{companyData.organization}</h1>
           <div className="bg-(--bg) rounded-lg shadow overflow-x-auto flex flex-col gap-4 p-4">
             <div className="">
-              <h2 className="text-lg font-bold mb-2">Products</h2>
-              <div className="grid  xl:grid-cols-2 gap-4">
-                {companyData.product?.map((product: any) => (
-                  <ProductItem
-                    key={product.id}
-                    item={product}
-                    onAdd={() => {
-                      setAddToBasketOpen(true)
-                      setPreference({ ...product, qty: 1 })
-                    }}
-                  />
-                ))}
-              </div>
+              <MenuSearch
+                tabs={
+                  companyData?.category?.map((catItem) => ({
+                    id: catItem.id,
+                    label: catItem.name,
+                    items: catItem?.product.map((product) => (
+                      <ProductItem
+                        key={product.id}
+                        item={product}
+                        onAdd={() => {
+                          setAddToBasketOpen(true)
+                          setPreference({ ...product, selections: {}, qty: 1 })
+                        }}
+                      />
+                    )),
+                  })) || []
+                }
+              />
             </div>
           </div>
         </div>

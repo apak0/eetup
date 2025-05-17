@@ -1,0 +1,1 @@
+ALTER TABLE "eetup-dev"."category" ALTER COLUMN "company_id" DROP NOT NULL;

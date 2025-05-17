@@ -14,7 +14,7 @@ export const Tabs = async ({
   const pathname = headerList.get('current-path')
 
   return (
-    <TabGroup selectedIndex={tabs.findIndex((tab) => tab.key === selectedTab)}>
+    <TabGroup selectedIndex={tabs.findIndex((tab) => tab.key === selectedTab)} vertical >
       <TabList className="flex items-center gap-1">
         {tabs.map((tab) => (
           <Tab

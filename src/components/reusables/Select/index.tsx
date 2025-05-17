@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { JSX, useState } from 'react'
 import { Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
 import classNames from 'classnames'
 import { CheckIcon, ChevronDown, X } from 'lucide-react'
@@ -8,10 +8,11 @@ import { CheckIcon, ChevronDown, X } from 'lucide-react'
 type SelectItem = {
   value: string | number
   label: string
+  [k: string]: any
 }
 
 export default function Select({
-  placeholder = 'Select an option',
+  placeholder,
   className,
   mode,
   options,
@@ -22,8 +23,8 @@ export default function Select({
   placeholder?: string
   className?: string
   mode?: 'multiple'
-  options: { value: any; label: any }[]
-  label: string
+  options: SelectItem[]
+  label: JSX.Element | string
   value?: any
   onChange?: (value: any) => void
 }) {
@@ -48,7 +49,7 @@ export default function Select({
       <div className="relative">
         <ListboxButton
           className={classNames(
-            'field group text-(--text) w-full grid grid-cols-1 rounded-md py-1 px-2 text-left sm:text-sm/6 bg-transparent hover:bg-transparent',
+            'input font-normal group text-(--text) w-full grid grid-cols-1 rounded-md py-1 px-2 text-left bg-transparent hover:bg-transparent',
             {
               'px-4': mode !== 'multiple',
             },
@@ -68,10 +69,12 @@ export default function Select({
                 )}
               </span>
             ) : (
-              <div className={classNames('opacity-50', { 'pl-2': mode === 'multiple' })}>{placeholder}</div>
+              <div className={classNames('placeholder', { 'pl-2': mode === 'multiple' })}>
+                {placeholder || mode === 'multiple' ? 'Select multiple options' : 'Select an option'}
+              </div>
             )}
           </span>
-          {mode === 'multiple' && (selected as SelectItem[])?.length > 0 && (
+          {(mode === 'multiple' ? (selected as SelectItem[])?.length > 0 : selected) && (
             <div
               className="btn-text col-start-1 row-start-1 justify-self-end self-center mr-4 rounded-full p-1"
               onClick={(e) => {
