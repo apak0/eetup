@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Button, Input } from '@headlessui/react'
 import classNames from 'classnames'
-import { ArrowLeft, ArrowRight, X } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Search, X } from 'lucide-react'
 
 import { StyledDiv } from './style'
 
@@ -121,13 +121,18 @@ export const MenuSearch: React.FC<MenuSearchProps> = ({ tabs, onSearch, onTabCli
   return (
     <div className="@container">
       <div className="flex bg-(--bg) gap-2 flex-col @xl:flex-row items-center mb-4 sticky top-0 z-40 border-bottom p-2">
-        <div className="flex gap-2 w-full @xl:w-auto">
+        <div className="flex gap-2 w-full @xl:w-auto relative">
           <Input
             type="text"
             placeholder="Search menu"
             value={searchQuery}
             onChange={handleSearchChange}
-            className="rounded-full px-4 h-8 pr-10 w-60 flex-1"
+            className="peer rounded-full h-8 pl-8 px-10 w-60 flex-1"
+          />
+          <Search
+            size={20}
+            strokeWidth={1.5}
+            className="absolute top-1/2 -translate-y-1/2 left-2 text-text font-extralight opacity-40 peer-focus:text-slate-400 peer-focus:opacity-100"
           />
           {searchQuery && (
             <Button
