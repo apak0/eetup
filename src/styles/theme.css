@@ -16,7 +16,4 @@
     --bg-secondary: var(--color-gray-6);
     --border-color: var(--color-gray-4);
   }
-  ::selection {
-    @apply bg-orange-3;
-  }
 }

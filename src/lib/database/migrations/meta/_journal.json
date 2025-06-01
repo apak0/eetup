@@ -22,6 +22,41 @@
       "when": 1747084133290,
       "tag": "0002_elite_thunderbolt",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1747338456968,
+      "tag": "0003_mysterious_the_renegades",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1747340019823,
+      "tag": "0004_dapper_giant_girl",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1747341047848,
+      "tag": "0005_secret_true_believers",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1747484824559,
+      "tag": "0006_naive_triton",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1747485643465,
+      "tag": "0007_material_molten_man",
+      "breakpoints": true
     }
   ]
 }
