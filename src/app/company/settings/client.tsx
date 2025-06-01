@@ -34,7 +34,7 @@ export default function CompanySettingsClient({ tagOptions }: { tagOptions: Tag[
           label={
             <div className="flex items-center justify-between">
               <div>Category</div>
-              <Button className="btn-text h-7 font-normal gap-1" type="button" onClick={() => setTagModalOpen(true)}>
+              <Button className="btn-text h-6 font-normal gap-1" type="button" onClick={() => setTagModalOpen(true)}>
                 <TicketPlus size={18} /> New
               </Button>
             </div>

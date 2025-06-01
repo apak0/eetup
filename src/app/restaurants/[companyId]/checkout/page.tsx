@@ -1,6 +1,9 @@
 'use client'
+
+import { useBasket } from '@/app/Providers'
+
 export default function CheckoutPage() {
-  const savedBasket: any = JSON.parse(localStorage.getItem('savedBaskets') || '{}') || {}
+  const savedBasket = useBasket().savedBasket || {}
 
   console.log('ahoy1', savedBasket)
 

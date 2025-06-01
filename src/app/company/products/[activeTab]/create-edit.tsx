@@ -283,7 +283,7 @@ export const CreateEditProduct = ({ productData, categoryOptions }: { productDat
               label={
                 <div className="flex items-center justify-between">
                   <div>Category</div>
-                  <Button className="btn-text h-7 font-normal gap-1" type="button" onClick={() => setCategoryModalOpen(true)}>
+                  <Button className="btn-text h-6 font-normal gap-1" type="button" onClick={() => setCategoryModalOpen(true)}>
                     <BookPlus size={18} /> New
                   </Button>
                 </div>

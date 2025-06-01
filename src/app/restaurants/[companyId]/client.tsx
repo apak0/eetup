@@ -7,32 +7,35 @@ import { Image as ImageKitImage } from '@imagekit/next'
 import classNames from 'classnames'
 import { Minus, Plus, ShoppingBasket, ShoppingCart, Trash2, X } from 'lucide-react'
 import { redirect } from 'next/navigation'
+import { useSession } from 'next-auth/react'
+
+import { Preference } from './type'
 
 import { ProductPreference } from '@/app/company/products/[activeTab]/type'
+import { useBasket } from '@/app/Providers'
 import { MenuSearch } from '@/components/MenuSearch'
 import { ProductItem } from '@/components/ProductItem'
 import Modal from '@/components/reusables/Modal'
 import { RadioGroup } from '@/components/reusables/RadioGroup'
 import { Tag } from '@/components/reusables/Tag'
-import { CompanyWithConnections, Product } from '@/lib/database/type'
-
-type Preference = Product & {
-  qty: number
-  selections: { [k: string]: { label: string; price: string }[] }
-}
+import { CompanyWithConnections } from '@/lib/database/type'
 
 export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWithConnections }) {
-  const savedBasket: any = JSON.parse(localStorage.getItem('savedBaskets') || '{}') || {}
-  const [basket, setBasket] = useState<Preference[]>(savedBasket[companyData.id] || [])
-
+  const { savedBasket, setSavedBasket } = useBasket()
+  const basket = savedBasket?.[companyData?.id] || []
   const [basketMobileOpen, setBasketMobileOpen] = useState(false)
   const [addToBasketOpen, setAddToBasketOpen] = useState(false)
   const [preference, setPreference] = useState<Preference>()
   const [errorElementId, setErrorElementId] = useState('')
 
+  const session = useSession()
+
   const handleBasketChange = (products: any) => {
-    localStorage.setItem('savedBaskets', JSON.stringify({ ...savedBasket, [companyData?.id]: products }))
-    setBasket(products)
+    if (!products?.length) {
+      setSavedBasket?.({})
+    } else {
+      setSavedBasket?.({ [companyData?.id]: products })
+    }
   }
 
   const basketComponent = (
@@ -143,7 +146,11 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
             <Button
               className="w-full"
               onClick={() => {
-                redirect(`/restaurants/${companyData?.id}/checkout`)
+                if (session?.data?.user?.isCompany) {
+                  toast.error('You cannot checkout as a company user. Please switch to a customer account.')
+                } else {
+                  redirect(`/restaurants/${companyData?.id}/checkout`)
+                }
               }}
             >
               Checkout
