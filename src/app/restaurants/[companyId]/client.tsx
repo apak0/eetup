@@ -140,11 +140,6 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
               </span>
             </div>
 
-            {/* <button className="w-full py-3 bg-orange-4 hover:bg-orange-5 text-white font-medium rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-              <ShoppingCart size={18} />
-              Checkout Now
-            </button> */}
-
             <Button
               className="w-full"
               onClick={() => {
@@ -351,7 +346,7 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
         <div className="col-span-2 flex flex-col gap-4">
           <div className="bg-orange-3 rounded-lg h-80"></div>
           <h1 className="px-4">{companyData.organization}</h1>
-          <div className="bg-(--bg) rounded-lg shadow flex flex-col gap-4 p-4">
+          <div className="bg-(--bg) rounded-lg border border-(--border-color) flex flex-col gap-4 p-4">
             <MenuSearch
               tabs={
                 companyData?.category?.map((catItem) => ({
@@ -375,7 +370,7 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
         <div className="hidden col-span-1 xl:flex flex-col">{basketComponent}</div>
 
         {!basket?.length || basketMobileOpen ? null : (
-          <Button className="xl:hidden fixed right-1/2 top-2 z-30 shadow" onClick={() => setBasketMobileOpen(!basketMobileOpen)}>
+          <Button className="xl:hidden fixed right-1/2 top-2 z-30" onClick={() => setBasketMobileOpen(!basketMobileOpen)}>
             <ShoppingBasket />
           </Button>
         )}
