@@ -4,7 +4,7 @@ import { Search } from './Search'
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
+    <div className="max-w-app mx-auto min-h-screen">
       {/* Hero Section */}
       <section className="min-h-[40vh] md:h-[50vh] flex items-center justify-center w-full ">
         <div className="w-full  ">
@@ -43,7 +43,13 @@ export default function Home() {
                 className="card p-4 shadow dark:border border-solid border-(--border-color) hover:shadow-lg transition cursor-pointer text-center"
               >
                 <div className="w-16 h-16 mx-auto mb-2 relative">
-                  <Image src={category.icon} alt={category.name} fill className="object-contain" />
+                  <Image
+                    src={category.icon}
+                    alt={category.name}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-contain"
+                  />
                 </div>
                 <span className="font-medium">{category.name}</span>
               </div>
@@ -63,7 +69,13 @@ export default function Home() {
                 className=" card shadow dark:border border-solid border-(--border-color) overflow-hidden hover:shadow-lg transition cursor-pointer"
               >
                 <div className="relative h-48">
-                  <Image src={restaurant.image} alt={restaurant.name} fill className="object-cover" />
+                  <Image
+                    src={restaurant.image}
+                    alt={restaurant.name}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover"
+                  />
                 </div>
                 <div className="p-4">
                   <h3 className="font-bold text-xl mb-2">{restaurant.name}</h3>
@@ -88,10 +100,10 @@ export default function Home() {
 const categories = [
   { name: 'Burger', icon: 'https://cdn-icons-png.flaticon.com/512/877/877951.png' },
   { name: 'Pizza', icon: 'https://cdn-icons-png.flaticon.com/512/3132/3132693.png' },
-  { name: 'Kebab', icon: 'https://cdn-icons-png.flaticon.com/512/2515/2515263.png' },
-  { name: 'Dessert', icon: 'https://cdn-icons-png.flaticon.com/512/3198/3198914.png' },
+  { name: 'Kebab', icon: 'https://cdn-icons-png.flaticon.com/128/4711/4711382.png' },
+  { name: 'Dessert', icon: 'https://cdn-icons-png.flaticon.com/128/8346/8346809.png' },
   { name: 'Drinks', icon: 'https://cdn-icons-png.flaticon.com/512/2738/2738730.png' },
-  { name: 'Breakfast', icon: 'https://cdn-icons-png.flaticon.com/512/1205/1205756.png' },
+  { name: 'Breakfast', icon: 'https://cdn-icons-png.flaticon.com/128/3480/3480823.png' },
 ]
 
 const restaurants = [

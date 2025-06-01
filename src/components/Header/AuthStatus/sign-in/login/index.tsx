@@ -1,14 +1,15 @@
 import { useActionState, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import toast from 'react-hot-toast'
+import { Eye, EyeOff } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 
-// TODO: add eye icon to show/hide password
 export default function Login({ setLoginContent, setAuthOpen }: { setLoginContent: (val: string) => void; setAuthOpen: any }) {
   const router = useRouter()
   const [email, setEmail] = useState(() => localStorage.getItem('rememberedEmail') || '')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [rememberMe, setRememberMe] = useState(() => !!localStorage.getItem('rememberedEmail'))
 
   const handleRememberMe = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,20 +63,32 @@ export default function Login({ setLoginContent, setAuthOpen }: { setLoginConten
                 localStorage.setItem('rememberedEmail', e.target.value)
               }
             }}
-          />
-          <input
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Password"
-            required
-            autoComplete="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          />{' '}
+          <div className="relative">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              id="password"
+              placeholder="Password"
+              required
+              autoComplete="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-1 top-1/2 -translate-y-1/2 text-gray-4 hover:text-gray-5 bg-transparent"
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
           <div className="flex items-center gap-2">
             <input type="checkbox" id="rememberMe" checked={rememberMe} onChange={handleRememberMe} className="accent-gray-200 " />
-            <label htmlFor="rememberMe">Remember Me</label>
+            <label htmlFor="rememberMe" className="mb-0">
+              Remember Me
+            </label>
           </div>
         </div>
         <div className="grid gap-4 mt-8">

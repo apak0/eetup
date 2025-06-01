@@ -1,6 +1,6 @@
 {
-  "id": "181b5c5d-8d14-4e93-9d89-343fd69dd82f",
-  "prevId": "ae808aee-5af8-4cf9-a39b-5cd9d683af94",
+  "id": "1c1caa8a-cbc3-46e1-b9f3-b86ea5be68e4",
+  "prevId": "81ef27b9-0015-48db-b7e3-394e0ff8e999",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -106,7 +106,7 @@
         },
         "bannedPostcodes": {
           "name": "bannedPostcodes",
-          "type": "varchar(255)[]",
+          "type": "varchar[]",
           "primaryKey": false,
           "notNull": false
         },
@@ -144,6 +144,24 @@
           "primaryKey": false,
           "notNull": true,
           "default": 0
+        },
+        "lat": {
+          "name": "lat",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "lon": {
+          "name": "lon",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "categories": {
+          "name": "categories",
+          "type": "varchar[]",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -187,7 +205,7 @@
           "name": "company_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "name": {
           "name": "name",
@@ -197,7 +215,7 @@
         },
         "description": {
           "name": "description",
-          "type": "varchar(255)",
+          "type": "varchar(1000)",
           "primaryKey": false,
           "notNull": true
         },
@@ -207,15 +225,15 @@
           "primaryKey": false,
           "notNull": true
         },
-        "discount_price": {
-          "name": "discount_price",
+        "discountPrice": {
+          "name": "discountPrice",
           "type": "numeric",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "image": {
           "name": "image",
-          "type": "varchar(2000)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
@@ -228,21 +246,35 @@
         },
         "categories": {
           "name": "categories",
-          "type": "varchar(255)[]",
+          "type": "integer[]",
           "primaryKey": false,
           "notNull": false
         },
         "allergens": {
           "name": "allergens",
-          "type": "varchar(255)[]",
+          "type": "integer[]",
           "primaryKey": false,
           "notNull": false
         },
         "dietary": {
           "name": "dietary",
-          "type": "varchar(255)[]",
+          "type": "integer[]",
           "primaryKey": false,
           "notNull": false
+        },
+        "addCartPreferencesChecked": {
+          "name": "addCartPreferencesChecked",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "addCartPreferences": {
+          "name": "addCartPreferences",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'[]'"
         }
       },
       "indexes": {},
@@ -263,7 +295,15 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "product_name_unique": {
+          "name": "product_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false

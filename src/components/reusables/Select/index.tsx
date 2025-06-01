@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { JSX, useState } from 'react'
 import { Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
 import classNames from 'classnames'
 import { CheckIcon, ChevronDown, X } from 'lucide-react'
@@ -8,10 +8,12 @@ import { CheckIcon, ChevronDown, X } from 'lucide-react'
 type SelectItem = {
   value: string | number
   label: string
+  [k: string]: any
 }
 
 export default function Select({
-  placeholder = 'Select an option',
+  placeholder,
+  className,
   mode,
   options,
   label,
@@ -19,15 +21,16 @@ export default function Select({
   onChange,
 }: {
   placeholder?: string
+  className?: string
   mode?: 'multiple'
-  options: { value: any; label: any }[]
-  label: string
+  options: SelectItem[]
+  label: JSX.Element | string
   value?: any
   onChange?: (value: any) => void
 }) {
-  const defaultValue = options.filter((item) => (mode === 'multiple' ? value?.includes(item.value) : item.value === value)) || null
+  const defaultValue = mode === 'multiple' ? options.filter((item) => value?.includes(item.value)) : options.find((item) => item.value === value)
 
-  const [selected, setSelected] = useState<SelectItem | SelectItem[]>(defaultValue)
+  const [selected, setSelected] = useState<SelectItem | SelectItem[]>(defaultValue!)
 
   const handleChange = (val: any) => {
     setSelected(val)
@@ -41,12 +44,12 @@ export default function Select({
   }
 
   return (
-    <Listbox as="div" value={selected} onChange={handleChange} multiple={mode === 'multiple'}>
-      <Label className="block text-sm/6 font-medium">{label}</Label>
-      <div className="relative mt-1">
+    <Listbox as="div" value={selected} onChange={handleChange} multiple={mode === 'multiple'} className={classNames('', className)}>
+      <Label className="block text-sm/6 font-medium mb-1">{label}</Label>
+      <div className="relative">
         <ListboxButton
           className={classNames(
-            'field group text-(--text) w-full grid grid-cols-1 rounded-md py-1 px-2 text-left sm:text-sm/6 hover:bg-transparent',
+            'input font-normal group text-(--text) w-full grid grid-cols-1 rounded-md py-1 px-2 text-left bg-transparent hover:bg-transparent',
             {
               'px-4': mode !== 'multiple',
             },
@@ -66,10 +69,12 @@ export default function Select({
                 )}
               </span>
             ) : (
-              <div className={classNames('opacity-50', { 'pl-2': mode === 'multiple' })}>{placeholder}</div>
+              <div className={classNames('placeholder', { 'pl-2': mode === 'multiple' })}>
+                {placeholder || mode === 'multiple' ? 'Select multiple options' : 'Select an option'}
+              </div>
             )}
           </span>
-          {mode === 'multiple' && (selected as SelectItem[])?.length > 0 && (
+          {(mode === 'multiple' ? (selected as SelectItem[])?.length > 0 : selected) && (
             <div
               className="btn-text col-start-1 row-start-1 justify-self-end self-center mr-4 rounded-full p-1"
               onClick={(e) => {
@@ -94,10 +99,13 @@ export default function Select({
             <ListboxOption
               key={item.value}
               value={item}
-              className="group relative cursor-default py-2 pr-9 pl-3 select-none data-focus:bg-orange-3 data-focus:text-white data-focus:outline-hidden"
+              className={classNames(
+                'group relative cursor-default py-2 pl-3 select-none data-focus:bg-orange-3 data-focus:text-white data-focus:outline-hidden',
+                { 'pr-9': mode === 'multiple', 'pr-3': mode !== 'multiple' },
+              )}
             >
               <div className="flex items-center">
-                <span className="ml-2 block truncate font-normal group-data-selected:font-semibold">{item.label}</span>
+                <span className="block truncate font-normal group-data-selected:font-semibold">{item.label}</span>
               </div>
 
               <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-orange-3 group-not-data-selected:hidden group-data-focus:text-white">

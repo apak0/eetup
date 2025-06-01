@@ -1,9 +1,75 @@
 {
-  "id": "3ae8906d-b425-4612-ab29-189e73e5f482",
-  "prevId": "9cd809a5-912b-4471-a932-d320ecafd1ad",
+  "id": "88e0bbbf-9ab1-4e34-8a4d-070963158d55",
+  "prevId": "d4f7c7a5-f4ac-40da-998c-ca5544437602",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+    "eetup-dev.category": {
+      "name": "category",
+      "schema": "eetup-dev",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "category_id_seq",
+            "schema": "eetup-dev",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "category_company_id_company_id_fk": {
+          "name": "category_company_id_company_id_fk",
+          "tableFrom": "category",
+          "tableTo": "company",
+          "schemaTo": "eetup-dev",
+          "columnsFrom": [
+            "company_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "category_company_id_name_unique": {
+          "name": "category_company_id_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "company_id",
+            "name"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "eetup-dev.company": {
       "name": "company",
       "schema": "eetup-dev",
@@ -106,7 +172,7 @@
         },
         "bannedPostcodes": {
           "name": "bannedPostcodes",
-          "type": "varchar(255)[]",
+          "type": "varchar[]",
           "primaryKey": false,
           "notNull": false
         },
@@ -199,7 +265,7 @@
           "name": "company_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "name": {
           "name": "name",
@@ -209,7 +275,7 @@
         },
         "description": {
           "name": "description",
-          "type": "varchar(255)",
+          "type": "varchar(1000)",
           "primaryKey": false,
           "notNull": true
         },
@@ -219,15 +285,15 @@
           "primaryKey": false,
           "notNull": true
         },
-        "discount_price": {
-          "name": "discount_price",
+        "discountPrice": {
+          "name": "discountPrice",
           "type": "numeric",
           "primaryKey": false,
           "notNull": false
         },
         "image": {
           "name": "image",
-          "type": "varchar(2000)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
@@ -238,23 +304,37 @@
           "notNull": true,
           "default": false
         },
-        "categories": {
-          "name": "categories",
-          "type": "varchar(255)[]",
+        "categoryId": {
+          "name": "categoryId",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
         "allergens": {
           "name": "allergens",
-          "type": "varchar(255)[]",
+          "type": "integer[]",
           "primaryKey": false,
           "notNull": false
         },
         "dietary": {
           "name": "dietary",
-          "type": "varchar(255)[]",
+          "type": "integer[]",
           "primaryKey": false,
           "notNull": false
+        },
+        "addCartPreferencesChecked": {
+          "name": "addCartPreferencesChecked",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "addCartPreferences": {
+          "name": "addCartPreferences",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'[]'"
         }
       },
       "indexes": {},
@@ -270,7 +350,21 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "product_categoryId_category_id_fk": {
+          "name": "product_categoryId_category_id_fk",
+          "tableFrom": "product",
+          "tableTo": "category",
+          "schemaTo": "eetup-dev",
+          "columnsFrom": [
+            "categoryId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },
@@ -280,6 +374,142 @@
           "name": "product_name_unique",
           "nullsNotDistinct": false,
           "columns": [
+            "name"
+          ]
+        },
+        "product_company_id_name_unique": {
+          "name": "product_company_id_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "company_id",
+            "name"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "eetup-dev.product_tag": {
+      "name": "product_tag",
+      "schema": "eetup-dev",
+      "columns": {
+        "productId": {
+          "name": "productId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tagId": {
+          "name": "tagId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "product_tag_productId_product_id_fk": {
+          "name": "product_tag_productId_product_id_fk",
+          "tableFrom": "product_tag",
+          "tableTo": "product",
+          "schemaTo": "eetup-dev",
+          "columnsFrom": [
+            "productId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "product_tag_tagId_tag_id_fk": {
+          "name": "product_tag_tagId_tag_id_fk",
+          "tableFrom": "product_tag",
+          "tableTo": "tag",
+          "schemaTo": "eetup-dev",
+          "columnsFrom": [
+            "tagId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "product_tag_productId_tagId_pk": {
+          "name": "product_tag_productId_tagId_pk",
+          "columns": [
+            "productId",
+            "tagId"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "eetup-dev.tag": {
+      "name": "tag",
+      "schema": "eetup-dev",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "tag_id_seq",
+            "schema": "eetup-dev",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "tag_company_id_company_id_fk": {
+          "name": "tag_company_id_company_id_fk",
+          "tableFrom": "tag",
+          "tableTo": "company",
+          "schemaTo": "eetup-dev",
+          "columnsFrom": [
+            "company_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "tag_company_id_name_unique": {
+          "name": "tag_company_id_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "company_id",
             "name"
           ]
         }

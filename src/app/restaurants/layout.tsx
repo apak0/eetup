@@ -1,3 +1,3 @@
 export default function RestaurantsLayout({ children }: { children: React.ReactNode }) {
-  return <div>{children}</div>
+  return <div className="max-w-app mx-auto">{children}</div>
 }

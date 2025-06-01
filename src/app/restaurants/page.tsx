@@ -19,14 +19,14 @@ export default async function RestaurantsPage({ searchParams }: RestaurantsPageP
         <p className="text-gray-600">Discover local restaurants and order your favorite meals</p>
       </div>
 
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {companies?.map((item) => (
           <Link key={item.id} href={`/restaurants/${item.id}`} className="block no-underline">
             <CompanyItem item={item} />
           </Link>
         ))}
         {(!companies || companies.length === 0) && (
-          <div className="text-center py-8">
+          <div className="text-center py-8 col-span-full">
             <p className="text-gray-500">No restaurants found in this area. Try searching with a different address.</p>
           </div>
         )}

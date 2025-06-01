@@ -70,21 +70,19 @@ export const ProductItem = ({
         </div>
         <div className="mt-auto flex gap-2">
           {onEdit && (
-            <div className="btn-default group-hover:bg-orange-4/100 group-hover:text-white p-1">
+            <div className="btn-default group-hover:bg-orange-4/100 group-hover:text-white p-1" title="Edit">
               <Edit size={20} />
             </div>
           )}
           {onAdd && (
-            <div className="btn-default group-hover:bg-orange-4/100 group-hover:text-white p-1">
+            <div className="btn-default group-hover:bg-orange-4/100 group-hover:text-white p-1" title="Add">
               <Plus size={20} />
             </div>
           )}
         </div>
       </div>
-      <div className="relative flex-1 h-40 overflow-hidden rounded-lg">
-        {item.image && (
-          <ImageKitImage src={item.image} width={400} height={400} alt={item.name || 'Product'} className="object-cover w-full h-full" />
-        )}
+      <div className="relative h-40 overflow-hidden rounded-lg">
+        {item.image && <ImageKitImage src={item.image} width={200} height={200} alt={item.name || 'Product'} className="object-cover w-40 h-40" />}
 
         {showToggle && (
           <div className="absolute top-2 right-2 z-10">
