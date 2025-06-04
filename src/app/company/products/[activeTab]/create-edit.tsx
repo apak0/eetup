@@ -2,6 +2,7 @@
 import { useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { Button, Checkbox, Field, Fieldset, Input, Label, Switch, Textarea } from '@headlessui/react'
+import { CheckIcon } from '@heroicons/react/16/solid'
 import {
   Image as ImageKitImage,
   ImageKitAbortError,
@@ -24,7 +25,6 @@ import Select from '@/components/reusables/Select'
 import { productAllergens, productDietary } from '@/lib/database/constants'
 import { Category, Product } from '@/lib/database/type'
 import { validateImageFile } from '@/lib/utils/validateImageSize'
-import { CheckIcon } from '@heroicons/react/16/solid'
 
 export const CreateEditProduct = ({ productData, categoryOptions }: { productData?: Product; categoryOptions: Category[] }) => {
   const isEdit = !!productData

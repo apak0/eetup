@@ -1,14 +1,14 @@
 'use client'
 import { useActionState, useEffect } from 'react'
 import toast from 'react-hot-toast'
+import { Checkbox } from '@headlessui/react'
+import { CheckIcon } from '@heroicons/react/16/solid'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 import { startCompanyAction } from './actions'
 
 import { PhoneInput } from '@/components/reusables/PhoneInput'
-import { Checkbox } from '@headlessui/react'
-import { CheckIcon } from '@heroicons/react/16/solid'
 
 export default function StartAsCompany() {
   const router = useRouter()

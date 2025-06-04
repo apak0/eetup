@@ -95,7 +95,6 @@ export default function Login({ setLoginContent, setAuthOpen }: { setLoginConten
               <CheckIcon className="hidden size-4 fill-black group-data-checked:block" />
             </Checkbox>
 
-            {/* <input type="checkbox" id="rememberMe" checked={rememberMe} onChange={handleRememberMe} className="accent-gray-200 " /> */}
             <label htmlFor="rememberMe" className="mb-0">
               Remember Me
             </label>
