@@ -1,7 +1,9 @@
 'use client'
 import { useActionState, useEffect } from 'react'
 import toast from 'react-hot-toast'
+import { Checkbox, Field, Label } from '@headlessui/react'
 import jwt from 'jsonwebtoken'
+import { CheckIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
@@ -16,7 +18,7 @@ export default function RegisterAsCompany() {
 
   useEffect(() => {
     if (formState?.error) {
-      toast.error(formState?.message, { duration: 15000 })
+      toast.error(formState?.error, { duration: 15000 })
     } else if (formState?.message) {
       router.push('/')
       toast.success(formState?.message, { duration: 15000 })
@@ -64,12 +66,19 @@ export default function RegisterAsCompany() {
         <input hidden type="text" name="token" id="token" defaultValue={token} />
       </div>
       <div className="grid gap-4 mt-8 w-80">
-        <div className="flex items-center gap-2">
-          <input type="checkbox" name="privacy-policy" id="privacy-policy" required defaultChecked={values?.['privacy-policy'] ? true : false} />
-          <label htmlFor="privacy-policy" className="mb-0">
-            I agree to the <Link href="/privacy-policy">privacy policy</Link>
-          </label>
-        </div>
+        <Field className="flex items-center gap-1 group mt-10 mb-2">
+          <Checkbox
+            defaultChecked={values?.['privacy-policy'] ? true : false}
+            name="privacyPolicy"
+            className="checkbox group size-5 rounded-md p-0.5 border-1 border-(--border-color) flex items-center justify-center group-hover:bg-orange-1 data-checked:bg-orange-1 transition-colors duration-200"
+          >
+            <CheckIcon strokeWidth={3} className="hidden group-data-checked:block text-orange-3" />
+          </Checkbox>
+
+          <Label className="mb-0 ml-1">I agree to the</Label>
+          <Link href="/privacy-policy">privacy policy</Link>
+        </Field>
+
         <button className="w-full" type="submit">
           Start as Company
         </button>

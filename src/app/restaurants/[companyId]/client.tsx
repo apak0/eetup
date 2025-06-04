@@ -2,10 +2,10 @@
 
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-import { Button } from '@headlessui/react'
+import { Button, Checkbox, Field, Label } from '@headlessui/react'
 import { Image as ImageKitImage } from '@imagekit/next'
 import classNames from 'classnames'
-import { Minus, Plus, ShoppingBasket, ShoppingCart, Trash2, X } from 'lucide-react'
+import { CheckIcon, Minus, Plus, ShoppingBasket, ShoppingCart, Trash2, X } from 'lucide-react'
 import { redirect } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 
@@ -215,22 +215,16 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
                   ) : (
                     item.value.map((opt: any) => {
                       return (
-                        <label
-                          key={opt.label}
-                          htmlFor={'addCartPreferencesOption' + opt.label}
-                          className="mb-0 cursor-pointer hover:bg-orange-1 dark:hover:bg-orange-2 px-3 py-2 rounded-lg"
-                        >
-                          <div className="flex items-center justify-between gap-2 flex-1">
+                        <Field className="group hover:bg-orange-1 dark:hover:bg-orange-2 rounded-lg" key={opt.label}>
+                          <Label className="flex items-center justify-between gap-2 flex-1 px-3 py-2 cursor-pointer mb-0">
                             <div className="flex items-center gap-2">
-                              <input
-                                type="checkbox"
-                                id={'addCartPreferencesOption' + opt.label}
-                                onChange={(e) => {
+                              <Checkbox
+                                onChange={(checked) => {
                                   if (optionElId === errorElementId) {
                                     setErrorElementId('')
                                   }
 
-                                  if (e.target.checked) {
+                                  if (checked) {
                                     setPreference({
                                       ...preference,
                                       selections: { ...preference.selections, [item.label]: [...(preference.selections?.[item.label] || []), opt] },
@@ -245,14 +239,16 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
                                     })
                                   }
                                 }}
-                                className="accent-gray-2"
-                              />
-
+                                className="checkbox group size-5 rounded-md p-0.5 border-1 border-(--border-color) flex items-center justify-center group-hover:bg-orange-1 data-checked:bg-orange-1 transition-colors duration-200"
+                              >
+                                <CheckIcon strokeWidth={3} className="hidden group-data-checked:block text-orange-3" />
+                              </Checkbox>
                               {opt.label}
                             </div>
+
                             <span className="text-sm">{opt.price ? <>+€{opt.price}</> : 'Free'}</span>
-                          </div>
-                        </label>
+                          </Label>
+                        </Field>
                       )
                     })
                   )}

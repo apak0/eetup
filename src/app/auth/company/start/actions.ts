@@ -10,6 +10,7 @@ import { db } from '@/lib/database/db'
 import { company } from '@/lib/database/schema'
 
 export const startCompanyAction = async (_prevState: any, formData: FormData) => {
+  const privacyPolicy = formData.get('privacyPolicy')?.toString() || ''
   const email = formData.get('email')?.toString() || ''
   const firstName = formData.get('firstName')?.toString() || ''
   const lastName = formData.get('lastName')?.toString() || ''
@@ -17,6 +18,7 @@ export const startCompanyAction = async (_prevState: any, formData: FormData) =>
   const tel = formData.get('tel')?.toString() || ''
 
   const values = {
+    privacyPolicy,
     email,
     firstName,
     lastName,
@@ -24,13 +26,19 @@ export const startCompanyAction = async (_prevState: any, formData: FormData) =>
     tel,
   }
 
+  if (!privacyPolicy) {
+    return {
+      error: 'You must accept the privacy policy to start.',
+      values,
+    }
+  }
+
   const [foundCompany] = await db.select().from(company).where(eq(company.email, email))
 
   if (foundCompany?.emailVerified) {
     return {
-      error: true,
+      error: 'This email is already used. If you forgot your password, use forgot password flow.',
       title: 'Company already exists!',
-      message: 'This email is already used. If you forgot your password, use forgot password flow.',
       values,
     }
   }
@@ -63,8 +71,7 @@ export const startCompanyAction = async (_prevState: any, formData: FormData) =>
 
   if (res.rejected.length > 0) {
     return {
-      error: true,
-      message: 'Error sending email. Please try again later.',
+      error: 'Error sending email. Please try again later.',
       values,
     }
   }
@@ -73,8 +80,7 @@ export const startCompanyAction = async (_prevState: any, formData: FormData) =>
     await db.insert(company).values(values)
   } catch (e: any) {
     return {
-      error: true,
-      message: e?.detail || 'Error inserting company. Please try again later.',
+      error: e?.detail || 'Error inserting company. Please try again later.',
       values,
     }
   }

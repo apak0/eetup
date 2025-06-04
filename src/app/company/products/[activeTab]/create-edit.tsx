@@ -1,7 +1,7 @@
 'use client'
 import { useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import { Button, Field, Fieldset, Input, Label, Switch, Textarea } from '@headlessui/react'
+import { Button, Checkbox, Field, Fieldset, Input, Label, Switch, Textarea } from '@headlessui/react'
 import {
   Image as ImageKitImage,
   ImageKitAbortError,
@@ -11,7 +11,7 @@ import {
   upload,
 } from '@imagekit/next'
 import classNames from 'classnames'
-import { ArrowBigDownDash, ArrowRight, BookPlus, ImageUp, Trash2, X } from 'lucide-react'
+import { ArrowBigDownDash, ArrowRight, BookPlus, CheckIcon, ImageUp, Trash2, X } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
@@ -307,18 +307,17 @@ export const CreateEditProduct = ({ productData, categoryOptions }: { productDat
             />
           </div>
         </div>
-        <div className="flex items-center gap-2 mt-10">
-          <input
-            type="checkbox"
-            id="addCartPreferencesChecked"
+        <Field className="flex items-center gap-1 group mt-10 mb-2">
+          <Checkbox
             checked={formValues.addCartPreferencesChecked}
-            onChange={(e) => handleChange('addCartPreferencesChecked', e.target.checked)}
-            className="accent-gray-2"
-          />
-          <label htmlFor="addCartPreferencesChecked" className="mb-0">
-            Has Preferences
-          </label>
-        </div>
+            onChange={(checked) => handleChange('addCartPreferencesChecked', checked)}
+            className="checkbox group size-5 rounded-md p-0.5 border-1 border-(--border-color) flex items-center justify-center group-hover:bg-orange-1 data-checked:bg-orange-1 transition-colors duration-200"
+          >
+            <CheckIcon strokeWidth={3} className="hidden group-data-checked:block text-orange-3" />
+          </Checkbox>
+
+          <Label className="mb-0 ml-1">Has Preferences</Label>
+        </Field>
         {formValues.addCartPreferencesChecked && (
           <div className="flex flex-col gap-4 border rounded-lg border-(--border-color) p-4 xl:p-8">
             <h2 className="mb-6">Add to Cart Preferences</h2>

@@ -1,7 +1,8 @@
 import { useActionState, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import toast from 'react-hot-toast'
-import { Eye, EyeOff } from 'lucide-react'
+import { Checkbox, Field, Label } from '@headlessui/react'
+import { CheckIcon, Eye, EyeOff } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 
@@ -12,9 +13,9 @@ export default function Login({ setLoginContent, setAuthOpen }: { setLoginConten
   const [showPassword, setShowPassword] = useState(false)
   const [rememberMe, setRememberMe] = useState(() => !!localStorage.getItem('rememberedEmail'))
 
-  const handleRememberMe = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRememberMe(e.target.checked)
-    if (e.target.checked) {
+  const handleRememberMe = (checked: boolean) => {
+    setRememberMe(checked)
+    if (checked) {
       localStorage.setItem('rememberedEmail', email)
     } else {
       localStorage.removeItem('rememberedEmail')
@@ -84,16 +85,21 @@ export default function Login({ setLoginContent, setAuthOpen }: { setLoginConten
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
-          <div className="flex items-center gap-2">
-            <input type="checkbox" id="rememberMe" checked={rememberMe} onChange={handleRememberMe} className="accent-gray-200 " />
-            <label htmlFor="rememberMe" className="mb-0">
-              Remember Me
-            </label>
-          </div>
+          <Field className="flex items-center gap-1 group">
+            <Checkbox
+              checked={rememberMe}
+              onChange={handleRememberMe}
+              className="checkbox group size-5 rounded-md p-0.5 border-1 border-(--border-color) flex items-center justify-center group-hover:bg-orange-1 data-checked:bg-orange-1 transition-colors duration-200"
+            >
+              <CheckIcon strokeWidth={3} className="hidden group-data-checked:block text-orange-3" />
+            </Checkbox>
+
+            <Label className="mb-0 ml-1">Remember Me</Label>
+          </Field>
         </div>
         <div className="grid gap-4 mt-8">
           <LoginButton />
-          <button onClick={() => setLoginContent('register')} className="btn-link ml-auto btn-text" type="button">
+          <button onClick={() => setLoginContent('register')} className="btn-link ml-auto" type="button">
             to register
           </button>
         </div>

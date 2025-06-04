@@ -1,6 +1,8 @@
 import { useActionState, useEffect, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import toast from 'react-hot-toast'
+import { Checkbox, Field, Label } from '@headlessui/react'
+import { CheckIcon } from 'lucide-react'
 import Link from 'next/link'
 
 import { registerUserAction } from './actions'
@@ -31,23 +33,21 @@ export default function Register({ setLoginContent, setAuthOpen }: { setLoginCon
         <input type="email" name="email" placeholder="Email" required autoComplete="email" defaultValue={values?.email} />
         <input type="password" name="password" placeholder="Password" required />
 
-        <div className="flex items-center gap-2 mt-2">
-          <input
-            type="checkbox"
-            id="privacyPolicy"
+        <Field className="flex items-center gap-1 group">
+          <Checkbox
             name="privacyPolicy"
-            className="w-4 h-4 accent-gray-200"
             checked={policyAccepted}
-            onChange={(e) => setPolicyAccepted(e.target.checked)}
-            required
-          />
-          <label htmlFor="privacyPolicy" className="text-sm">
-            I agree to the{' '}
-            <Link href="/hub/privacy-policy" className="hover:underline" target="_blank">
-              Privacy Policy
-            </Link>
-          </label>
-        </div>
+            onChange={setPolicyAccepted}
+            className="checkbox group size-5 rounded-md p-0.5 border-1 border-(--border-color) flex items-center justify-center group-hover:bg-orange-1 data-checked:bg-orange-1 transition-colors duration-200"
+          >
+            <CheckIcon strokeWidth={3} className="hidden group-data-checked:block text-orange-3" />
+          </Checkbox>
+
+          <Label className="mb-0 ml-1">I agree to the </Label>
+          <Link href="/hub/privacy-policy" className="hover:underline text-sm" target="_blank">
+            Privacy Policy
+          </Link>
+        </Field>
       </div>
       <div className="grid gap-4 mt-8">
         <LoginButton disabled={!policyAccepted} />
