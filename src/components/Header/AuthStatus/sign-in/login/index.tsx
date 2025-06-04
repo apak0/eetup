@@ -1,9 +1,8 @@
 import { useActionState, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import toast from 'react-hot-toast'
-import { Checkbox } from '@headlessui/react'
-import { CheckIcon } from '@heroicons/react/16/solid'
-import { Eye, EyeOff } from 'lucide-react'
+import { Checkbox, Field, Label } from '@headlessui/react'
+import { CheckIcon, Eye, EyeOff } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 
@@ -86,23 +85,21 @@ export default function Login({ setLoginContent, setAuthOpen }: { setLoginConten
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
-          <div className="flex items-center gap-2">
+          <Field className="flex items-center gap-1 group">
             <Checkbox
               checked={rememberMe}
               onChange={handleRememberMe}
-              className="group size-6 rounded-md bg-orange-3/100 p-1 ring-1 ring-white/15 ring-inset focus:not-data-focus:outline-none data-checked:bg-bg-orange-3/100 data-focus:outline data-focus:outline-offset-2 data-focus:outline-white"
+              className="checkbox group size-5 rounded-md p-0.5 border-1 border-(--border-color) flex items-center justify-center group-hover:bg-orange-1 data-checked:bg-orange-1 transition-colors duration-200"
             >
-              <CheckIcon className="hidden size-4 fill-black group-data-checked:block" />
+              <CheckIcon strokeWidth={3} className="hidden group-data-checked:block text-orange-3" />
             </Checkbox>
 
-            <label htmlFor="rememberMe" className="mb-0">
-              Remember Me
-            </label>
-          </div>
+            <Label className="mb-0 ml-1">Remember Me</Label>
+          </Field>
         </div>
         <div className="grid gap-4 mt-8">
           <LoginButton />
-          <button onClick={() => setLoginContent('register')} className="btn-link ml-auto btn-text" type="button">
+          <button onClick={() => setLoginContent('register')} className="btn-link ml-auto" type="button">
             to register
           </button>
         </div>

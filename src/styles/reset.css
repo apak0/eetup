@@ -71,6 +71,6 @@
     margin: 0;
   }
   ::selection {
-    @apply bg-orange-3;
+    @apply bg-orange-3 text-white;
   }
 }

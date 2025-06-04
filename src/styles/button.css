@@ -10,7 +10,7 @@
   }
 
   button.btn-link {
-    @apply bg-transparent text-orange-2 underline;
+    @apply bg-transparent text-orange-2 underline  tracking-normal;
   }
   button.btn-link:hover,
   .btn-link:hover {

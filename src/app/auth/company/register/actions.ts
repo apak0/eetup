@@ -9,6 +9,7 @@ import { company } from '@/lib/database/schema'
 import { getLatLon } from '@/lib/utils/getLatLon'
 
 export const registerCompanyAction = async (_prevState: any, formData: FormData) => {
+  const privacyPolicy = formData.get('privacyPolicy')?.toString() || ''
   const postcode = formData.get('postcode')?.toString() || ''
   const city = formData.get('city')?.toString() || ''
   const street = formData.get('street')?.toString() || ''
@@ -20,6 +21,7 @@ export const registerCompanyAction = async (_prevState: any, formData: FormData)
   const token = formData.get('token')?.toString() || ''
 
   const values = {
+    privacyPolicy,
     postcode,
     city,
     street,
@@ -30,13 +32,19 @@ export const registerCompanyAction = async (_prevState: any, formData: FormData)
 
   let decodedToken: any = null
 
+  if (!privacyPolicy) {
+    return {
+      error: 'You must accept the privacy policy to register.',
+      values,
+    }
+  }
+
   try {
     decodedToken = jwt.verify(token, JWT_SECRET)
   } catch (_) {
     return {
-      error: true,
       title: 'Your token is expired!',
-      message: 'Your token is expired. Please start the registration process again.',
+      error: 'Your token is expired. Please start the registration process again.',
       values,
     }
   }
@@ -45,26 +53,23 @@ export const registerCompanyAction = async (_prevState: any, formData: FormData)
 
   if (!foundCompany) {
     return {
-      error: true,
       title: 'This company is not stared yet!',
-      message: 'Your company is not started yet. Please start the registration process again.',
+      error: 'Your company is not started yet. Please start the registration process again.',
       values,
     }
   }
 
   if (foundCompany.emailVerified) {
     return {
-      error: true,
       title: 'Company is already registered!',
-      message: 'This email is already used. If you forgot your password, use forgot password flow.',
+      error: 'This email is already used. If you forgot your password, use forgot password flow.',
       values,
     }
   }
 
   if (password !== passwordConfirm) {
     return {
-      error: true,
-      message: 'Passwords do not match!',
+      error: 'Passwords do not match!',
       values,
     }
   }
@@ -86,8 +91,7 @@ export const registerCompanyAction = async (_prevState: any, formData: FormData)
       .where(eq(company.email, decodedToken.email))
   } catch (e: any) {
     return {
-      error: true,
-      message: e?.detail || 'Error registering company. Please try again later.',
+      error: e?.detail || 'Error registering company. Please try again later.',
       values,
     }
   }

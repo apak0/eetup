@@ -8,6 +8,7 @@
     }
   }
 
+  button[disabled],
   input[disabled],
   textarea[disabled],
   .input[disabled] {
@@ -17,12 +18,8 @@
     }
   }
 
-  input[type='checkbox'] {
-    @apply h-auto;
-  }
-
-  input[type='checkbox'],
-  input[type='checkbox'] + label,
+  .checkbox,
+  .checkbox + label,
   input + label,
   textarea + label,
   .input + label {

@@ -1,8 +1,8 @@
 import { useActionState, useEffect, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import toast from 'react-hot-toast'
-import { Checkbox } from '@headlessui/react'
-import { CheckIcon } from '@heroicons/react/16/solid'
+import { Checkbox, Field, Label } from '@headlessui/react'
+import { CheckIcon } from 'lucide-react'
 import Link from 'next/link'
 
 import { registerUserAction } from './actions'
@@ -33,24 +33,21 @@ export default function Register({ setLoginContent, setAuthOpen }: { setLoginCon
         <input type="email" name="email" placeholder="Email" required autoComplete="email" defaultValue={values?.email} />
         <input type="password" name="password" placeholder="Password" required />
 
-        <div className="flex items-center gap-2 mt-2">
+        <Field className="flex items-center gap-1 group">
           <Checkbox
-            id="privacyPolicy"
             name="privacyPolicy"
             checked={policyAccepted}
             onChange={setPolicyAccepted}
-            className="group size-6 rounded-md bg-orange-3/100 p-1 ring-1 ring-white/15 ring-inset focus:not-data-focus:outline-none data-checked:bg-bg-orange-3/100 data-focus:outline data-focus:outline-offset-2 data-focus:outline-white"
+            className="checkbox group size-5 rounded-md p-0.5 border-1 border-(--border-color) flex items-center justify-center group-hover:bg-orange-1 data-checked:bg-orange-1 transition-colors duration-200"
           >
-            <CheckIcon className="hidden size-4 fill-black group-data-checked:block" />
+            <CheckIcon strokeWidth={3} className="hidden group-data-checked:block text-orange-3" />
           </Checkbox>
 
-          <label htmlFor="privacyPolicy" className="text-sm mb-0">
-            I agree to the{' '}
-            <Link href="/hub/privacy-policy" className="hover:underline" target="_blank">
-              Privacy Policy
-            </Link>
-          </label>
-        </div>
+          <Label className="mb-0 ml-1">I agree to the </Label>
+          <Link href="/hub/privacy-policy" className="hover:underline text-sm" target="_blank">
+            Privacy Policy
+          </Link>
+        </Field>
       </div>
       <div className="grid gap-4 mt-8">
         <LoginButton disabled={!policyAccepted} />

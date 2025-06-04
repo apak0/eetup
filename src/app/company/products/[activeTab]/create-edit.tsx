@@ -2,7 +2,6 @@
 import { useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { Button, Checkbox, Field, Fieldset, Input, Label, Switch, Textarea } from '@headlessui/react'
-import { CheckIcon } from '@heroicons/react/16/solid'
 import {
   Image as ImageKitImage,
   ImageKitAbortError,
@@ -12,7 +11,7 @@ import {
   upload,
 } from '@imagekit/next'
 import classNames from 'classnames'
-import { ArrowBigDownDash, ArrowRight, BookPlus, ImageUp, Trash2, X } from 'lucide-react'
+import { ArrowBigDownDash, ArrowRight, BookPlus, CheckIcon, ImageUp, Trash2, X } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
@@ -308,20 +307,17 @@ export const CreateEditProduct = ({ productData, categoryOptions }: { productDat
             />
           </div>
         </div>
-        <div className="flex items-center gap-2 mt-10 mb-2">
+        <Field className="flex items-center gap-1 group mt-10 mb-2">
           <Checkbox
-            id="addCartPreferencesChecked"
             checked={formValues.addCartPreferencesChecked}
             onChange={(checked) => handleChange('addCartPreferencesChecked', checked)}
-            className="group size-6 rounded-md bg-orange-3/100 p-1 ring-1 ring-white/15 ring-inset focus:not-data-focus:outline-none data-checked:bg-bg-orange-3/100 data-focus:outline data-focus:outline-offset-2 data-focus:outline-white "
+            className="checkbox group size-5 rounded-md p-0.5 border-1 border-(--border-color) flex items-center justify-center group-hover:bg-orange-1 data-checked:bg-orange-1 transition-colors duration-200"
           >
-            <CheckIcon className="hidden size-4 fill-black group-data-checked:block" />
+            <CheckIcon strokeWidth={3} className="hidden group-data-checked:block text-orange-3" />
           </Checkbox>
 
-          <label htmlFor="addCartPreferencesChecked" className="mb-0">
-            Has Preferences
-          </label>
-        </div>
+          <Label className="mb-0 ml-1">Has Preferences</Label>
+        </Field>
         {formValues.addCartPreferencesChecked && (
           <div className="flex flex-col gap-4 border rounded-lg border-(--border-color) p-4 xl:p-8">
             <h2 className="mb-6">Add to Cart Preferences</h2>
