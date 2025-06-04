@@ -1,7 +1,7 @@
 'use client'
 import { useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import { Button, Field, Fieldset, Input, Label, Switch, Textarea } from '@headlessui/react'
+import { Button, Checkbox, Field, Fieldset, Input, Label, Switch, Textarea } from '@headlessui/react'
 import {
   Image as ImageKitImage,
   ImageKitAbortError,
@@ -24,6 +24,7 @@ import Select from '@/components/reusables/Select'
 import { productAllergens, productDietary } from '@/lib/database/constants'
 import { Category, Product } from '@/lib/database/type'
 import { validateImageFile } from '@/lib/utils/validateImageSize'
+import { CheckIcon } from '@heroicons/react/16/solid'
 
 export const CreateEditProduct = ({ productData, categoryOptions }: { productData?: Product; categoryOptions: Category[] }) => {
   const isEdit = !!productData
@@ -307,14 +308,16 @@ export const CreateEditProduct = ({ productData, categoryOptions }: { productDat
             />
           </div>
         </div>
-        <div className="flex items-center gap-2 mt-10">
-          <input
-            type="checkbox"
+        <div className="flex items-center gap-2 mt-10 mb-2">
+          <Checkbox
             id="addCartPreferencesChecked"
             checked={formValues.addCartPreferencesChecked}
-            onChange={(e) => handleChange('addCartPreferencesChecked', e.target.checked)}
-            className="accent-gray-2"
-          />
+            onChange={(checked) => handleChange('addCartPreferencesChecked', checked)}
+            className="group size-6 rounded-md bg-orange-3/100 p-1 ring-1 ring-white/15 ring-inset focus:not-data-focus:outline-none data-checked:bg-bg-orange-3/100 data-focus:outline data-focus:outline-offset-2 data-focus:outline-white "
+          >
+            <CheckIcon className="hidden size-4 fill-black group-data-checked:block" />
+          </Checkbox>
+
           <label htmlFor="addCartPreferencesChecked" className="mb-0">
             Has Preferences
           </label>

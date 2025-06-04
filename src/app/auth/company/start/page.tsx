@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation'
 import { startCompanyAction } from './actions'
 
 import { PhoneInput } from '@/components/reusables/PhoneInput'
+import { Checkbox } from '@headlessui/react'
+import { CheckIcon } from '@heroicons/react/16/solid'
 
 export default function StartAsCompany() {
   const router = useRouter()
@@ -75,7 +77,9 @@ export default function StartAsCompany() {
       <div className="grid gap-4 mt-8 w-80">
         {/* add privacy-policy checkbox */}
         <div className="flex items-center gap-2">
-          <input type="checkbox" name="privacy-policy" id="privacy-policy" required defaultChecked={values?.['privacy-policy'] ? true : false} />
+          <Checkbox className="group size-6 rounded-md bg-orange-3/100 p-1 ring-1 ring-white/15 ring-inset focus:not-data-focus:outline-none data-checked:bg-bg-orange-3/100 data-focus:outline data-focus:outline-offset-2 data-focus:outline-white">
+            <CheckIcon className="hidden size-4 fill-black group-data-checked:block" />
+          </Checkbox>
           <label htmlFor="privacy-policy" className="mb-0">
             I agree to the <Link href="/privacy-policy">privacy policy</Link>
           </label>

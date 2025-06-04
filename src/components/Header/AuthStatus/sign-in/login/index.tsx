@@ -1,6 +1,8 @@
 import { useActionState, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import toast from 'react-hot-toast'
+import { Checkbox } from '@headlessui/react'
+import { CheckIcon } from '@heroicons/react/16/solid'
 import { Eye, EyeOff } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
@@ -12,9 +14,9 @@ export default function Login({ setLoginContent, setAuthOpen }: { setLoginConten
   const [showPassword, setShowPassword] = useState(false)
   const [rememberMe, setRememberMe] = useState(() => !!localStorage.getItem('rememberedEmail'))
 
-  const handleRememberMe = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRememberMe(e.target.checked)
-    if (e.target.checked) {
+  const handleRememberMe = (checked: boolean) => {
+    setRememberMe(checked)
+    if (checked) {
       localStorage.setItem('rememberedEmail', email)
     } else {
       localStorage.removeItem('rememberedEmail')
@@ -85,7 +87,15 @@ export default function Login({ setLoginContent, setAuthOpen }: { setLoginConten
             </button>
           </div>
           <div className="flex items-center gap-2">
-            <input type="checkbox" id="rememberMe" checked={rememberMe} onChange={handleRememberMe} className="accent-gray-200 " />
+            <Checkbox
+              checked={rememberMe}
+              onChange={handleRememberMe}
+              className="group size-6 rounded-md bg-orange-3/100 p-1 ring-1 ring-white/15 ring-inset focus:not-data-focus:outline-none data-checked:bg-bg-orange-3/100 data-focus:outline data-focus:outline-offset-2 data-focus:outline-white"
+            >
+              <CheckIcon className="hidden size-4 fill-black group-data-checked:block" />
+            </Checkbox>
+
+            {/* <input type="checkbox" id="rememberMe" checked={rememberMe} onChange={handleRememberMe} className="accent-gray-200 " /> */}
             <label htmlFor="rememberMe" className="mb-0">
               Remember Me
             </label>

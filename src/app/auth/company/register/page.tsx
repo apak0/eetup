@@ -1,6 +1,8 @@
 'use client'
-import { useActionState, useEffect } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+import { Checkbox } from '@headlessui/react'
+import { CheckBadgeIcon } from '@heroicons/react/16/solid'
 import jwt from 'jsonwebtoken'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -13,6 +15,8 @@ export default function RegisterAsCompany() {
   const searchParams = new URLSearchParams(window.location.search)
 
   const [formState, formAction] = useActionState<{ values?: any; error?: any; message?: any }, any>(registerCompanyAction, { values: {} })
+
+  const [enabled, setEnabled] = useState(false)
 
   useEffect(() => {
     if (formState?.error) {
@@ -66,6 +70,9 @@ export default function RegisterAsCompany() {
       <div className="grid gap-4 mt-8 w-80">
         <div className="flex items-center gap-2">
           <input type="checkbox" name="privacy-policy" id="privacy-policy" required defaultChecked={values?.['privacy-policy'] ? true : false} />
+          <Checkbox className="group size-6 rounded-md bg-orange-3/100 p-1 ring-1 ring-white/15 ring-inset focus:not-data-focus:outline-none data-checked:bg-bg-orange-3/100 data-focus:outline data-focus:outline-offset-2 data-focus:outline-white">
+            <CheckBadgeIcon className="hidden size-4 fill-black group-data-checked:block" />
+          </Checkbox>
           <label htmlFor="privacy-policy" className="mb-0">
             I agree to the <Link href="/privacy-policy">privacy policy</Link>
           </label>
