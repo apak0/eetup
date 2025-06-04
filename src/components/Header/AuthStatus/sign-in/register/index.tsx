@@ -2,7 +2,7 @@ import { useActionState, useEffect, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import toast from 'react-hot-toast'
 import { Checkbox } from '@headlessui/react'
-import { CheckIcon } from '@heroicons/react/16/solid'
+import { CheckIcon } from 'lucide-react'
 import Link from 'next/link'
 
 import { registerUserAction } from './actions'
@@ -41,7 +41,7 @@ export default function Register({ setLoginContent, setAuthOpen }: { setLoginCon
             onChange={setPolicyAccepted}
             className="group size-6 rounded-md bg-orange-3/100 p-1 ring-1 ring-white/15 ring-inset focus:not-data-focus:outline-none data-checked:bg-bg-orange-3/100 data-focus:outline data-focus:outline-offset-2 data-focus:outline-white"
           >
-            <CheckIcon className="hidden size-4 fill-black group-data-checked:block" />
+            <CheckIcon className="hidden size-4 group-data-checked:block" />
           </Checkbox>
 
           <label htmlFor="privacyPolicy" className="text-sm mb-0">

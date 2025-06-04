@@ -2,8 +2,8 @@
 import { useActionState, useEffect } from 'react'
 import toast from 'react-hot-toast'
 import { Checkbox } from '@headlessui/react'
-import { CheckBadgeIcon } from '@heroicons/react/16/solid'
 import jwt from 'jsonwebtoken'
+import { CheckIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
@@ -69,7 +69,7 @@ export default function RegisterAsCompany() {
         <div className="flex items-center gap-2">
           <input type="checkbox" name="privacy-policy" id="privacy-policy" required defaultChecked={values?.['privacy-policy'] ? true : false} />
           <Checkbox className="group size-6 rounded-md bg-orange-3/100 p-1 ring-1 ring-white/15 ring-inset focus:not-data-focus:outline-none data-checked:bg-bg-orange-3/100 data-focus:outline data-focus:outline-offset-2 data-focus:outline-white">
-            <CheckBadgeIcon className="hidden size-4 fill-black group-data-checked:block" />
+            <CheckIcon className="hidden size-4 group-data-checked:block" />
           </Checkbox>
           <label htmlFor="privacy-policy" className="mb-0">
             I agree to the <Link href="/privacy-policy">privacy policy</Link>

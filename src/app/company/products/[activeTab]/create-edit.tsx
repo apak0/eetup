@@ -2,7 +2,6 @@
 import { useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { Button, Checkbox, Field, Fieldset, Input, Label, Switch, Textarea } from '@headlessui/react'
-import { CheckIcon } from '@heroicons/react/16/solid'
 import {
   Image as ImageKitImage,
   ImageKitAbortError,
@@ -12,6 +11,7 @@ import {
   upload,
 } from '@imagekit/next'
 import classNames from 'classnames'
+import { CheckIcon } from 'lucide-react'
 import { ArrowBigDownDash, ArrowRight, BookPlus, ImageUp, Trash2, X } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -315,7 +315,7 @@ export const CreateEditProduct = ({ productData, categoryOptions }: { productDat
             onChange={(checked) => handleChange('addCartPreferencesChecked', checked)}
             className="group size-6 rounded-md bg-orange-3/100 p-1 ring-1 ring-white/15 ring-inset focus:not-data-focus:outline-none data-checked:bg-bg-orange-3/100 data-focus:outline data-focus:outline-offset-2 data-focus:outline-white "
           >
-            <CheckIcon className="hidden size-4 fill-black group-data-checked:block" />
+            <CheckIcon className="hidden size-4 group-data-checked:block" />
           </Checkbox>
 
           <label htmlFor="addCartPreferencesChecked" className="mb-0">
