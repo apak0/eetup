@@ -1,11 +1,11 @@
 import { useActionState, useEffect, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import toast from 'react-hot-toast'
+import { Checkbox } from '@headlessui/react'
+import { CheckIcon } from '@heroicons/react/16/solid'
 import Link from 'next/link'
 
 import { registerUserAction } from './actions'
-import { Checkbox } from '@headlessui/react'
-import { CheckIcon } from '@heroicons/react/16/solid'
 
 export default function Register({ setLoginContent, setAuthOpen }: { setLoginContent: (val: string) => void; setAuthOpen: any }) {
   const [formState, formAction] = useActionState<{ values?: any; error?: any; message?: any }, any>(registerUserAction, { values: {} })
@@ -35,7 +35,7 @@ export default function Register({ setLoginContent, setAuthOpen }: { setLoginCon
 
         <div className="flex items-center gap-2 mt-2">
           <Checkbox
-            id="privacyPolicy"  
+            id="privacyPolicy"
             name="privacyPolicy"
             checked={policyAccepted}
             onChange={setPolicyAccepted}

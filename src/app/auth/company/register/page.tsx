@@ -1,5 +1,5 @@
 'use client'
-import { useActionState, useEffect, useState } from 'react'
+import { useActionState, useEffect } from 'react'
 import toast from 'react-hot-toast'
 import { Checkbox } from '@headlessui/react'
 import { CheckBadgeIcon } from '@heroicons/react/16/solid'
@@ -15,8 +15,6 @@ export default function RegisterAsCompany() {
   const searchParams = new URLSearchParams(window.location.search)
 
   const [formState, formAction] = useActionState<{ values?: any; error?: any; message?: any }, any>(registerCompanyAction, { values: {} })
-
-  const [enabled, setEnabled] = useState(false)
 
   useEffect(() => {
     if (formState?.error) {
