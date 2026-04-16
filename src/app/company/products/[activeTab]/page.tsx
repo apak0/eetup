@@ -36,5 +36,5 @@ export default async function ProductsPage({
       icon: <Edit size={20} />,
     })
   }
-  return <Tabs tabs={tabs} selectedTab={activeTab} />
+  return <Tabs tabs={tabs} selectedTab={activeTab} basePath="/company/products/" />
 }

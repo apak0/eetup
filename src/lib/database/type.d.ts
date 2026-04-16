@@ -2,11 +2,9 @@ import { InferSelectModel } from 'drizzle-orm'
 
 import { category, company, product, tag, user } from './schema'
 
-export type UserWithPassword = InferSelectModel<typeof user>
-export type User = Omit<UserWithPassword, 'password'>
+export type User = InferSelectModel<typeof user>
 
-export type CompanyWithPassword = InferSelectModel<typeof company>
-export type Company = Omit<CompanyWithPassword, 'password'>
+export type Company = InferSelectModel<typeof company>
 
 export type Product = InferSelectModel<typeof product>
 
@@ -16,12 +14,8 @@ export type Tag = InferSelectModel<typeof tag>
 export type UserSession = {
   user: {
     id: number
-    firstName: string
-    lastName: string
-    organization: string
-    isCompany: boolean
     email: string
-    image: string
+    role: string
   }
 }
 

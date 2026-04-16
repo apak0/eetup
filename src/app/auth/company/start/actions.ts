@@ -3,11 +3,12 @@ import { eq } from 'drizzle-orm'
 import jwt from 'jsonwebtoken'
 import nodemailer from 'nodemailer'
 
-import { registerCompanyEmailTemplate } from './register-company'
-
 import { appName, JWT_SECRET } from '@/constants'
 import { db } from '@/lib/database/db'
-import { company } from '@/lib/database/schema'
+import { account } from '@/lib/database/schema/account'
+import { company } from '@/lib/database/schema/company'
+import { sendEmail } from '@/lib/utils/sendEmail'
+import { registerCompanyEmailTemplate } from '@/lib/templates/registerCompany'
 
 export const startCompanyAction = async (_prevState: any, formData: FormData) => {
   const privacyPolicy = formData.get('privacyPolicy')?.toString() || ''
@@ -33,9 +34,9 @@ export const startCompanyAction = async (_prevState: any, formData: FormData) =>
     }
   }
 
-  const [foundCompany] = await db.select().from(company).where(eq(company.email, email))
-
-  if (foundCompany?.emailVerified) {
+  // Check for existing account
+  const [foundAccount] = await db.select().from(account).where(eq(account.email, email))
+  if (foundAccount) {
     return {
       error: 'This email is already used. If you forgot your password, use forgot password flow.',
       title: 'Company already exists!',
@@ -57,17 +58,14 @@ export const startCompanyAction = async (_prevState: any, formData: FormData) =>
 
   const mailTemplate = registerCompanyEmailTemplate({ firstName, registrationToken })
 
-  // Email options
   const mailOptions = {
     from: process.env.SMTP_FROM,
     to: email,
     subject: `Company Invitation to ${appName}`,
-    text: `Register your store at ${appName} below`,
     html: mailTemplate,
   }
 
-  // Send the email
-  const res = await transporter.sendMail(mailOptions)
+  const res = await sendEmail(mailOptions)
 
   if (res.rejected.length > 0) {
     return {
@@ -77,7 +75,19 @@ export const startCompanyAction = async (_prevState: any, formData: FormData) =>
   }
 
   try {
-    await db.insert(company).values(values)
+    const [createdAccount] = await db
+      .insert(account)
+      .values({
+        email,
+        password: '', // Set on registration
+        role: 'company',
+        emailVerified: false,
+      })
+      .returning()
+    await db.insert(company).values({
+      ...values,
+      accountId: createdAccount.id,
+    })
   } catch (e: any) {
     return {
       error: e?.detail || 'Error inserting company. Please try again later.',

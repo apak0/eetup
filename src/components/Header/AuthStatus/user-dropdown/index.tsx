@@ -20,7 +20,7 @@ export const UserDropdown = () => {
         anchor={{ to: 'bottom end', gap: '5px' }}
         className="flex flex-col bg-(--bg) rounded-xl py-1 drop-shadow-2xl dark:border border-(--border-color)"
       >
-        {user?.isCompany && (
+        {user?.role === 'company' && (
           <MenuItem>
             <Link className="btn-text flex items-center rounded-full h-8 my-1 mx-2 py-2 px-3 hover:bg-orange-1 gap-4 justify-start" href="/company">
               <Crown size={20} />
@@ -28,7 +28,7 @@ export const UserDropdown = () => {
             </Link>
           </MenuItem>
         )}
-        {user?.isCompany && (
+        {user?.role === 'company' && (
           <MenuItem>
             <Link className="btn-text flex items-center rounded-full h-8 my-1 mx-2 py-2 px-3 hover:bg-orange-1 gap-4 justify-start" href="/company">
               <User size={20} />

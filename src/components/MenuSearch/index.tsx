@@ -5,10 +5,13 @@ import { ArrowLeft, ArrowRight, Search, X } from 'lucide-react'
 
 import { StyledDiv } from './style'
 
+import { ProductItem } from '@/components/ProductItem'
+import { useRouter } from 'next/navigation'
+
 interface Tab {
   id: number
   label: string
-  items: any
+  products: any[]
 }
 
 interface MenuSearchProps {
@@ -18,6 +21,7 @@ interface MenuSearchProps {
 }
 
 export const MenuSearch: React.FC<MenuSearchProps> = ({ tabs, onSearch, onTabClick }) => {
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
   const [activeTab, setActiveTab] = useState(tabs.length > 0 ? tabs[0].id : '')
   const tabsRootRef = useRef<HTMLDivElement>(null)
@@ -179,7 +183,7 @@ export const MenuSearch: React.FC<MenuSearchProps> = ({ tabs, onSearch, onTabCli
             (item) =>
               !searchQuery ||
               item.label.toLowerCase()?.includes(searchQuery.toLowerCase()) ||
-              item.items?.some((subItem: any) => subItem.props.item.name.toLowerCase()?.includes(searchQuery.toLowerCase())),
+              item.products?.some((product: any) => product.name.toLowerCase()?.includes(searchQuery.toLowerCase())),
           )
           ?.map((tabItem) => (
             <div
@@ -190,7 +194,16 @@ export const MenuSearch: React.FC<MenuSearchProps> = ({ tabs, onSearch, onTabCli
               }}
             >
               <h3 className="font-bold mb-2">{tabItem.label}</h3>
-              <div className="grid gap-4 grid-cols-1 @3xl:grid-cols-2 @5xl:grid-cols-3">{tabItem.items}</div>
+              <div className="grid gap-4 grid-cols-1 @3xl:grid-cols-2 @5xl:grid-cols-3">
+                {tabItem.products?.map((product) => (
+                  <ProductItem
+                    key={product.id}
+                    item={product}
+                    showToggle={true}
+                    onEdit={() => router.push(`/company/products/edit?productId=${product.id}`)}
+                  />
+                ))}
+              </div>
             </div>
           ))}
       </div>

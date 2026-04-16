@@ -7,7 +7,7 @@ export type SendEmailOptions = {
   from?: string
 }
 
-export async function sendEmail({ to, subject, html, from }: SendEmailOptions) {
+export const sendEmail = async ({ to, subject, html, from }: SendEmailOptions) => {
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT) || 587,
@@ -18,7 +18,7 @@ export async function sendEmail({ to, subject, html, from }: SendEmailOptions) {
     },
   })
 
-  await transporter.sendMail({
+  return await transporter.sendMail({
     from: from || process.env.SMTP_FROM || 'no-reply@eetup.com',
     to,
     subject,

@@ -14,7 +14,7 @@ export const Header = async () => {
     <div className="flex justify-center h-15 w-full border-bottom shadow-md bg-(--bg)">
       <div className="grid grid-cols-2 items-center max-w-app px-2 lg:px-10 flex-1">
         <div className="flex items-center gap-10">
-          <Link href="/">
+          <Link href="/" className="min-w-20">
             <Image
               width={60}
               height={60}

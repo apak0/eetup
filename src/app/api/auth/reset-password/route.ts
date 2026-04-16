@@ -1,5 +1,5 @@
 import { db } from '@/lib/database/db'
-import { user } from '@/lib/database/schema'
+import { account } from '@/lib/database/schema/account'
 import { eq } from 'drizzle-orm'
 import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from '@/constants'
@@ -18,14 +18,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid or expired token' }, { status: 400 })
     }
 
-    const found = await db.select().from(user).where(eq(user.email, payload.email)).limit(1)
+    const found = await db.select().from(account).where(eq(account.email, payload.email)).limit(1)
     if (!found.length || found[0].resetToken !== token) {
       return NextResponse.json({ error: 'Invalid or expired token' }, { status: 400 })
     }
 
     const hashed = await bcrypt.hash(password, 10)
 
-    await db.update(user).set({ password: hashed, resetToken: null }).where(eq(user.email, payload.email))
+    await db.update(account).set({ password: hashed, resetToken: null }).where(eq(account.email, payload.email))
 
     return NextResponse.json({ message: 'Password has been reset.' })
   } catch (e) {

@@ -1,21 +1,27 @@
 'use client'
-
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { DarkModeTogglerContainer } from './styled'
 
 export const DarkModeToggler = ({ preferredTheme }: { preferredTheme: 'dark' | 'light' }) => {
-  const initialTheme: any =
-    preferredTheme || (globalThis.matchMedia && globalThis.matchMedia('(prefers-color-scheme: dark)').matches && 'dark') || 'light'
+  const [theme, setTheme] = useState<'dark' | 'light'>(preferredTheme)
 
-  const [theme, setTheme] = useState<'dark' | 'light'>(initialTheme)
+  // Set theme on mount to avoid hydration mismatch
+  useEffect(() => {
+    let initialTheme: 'dark' | 'light' = preferredTheme
+    if (!preferredTheme && typeof window !== 'undefined' && window.matchMedia) {
+      initialTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    }
+    setTheme(initialTheme)
+    document.documentElement.classList.toggle('dark', initialTheme === 'dark')
+  }, [preferredTheme])
 
   const onThemeChange = (val: 'dark' | 'light') => {
     setTheme(val)
     document.documentElement.classList.toggle('dark', val === 'dark')
 
     if (val === 'dark') {
-      document.cookie = 'theme=dark; path=/;'
+      document.cookie = 'theme=dark; path=/'
     } else {
       document.cookie = 'theme=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;'
     }

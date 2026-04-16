@@ -37,14 +37,7 @@ export const ProductsOverview = () => {
           companyData?.category?.map((catItem) => ({
             id: catItem.id,
             label: catItem.name,
-            items: catItem?.product.map((product) => (
-              <ProductItem
-                key={product.id}
-                item={product}
-                showToggle={true}
-                onEdit={() => redirect(`/company/products/edit?productId=${product.id}`)}
-              />
-            )),
+            products: catItem.product,
           })) || []
         }
       />

@@ -4,11 +4,12 @@ import { eq } from 'drizzle-orm'
 import jwt from 'jsonwebtoken'
 import nodemailer from 'nodemailer'
 
-import { registerUserEmailTemplate } from './register-user'
-
 import { appName, JWT_SECRET } from '@/constants'
 import { db } from '@/lib/database/db'
-import { user } from '@/lib/database/schema'
+import { account } from '@/lib/database/schema/account'
+import { user } from '@/lib/database/schema/user'
+import { sendEmail } from '@/lib/utils/sendEmail'
+import { registerUserEmailTemplate } from '@/lib/templates/registerUser'
 
 export const registerUserAction = async (_prevState: any, formData: FormData) => {
   const email = formData.get('email')?.toString() || ''
@@ -22,8 +23,9 @@ export const registerUserAction = async (_prevState: any, formData: FormData) =>
     lastName,
   }
 
-  const [foundUser] = await db.select().from(user).where(eq(user.email, email))
-  if (foundUser && foundUser.emailVerified) {
+  // Check for existing account
+  const [foundAccount] = await db.select().from(account).where(eq(account.email, email))
+  if (foundAccount && foundAccount.emailVerified) {
     return {
       error: true,
       message: 'User already exists',
@@ -53,8 +55,7 @@ export const registerUserAction = async (_prevState: any, formData: FormData) =>
     html: mailTemplate,
   }
 
-  // Send the email
-  const res = await transporter.sendMail(mailOptions)
+  const res = await sendEmail(mailOptions)
 
   if (res.rejected.length > 0) {
     return {
@@ -65,10 +66,34 @@ export const registerUserAction = async (_prevState: any, formData: FormData) =>
   }
 
   const hashedPassword = await bcrypt.hash(password, 10)
-  const newUser = { email, firstName, lastName, password: hashedPassword }
 
   try {
-    await db.insert(user).values(newUser)
+    let accountId = foundAccount?.id
+    if (!accountId) {
+      // Create account
+      const [createdAccount] = await db
+        .insert(account)
+        .values({
+          email,
+          password: hashedPassword,
+          role: 'user',
+          emailVerified: false,
+        })
+        .returning()
+      accountId = createdAccount.id
+    } else {
+      // Update password if account exists but not verified
+      await db.update(account).set({ password: hashedPassword }).where(eq(account.email, email))
+    }
+    // Create user profile if not exists
+    const [foundUser] = await db.select().from(user).where(eq(user.accountId, accountId))
+    if (!foundUser) {
+      await db.insert(user).values({
+        accountId,
+        firstName,
+        lastName,
+      })
+    }
   } catch (e: any) {
     return {
       error: true,

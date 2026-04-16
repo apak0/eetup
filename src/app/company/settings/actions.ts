@@ -19,7 +19,7 @@ export const getCompanyTagOptions = async () => {
 
 export const createTagAction = async (formValues: any) => {
   const session = await auth()
-  if (!session?.user?.id || !session?.user?.isCompany) return { error: 'Unauthorized' }
+  if (!session?.user?.id || session?.user?.role !== 'company') return { error: 'Unauthorized' }
   const companyId = session?.user?.id
 
   const newTag = formValues

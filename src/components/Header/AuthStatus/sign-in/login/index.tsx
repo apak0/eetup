@@ -29,9 +29,16 @@ export default function Login({ setLoginContent, setAuthOpen }: { setLoginConten
     })
 
     signIn('credentials', { redirect: false, username: object.email, password: object.password })
-      .then((res) => {
+      .then(async (res) => {
         if (res?.ok) {
-          router.push(res?.url || '/')
+          // Fetch session to get user role
+          const sessionRes = await fetch('/api/auth/session')
+          const session = await sessionRes.json()
+          if (session?.user?.role === 'company') {
+            router.push('/company')
+          } else {
+            router.push(res?.url || '/')
+          }
           toast.success('Login successful!')
         } else if (res?.error) {
           toast.error(res?.error, { duration: 5000 })

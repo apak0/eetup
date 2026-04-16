@@ -146,7 +146,7 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
             <Button
               className="w-full"
               onClick={() => {
-                if (session?.data?.user?.isCompany) {
+                if (session?.data?.user?.role === 'company') {
                   toast.error('You cannot checkout as a company user. Please switch to a customer account.')
                 } else {
                   redirect(`/restaurants/${companyData?.id}/checkout`)
@@ -355,16 +355,7 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
                 companyData?.category?.map((catItem) => ({
                   id: catItem.id,
                   label: catItem.name,
-                  items: catItem?.product.map((product) => (
-                    <ProductItem
-                      key={product.id}
-                      item={product}
-                      onAdd={() => {
-                        setAddToBasketOpen(true)
-                        setPreference({ ...product, selections: {}, qty: 1 })
-                      }}
-                    />
-                  )),
+                  products: catItem.product,
                 })) || []
               }
             />
