@@ -12,11 +12,24 @@ const BasketContext = createContext<{
 export const useBasket = () => useContext(BasketContext)
 
 export const Providers = ({ children }: { children: any }) => {
-  const [savedBasket, setSavedBasketHandler] = useState<{ [k: string]: Preference[] }>(JSON.parse(localStorage.getItem('savedBasket') || '{}'))
+  const getInitialBasket = () => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      try {
+        return JSON.parse(window.localStorage.getItem('savedBasket') || '{}')
+      } catch {
+        return {}
+      }
+    }
+    return {}
+  }
+
+  const [savedBasket, setSavedBasketHandler] = useState<{ [k: string]: Preference[] }>(getInitialBasket())
 
   const setSavedBasket = (value: { [k: string]: Preference[] }) => {
     setSavedBasketHandler(value)
-    localStorage.setItem('savedBasket', JSON.stringify(savedBasket))
+    if (typeof window !== 'undefined' && window.localStorage) {
+      window.localStorage.setItem('savedBasket', JSON.stringify(value))
+    }
   }
 
   return (

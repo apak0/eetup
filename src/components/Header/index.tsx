@@ -11,11 +11,19 @@ export const Header = async () => {
   const theme: any = cookieStore.get('theme')?.value
 
   return (
-    <div className="flex justify-center h-17 w-full border-bottom shadow-md bg-(--bg)">
+    <div className="flex justify-center h-15 w-full border-bottom shadow-md bg-(--bg)">
       <div className="grid grid-cols-2 items-center max-w-app px-2 lg:px-10 flex-1">
         <div className="flex items-center gap-10">
-          <Link href="/" className="min-w-[70px]">
-            <Image width={70} height={70} priority alt="company-logo" src="/LOGO.png" className="cursor-pointer" />
+          <Link href="/">
+            <Image
+              width={60}
+              height={60}
+              priority
+              alt="company-logo"
+              src="/LOGO.png"
+              className="cursor-pointer"
+              style={{ height: 'auto', width: 'auto' }}
+            />
           </Link>
           <Search />
         </div>
