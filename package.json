@@ -48,6 +48,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
+    "@eslint/js": "^10.0.1",
     "@tailwindcss/container-queries": "^0.1.1",
     "@tailwindcss/postcss": "^4.2.2",
     "@types/bcrypt": "^6.0.0",
@@ -58,8 +59,9 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "drizzle-kit": "^0.31.10",
-    "eslint": "^10",
+    "eslint": "^10.2.0",
     "eslint-config-next": "16.2.3",
+    "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-simple-import-sort": "^13.0.0",
     "eslint-plugin-unused-imports": "^4.4.1",
     "prettier": "^3.8.2",

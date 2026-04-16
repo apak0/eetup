@@ -6,7 +6,6 @@ import { redirect } from 'next/navigation'
 import { getLoggedInCompanyWithConnectionsAction } from './actions'
 
 import { MenuSearch } from '@/components/MenuSearch'
-import { ProductItem } from '@/components/ProductItem'
 import Loading from '@/components/reusables/Loading'
 import { CompanyWithConnections } from '@/lib/database/type'
 

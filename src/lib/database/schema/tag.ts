@@ -1,4 +1,4 @@
-import { integer, varchar, check, timestamp } from 'drizzle-orm/pg-core'
+import { integer, varchar, check } from 'drizzle-orm/pg-core'
 import { company } from './company'
 import { cs1, withTimestamps } from './utils'
 import { sql } from 'drizzle-orm'

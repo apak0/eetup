@@ -1,10 +1,11 @@
 import { relations } from 'drizzle-orm'
+
+import { account } from './account'
+import { category } from './category'
 import { company } from './company'
 import { product } from './product'
 import { tag } from './tag'
-import { category } from './category'
 import { user } from './user'
-import { account } from './account'
 
 //// Relations
 

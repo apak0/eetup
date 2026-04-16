@@ -1,4 +1,4 @@
-import { integer, varchar, decimal, boolean, doublePrecision, jsonb, timestamp, unique } from 'drizzle-orm/pg-core'
+import { integer, varchar, decimal, boolean, jsonb, unique } from 'drizzle-orm/pg-core'
 import { company } from './company'
 import { category } from './category'
 import { cs1, withTimestamps } from './utils'
