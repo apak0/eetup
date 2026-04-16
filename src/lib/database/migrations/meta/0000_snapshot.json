@@ -1,9 +1,205 @@
 {
-  "id": "8e209910-bb08-4bae-8d00-a28feff14dac",
+  "id": "82de58a0-84b6-4221-a3e7-1376c2a21e34",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+    "eetup-dev.account": {
+      "name": "account",
+      "schema": "eetup-dev",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "account_id_seq",
+            "schema": "eetup-dev",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password": {
+          "name": "password",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role": {
+          "name": "role",
+          "type": "varchar(32)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "emailVerified": {
+          "name": "emailVerified",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "resetToken": {
+          "name": "resetToken",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "account_email_unique": {
+          "name": "account_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "eetup-dev.user": {
+      "name": "user",
+      "schema": "eetup-dev",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "user_id_seq",
+            "schema": "eetup-dev",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "accountId": {
+          "name": "accountId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "firstName": {
+          "name": "firstName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lastName": {
+          "name": "lastName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tel": {
+          "name": "tel",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "postcode": {
+          "name": "postcode",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "city": {
+          "name": "city",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "street": {
+          "name": "street",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "houseNumber": {
+          "name": "houseNumber",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "houseNumberAddition": {
+          "name": "houseNumberAddition",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "user_accountId_account_id_fk": {
+          "name": "user_accountId_account_id_fk",
+          "tableFrom": "user",
+          "tableTo": "account",
+          "schemaTo": "eetup-dev",
+          "columnsFrom": [
+            "accountId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "eetup-dev.company": {
       "name": "company",
       "schema": "eetup-dev",
@@ -25,14 +221,14 @@
             "cycle": false
           }
         },
-        "organization": {
-          "name": "organization",
-          "type": "varchar(255)",
+        "accountId": {
+          "name": "accountId",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
-        "email": {
-          "name": "email",
+        "organization": {
+          "name": "organization",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
@@ -55,12 +251,6 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
-        },
-        "password": {
-          "name": "password",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
         },
         "cocId": {
           "name": "cocId",
@@ -106,16 +296,9 @@
         },
         "bannedPostcodes": {
           "name": "bannedPostcodes",
-          "type": "varchar(255)[]",
+          "type": "varchar[]",
           "primaryKey": false,
           "notNull": false
-        },
-        "emailVerified": {
-          "name": "emailVerified",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
         },
         "minEstimatedDeliveryTime": {
           "name": "minEstimatedDeliveryTime",
@@ -156,20 +339,41 @@
           "type": "double precision",
           "primaryKey": false,
           "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "company_email_unique": {
-          "name": "company_email_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+      "foreignKeys": {
+        "company_accountId_account_id_fk": {
+          "name": "company_accountId_account_id_fk",
+          "tableFrom": "company",
+          "tableTo": "account",
+          "schemaTo": "eetup-dev",
+          "columnsFrom": [
+            "accountId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -209,7 +413,7 @@
         },
         "description": {
           "name": "description",
-          "type": "varchar(255)",
+          "type": "varchar(1000)",
           "primaryKey": false,
           "notNull": true
         },
@@ -219,15 +423,15 @@
           "primaryKey": false,
           "notNull": true
         },
-        "discount_price": {
-          "name": "discount_price",
+        "discountPrice": {
+          "name": "discountPrice",
           "type": "numeric",
           "primaryKey": false,
           "notNull": false
         },
         "image": {
           "name": "image",
-          "type": "varchar(2000)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
@@ -238,9 +442,9 @@
           "notNull": true,
           "default": false
         },
-        "categories": {
-          "name": "categories",
-          "type": "integer[]",
+        "categoryId": {
+          "name": "categoryId",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
@@ -255,6 +459,34 @@
           "type": "integer[]",
           "primaryKey": false,
           "notNull": false
+        },
+        "addCartPreferencesChecked": {
+          "name": "addCartPreferencesChecked",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "addCartPreferences": {
+          "name": "addCartPreferences",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'[]'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -270,7 +502,21 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "product_categoryId_category_id_fk": {
+          "name": "product_categoryId_category_id_fk",
+          "tableFrom": "product",
+          "tableTo": "category",
+          "schemaTo": "eetup-dev",
+          "columnsFrom": [
+            "categoryId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },
@@ -282,14 +528,22 @@
           "columns": [
             "name"
           ]
+        },
+        "product_company_id_name_unique": {
+          "name": "product_company_id_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "company_id",
+            "name"
+          ]
         }
       },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "eetup-dev.user": {
-      "name": "user",
+    "eetup-dev.category": {
+      "name": "category",
       "schema": "eetup-dev",
       "columns": {
         "id": {
@@ -299,7 +553,7 @@
           "notNull": true,
           "identity": {
             "type": "always",
-            "name": "user_id_seq",
+            "name": "category_id_seq",
             "schema": "eetup-dev",
             "increment": "1",
             "startWith": "1",
@@ -309,95 +563,140 @@
             "cycle": false
           }
         },
-        "password": {
-          "name": "password",
+        "name": {
+          "name": "name",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "firstName": {
-          "name": "firstName",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "lastName": {
-          "name": "lastName",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "email": {
-          "name": "email",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "tel": {
-          "name": "tel",
-          "type": "varchar(255)",
+        "company_id": {
+          "name": "company_id",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
-        "postcode": {
-          "name": "postcode",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "city": {
-          "name": "city",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "street": {
-          "name": "street",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "houseNumber": {
-          "name": "houseNumber",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "houseNumberAddition": {
-          "name": "houseNumberAddition",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "emailVerified": {
-          "name": "emailVerified",
-          "type": "boolean",
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
-          "default": false
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "user_email_unique": {
-          "name": "user_email_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+      "foreignKeys": {
+        "category_company_id_company_id_fk": {
+          "name": "category_company_id_company_id_fk",
+          "tableFrom": "category",
+          "tableTo": "company",
+          "schemaTo": "eetup-dev",
+          "columnsFrom": [
+            "company_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
       "policies": {},
-      "checkConstraints": {},
+      "checkConstraints": {
+        "name_min_length": {
+          "name": "name_min_length",
+          "value": "char_length(\"eetup-dev\".\"category\".\"name\") >= 2"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "eetup-dev.tag": {
+      "name": "tag",
+      "schema": "eetup-dev",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "tag_id_seq",
+            "schema": "eetup-dev",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "company_id": {
+          "name": "company_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "tag_company_id_company_id_fk": {
+          "name": "tag_company_id_company_id_fk",
+          "tableFrom": "tag",
+          "tableTo": "company",
+          "schemaTo": "eetup-dev",
+          "columnsFrom": [
+            "company_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "name_min_length": {
+          "name": "name_min_length",
+          "value": "char_length(\"eetup-dev\".\"tag\".\"name\") >= 2"
+        }
+      },
       "isRLSEnabled": false
     }
   },
   "enums": {},
-  "schemas": {
-    "eetup-dev": "eetup-dev"
-  },
+  "schemas": {},
   "sequences": {},
   "roles": {},
   "policies": {},

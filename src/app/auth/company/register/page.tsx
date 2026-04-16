@@ -70,7 +70,7 @@ export default function RegisterAsCompany() {
           <Checkbox
             defaultChecked={values?.['privacy-policy'] ? true : false}
             name="privacyPolicy"
-            className="checkbox group size-5 rounded-md p-0.5 border-1 border-(--border-color) flex items-center justify-center group-hover:bg-orange-1 data-checked:bg-orange-1 transition-colors duration-200"
+            className="checkbox group size-5 rounded-md p-0.5 border border-(--border-color) flex items-center justify-center group-hover:bg-orange-1 data-checked:bg-orange-1 transition-colors duration-200"
           >
             <CheckIcon strokeWidth={3} className="hidden group-data-checked:block text-orange-3" />
           </Checkbox>

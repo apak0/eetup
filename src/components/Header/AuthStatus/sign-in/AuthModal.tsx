@@ -5,9 +5,29 @@ import Login from './login'
 import Register from './register'
 
 import Modal from '@/components/reusables/Modal'
+import ForgotPassword from './forgot-password'
+import ResetPassword from './reset-password'
+import { useSearchParams } from 'next/navigation'
 
 export function AuthModal({ open, setAuthOpen }: { open: boolean; setAuthOpen: (val: boolean) => void }) {
   const [loginContent, setLoginContent] = useState('initial')
+  const [token, setToken] = useState('')
+  const searchParams = useSearchParams()
+  const searchToken = searchParams.get('token')
+
+  if (typeof window !== 'undefined') {
+    const url = window.location.pathname + window.location.search
+    setTimeout(() => {
+      if (searchToken) setToken(searchToken)
+    }, 0)
+    if (url.startsWith('/auth/reset-password') && loginContent !== 'reset-password') {
+      window.history.replaceState({}, '', '/')
+      setTimeout(() => {
+        setAuthOpen(true)
+        setLoginContent('reset-password')
+      }, 0)
+    }
+  }
 
   return (
     <Modal
@@ -34,6 +54,16 @@ export function AuthModal({ open, setAuthOpen }: { open: boolean; setAuthOpen: (
           {loginContent === 'login' && (
             <div>
               <Login setLoginContent={setLoginContent} setAuthOpen={setAuthOpen} />
+            </div>
+          )}
+          {loginContent === 'forgot-password' && (
+            <div>
+              <ForgotPassword setLoginContent={setLoginContent} />
+            </div>
+          )}
+          {loginContent === 'reset-password' && (
+            <div>
+              <ResetPassword setLoginContent={setLoginContent} token={token} />
             </div>
           )}
           {loginContent === 'register' && (

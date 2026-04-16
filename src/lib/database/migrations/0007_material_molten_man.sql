@@ -1,1 +1,0 @@
-DROP TABLE "eetup-dev"."product_tag" CASCADE;

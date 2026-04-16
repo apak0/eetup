@@ -85,17 +85,21 @@ export default function Login({ setLoginContent, setAuthOpen }: { setLoginConten
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
-          <Field className="flex items-center gap-1 group">
-            <Checkbox
-              checked={rememberMe}
-              onChange={handleRememberMe}
-              className="checkbox group size-5 rounded-md p-0.5 border-1 border-(--border-color) flex items-center justify-center group-hover:bg-orange-1 data-checked:bg-orange-1 transition-colors duration-200"
-            >
-              <CheckIcon strokeWidth={3} className="hidden group-data-checked:block text-orange-3" />
-            </Checkbox>
-
-            <Label className="mb-0 ml-1">Remember Me</Label>
-          </Field>
+          <div className="flex items-center gap-2 justify-between">
+            <Field className="flex items-center gap-1 group">
+              <Checkbox
+                checked={rememberMe}
+                onChange={handleRememberMe}
+                className="checkbox group size-5 rounded-md p-0.5 border border-(--border-color) flex items-center justify-center group-hover:bg-orange-1 data-checked:bg-orange-1 transition-colors duration-200"
+              >
+                <CheckIcon strokeWidth={3} className="hidden group-data-checked:block text-orange-3" />
+              </Checkbox>
+              <Label className="mb-0 ml-1">Remember Me</Label>
+            </Field>
+            <button type="button" className="btn-link text-sm ml-2" onClick={() => setLoginContent && setLoginContent('forgot-password')}>
+              Forgot password?
+            </button>
+          </div>
         </div>
         <div className="grid gap-4 mt-8">
           <LoginButton />
