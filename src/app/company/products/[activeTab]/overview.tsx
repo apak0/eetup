@@ -5,8 +5,8 @@ import { redirect } from 'next/navigation'
 
 import { getLoggedInCompanyWithConnectionsAction } from './actions'
 
-import { MenuSearch } from '@/components/MenuSearch'
-import Loading from '@/components/reusables/Loading'
+import { MenuSearch } from '@/components-smart/MenuSearch'
+import Loading from '@/components/Loading'
 import { CompanyWithConnections } from '@/lib/database/type'
 
 export const ProductsOverview = () => {

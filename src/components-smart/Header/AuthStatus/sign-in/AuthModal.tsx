@@ -4,7 +4,7 @@ import SignInPage from './login/SignInGoogle'
 import Login from './login'
 import Register from './register'
 
-import Modal from '@/components/reusables/Modal'
+import Modal from '@/components/Modal'
 import ForgotPassword from './forgot-password'
 import ResetPassword from './reset-password'
 import { useSearchParams } from 'next/navigation'

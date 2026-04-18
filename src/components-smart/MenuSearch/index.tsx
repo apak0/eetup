@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight, Search, X } from 'lucide-react'
 
 import { StyledDiv } from './style'
 
-import { ProductItem } from '@/components/ProductItem'
+import { ProductItem } from '@/components-smart/ProductItem'
 import { useRouter } from 'next/navigation'
 
 interface Tab {

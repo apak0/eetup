@@ -6,7 +6,7 @@ import { Image as ImageKitImage } from '@imagekit/next'
 import classNames from 'classnames'
 import { Edit, Plus } from 'lucide-react'
 
-import { OverflowingText } from './reusables/OverflowingText'
+import { OverflowingText } from '../components/OverflowingText'
 
 import { updateProductActivationAction } from '@/app/company/products/[activeTab]/actions'
 import { productCategories } from '@/lib/database/constants'

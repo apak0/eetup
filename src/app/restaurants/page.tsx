@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 import { getNearbyCompanies } from './actions'
 
-import { CompanyItem } from '@/components/CompanyItem'
+import { CompanyItem } from '@/components-smart/CompanyItem'
 
 interface RestaurantsPageProps {
   searchParams: { [key: string]: string | string[] | undefined }
