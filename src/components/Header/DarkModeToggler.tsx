@@ -1,47 +1,50 @@
 'use client'
+
 import { useEffect, useState } from 'react'
 
-import { DarkModeTogglerContainer } from './styled'
+import styles from './DarkModeToggler.module.css'
+import classNames from 'classnames'
 
-export const DarkModeToggler = ({ preferredTheme }: { preferredTheme: 'dark' | 'light' }) => {
-  const [theme, setTheme] = useState<'dark' | 'light'>(preferredTheme)
-
-  // Set theme on mount to avoid hydration mismatch
-  useEffect(() => {
-    let initialTheme: 'dark' | 'light' = preferredTheme
-    if (!preferredTheme && typeof window !== 'undefined' && window.matchMedia) {
-      initialTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+export const DarkModeToggler = () => {
+  const getInitialTheme = () => {
+    if (typeof window !== 'undefined') {
+      const cookieMatch = document.cookie.match(/theme=(dark|light)/)
+      if (cookieMatch) return cookieMatch[1] as 'dark' | 'light'
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark'
     }
-    setTheme(initialTheme)
-    document.documentElement.classList.toggle('dark', initialTheme === 'dark')
-  }, [preferredTheme])
-
-  const onThemeChange = (val: 'dark' | 'light') => {
-    setTheme(val)
-    document.documentElement.classList.toggle('dark', val === 'dark')
-
-    if (val === 'dark') {
-      document.cookie = 'theme=dark; path=/'
-    } else {
-      document.cookie = 'theme=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;'
-    }
+    return 'light'
   }
 
-  return (
-    <DarkModeTogglerContainer>
-      <input type="checkbox" id="toggle_checkbox" onChange={(e) => onThemeChange(e.target.checked ? 'dark' : 'light')} checked={theme === 'dark'} />
+  const [theme, setTheme] = useState<'dark' | 'light'>()
 
-      <label htmlFor="toggle_checkbox" className="mb-0">
-        <div id="star">
-          <div className="star" id="star-1">
-            ★
-          </div>
-          <div className="star" id="star-2">
-            ★
-          </div>
+  useEffect(() => {
+    setTheme(getInitialTheme())
+  }, [])
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark')
+    document.cookie = `theme=${theme}; path=/`
+  }, [theme])
+
+  return (
+    <div className={styles.container}>
+      <input
+        type="checkbox"
+        id="toggle_checkbox"
+        className={styles.toggle_checkbox}
+        onChange={(e) => {
+          setTheme(e.target.checked ? 'dark' : 'light')
+        }}
+        checked={theme === 'dark'}
+      />
+
+      <label htmlFor="toggle_checkbox" className={classNames(styles.containerLabel, 'mb-0')}>
+        <div className={styles.starContainer}>
+          <div className={classNames(styles.star, styles.star1)}>★</div>
+          <div className={classNames(styles.star, styles.star2)}>★</div>
         </div>
-        <div id="moon"></div>
+        <div className={styles.moon}></div>
       </label>
-    </DarkModeTogglerContainer>
+    </div>
   )
 }

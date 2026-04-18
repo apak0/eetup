@@ -3,14 +3,12 @@ import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import unusedImports from 'eslint-plugin-unused-imports'
 import tseslint from 'typescript-eslint'
 import { defineConfig } from 'eslint/config'
-import reactPlugin from 'eslint-plugin-react'
 
 export default defineConfig({
   plugins: {
     '@typescript-eslint': tseslint.plugin,
     'unused-imports': unusedImports,
     'simple-import-sort': simpleImportSort,
-    react: reactPlugin,
   },
   languageOptions: {
     parser: tseslint.parser,
