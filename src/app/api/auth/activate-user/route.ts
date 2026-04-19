@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
 
   const token = searchParams.get('token') || ''
 
-  let decodedToken: any = null
+  let decodedToken: any
 
   try {
     decodedToken = jwt.verify(token, JWT_SECRET)

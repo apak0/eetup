@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Button, Input } from '@headlessui/react'
 import classNames from 'classnames'
 import { ArrowLeft, ArrowRight, Search, X } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 import { StyledDiv } from './style'
 
 import { ProductItem } from '@/components-smart/ProductItem'
-import { useRouter } from 'next/navigation'
 
 interface Tab {
   id: number

@@ -31,7 +31,7 @@ export const registerCompanyAction = async (_prevState: any, formData: FormData)
     cocId,
   }
 
-  let decodedToken: any = null
+  let decodedToken: any
 
   if (!privacyPolicy) {
     return {

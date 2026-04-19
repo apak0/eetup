@@ -2,6 +2,7 @@ import type { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 
 import { getServerSession } from 'next-auth'
 
 import { UserSession } from '../database/type'
+
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 
 // Use it in server contexts

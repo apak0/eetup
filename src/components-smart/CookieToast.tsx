@@ -28,7 +28,9 @@ export default function CookieToast({ toastCookie }: { toastCookie: any }) {
             document.cookie = `${name}=; path=/; max-age=0`
           }
         }
-      } catch {}
+      } catch (e) {
+        console.error('Failed to toast cookie', name, e)
+      }
     }
   }, [toastCookie])
   return null

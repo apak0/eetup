@@ -1,18 +1,18 @@
 'use client'
 import { useActionState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
 import toast from 'react-hot-toast'
 import { Checkbox, Field, Label } from '@headlessui/react'
 import { CheckIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 
 import { startCompanyAction } from './actions'
 
 import { PhoneInput } from '@/components/PhoneInput'
 
 export default function StartAsCompany() {
-  const { data: session, status } = useSession()
+  useSession()
   const router = useRouter()
   const [formState, formAction] = useActionState<{ values?: any; error?: any; message?: any }, any>(startCompanyAction, { values: {} })
 

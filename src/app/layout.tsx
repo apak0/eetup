@@ -1,6 +1,6 @@
 import { Toaster } from 'react-hot-toast'
 import classNames from 'classnames'
-import type { Metadata } from 'next'
+import { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { cookies } from 'next/headers'
 
@@ -10,6 +10,7 @@ import { Header } from '../components-smart/Header'
 import { Providers } from './Providers'
 
 import './globals.css'
+
 import CookieToast from '@/components-smart/CookieToast'
 
 const inter = Inter({ subsets: ['latin'] })

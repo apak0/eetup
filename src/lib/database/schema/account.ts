@@ -1,4 +1,5 @@
-import { integer, varchar, boolean } from 'drizzle-orm/pg-core'
+import { boolean, integer, varchar } from 'drizzle-orm/pg-core'
+
 import { cs1, withTimestamps } from './utils'
 
 export const account = cs1.table(

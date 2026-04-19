@@ -6,10 +6,9 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 
 import { db } from '@/lib/database/db'
-
 import { account } from '@/lib/database/schema/account'
-import { user } from '@/lib/database/schema/user'
 import { company } from '@/lib/database/schema/company'
+import { user } from '@/lib/database/schema/user'
 
 export const authOptions: NextAuthOptions = {
   callbacks: {

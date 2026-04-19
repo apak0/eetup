@@ -13,10 +13,10 @@ import { Preference } from './type'
 
 import { ProductPreference } from '@/app/company/products/[activeTab]/type'
 import { useBasket } from '@/app/Providers'
-import { MenuSearch } from '@/components-smart/MenuSearch'
 import Modal from '@/components/Modal'
 import { RadioGroup } from '@/components/RadioGroup'
 import { Tag } from '@/components/Tag'
+import { MenuSearch } from '@/components-smart/MenuSearch'
 import { CompanyWithConnections } from '@/lib/database/type'
 
 export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWithConnections }) {

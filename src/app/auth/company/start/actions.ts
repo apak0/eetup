@@ -1,14 +1,13 @@
 'use server'
 import { eq } from 'drizzle-orm'
 import jwt from 'jsonwebtoken'
-import nodemailer from 'nodemailer'
 
 import { appName, JWT_SECRET } from '@/constants'
 import { db } from '@/lib/database/db'
 import { account } from '@/lib/database/schema/account'
 import { company } from '@/lib/database/schema/company'
-import { sendEmail } from '@/lib/utils/sendEmail'
 import { registerCompanyEmailTemplate } from '@/lib/templates/registerCompany'
+import { sendEmail } from '@/lib/utils/sendEmail'
 
 export const startCompanyAction = async (_prevState: any, formData: FormData) => {
   const privacyPolicy = formData.get('privacyPolicy')?.toString() || ''
@@ -43,16 +42,6 @@ export const startCompanyAction = async (_prevState: any, formData: FormData) =>
       values,
     }
   }
-
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT),
-    secure: true,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  })
 
   const registrationToken = jwt.sign({ email, firstName, lastName, organization }, JWT_SECRET, { expiresIn: '1h' })
 

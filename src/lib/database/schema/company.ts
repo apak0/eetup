@@ -1,4 +1,5 @@
-import { integer, varchar, boolean, decimal, doublePrecision } from 'drizzle-orm/pg-core'
+import { boolean, decimal, doublePrecision, integer, varchar } from 'drizzle-orm/pg-core'
+
 import { account } from './account'
 import { cs1, withTimestamps } from './utils'
 

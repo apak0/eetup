@@ -35,7 +35,6 @@ export default defineConfig({
         ignoreRestSiblings: true,
       },
     ],
-    'react/jsx-curly-brace-presence': ['error', { props: 'never', children: 'never' }],
     'jsx-a11y/no-autofocus': 'off',
 
     // Plugin rules:
@@ -51,6 +50,7 @@ export default defineConfig({
           ['^(index|constants|assets|styles)(/.*|$)'],
           ['^(components|utils|services)(/.*|$)'],
           ['^(pages)(/.*|$)'],
+          ['^(lib)(/.*|$)'],
           // Parent imports. Put `..` last.
           ['^\\.\\.(?!/?$)', '^\\.\\./?$'],
           // Other relative imports. Put same-folder imports and `.` last.

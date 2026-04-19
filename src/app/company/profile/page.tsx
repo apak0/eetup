@@ -1,10 +1,10 @@
+import { eq } from 'drizzle-orm'
+import { revalidatePath } from 'next/cache'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
+
 import { db } from '@/lib/database/db'
 import { auth } from '@/lib/utils/auth'
-import { eq } from 'drizzle-orm'
-import { redirect } from 'next/navigation'
-import { revalidatePath } from 'next/cache'
-
-import { cookies } from 'next/headers'
 
 async function updateCompanyProfile(formData: FormData) {
   'use server'
@@ -26,7 +26,7 @@ async function updateCompanyProfile(formData: FormData) {
       updates[key] = value.replace(/[<>]/g, '')
     }
   }
-  let toast = { success: false, error: '', message: '' }
+  const toast = { success: false, error: '', message: '' }
   if (Object.keys(updates).length === 0) {
     toast.error = 'No fields provided'
   } else {
@@ -35,7 +35,7 @@ async function updateCompanyProfile(formData: FormData) {
       revalidatePath('/company/profile')
       toast.success = true
       toast.message = 'Profile updated successfully.'
-    } catch (e: any) {
+    } catch (_e: any) {
       toast.error = 'Update failed'
     }
   }

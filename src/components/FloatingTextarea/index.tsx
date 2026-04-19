@@ -26,7 +26,6 @@ const FloatingTextarea: React.FC<FloatingTextareaProps> = ({
   value,
   className,
 }) => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const textareaId = id || useId()
   const [isFocused, setIsFocused] = useState(false)
   const shouldFloat = isFocused || value.trim().length > 0

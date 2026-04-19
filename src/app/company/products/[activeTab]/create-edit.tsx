@@ -79,8 +79,8 @@ export const CreateEditProduct = ({ productData, categoryOptions }: { productDat
       const data = await response.json()
       const { signature, expire, token, publicKey } = data
       return { signature, expire, token, publicKey }
-    } catch (_e) {
-      throw new Error('Authentication request failed')
+    } catch (e) {
+      throw new Error('Authentication request failed', { cause: e })
     }
   }
 
@@ -146,7 +146,7 @@ export const CreateEditProduct = ({ productData, categoryOptions }: { productDat
       router.refresh()
       router.push('/company/products/overview')
     } catch (error) {
-      let errorMesssage = ''
+      let errorMesssage
       if (error instanceof ImageKitAbortError) {
         errorMesssage = 'Upload aborted: ' + error.reason
       } else if (error instanceof ImageKitInvalidRequestError) {

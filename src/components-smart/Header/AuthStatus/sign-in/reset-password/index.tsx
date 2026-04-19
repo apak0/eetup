@@ -1,7 +1,6 @@
-
 import { useState } from 'react'
 
-export default function ResetPassword({ setLoginContent, token }: { setLoginContent: (val: string) => void, token: string }) {
+export default function ResetPassword({ setLoginContent, token }: { setLoginContent: (val: string) => void; token: string }) {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')

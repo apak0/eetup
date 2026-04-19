@@ -1,9 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import classNames from 'classnames'
 
 import styles from './DarkModeToggler.module.css'
-import classNames from 'classnames'
 
 export const DarkModeToggler = () => {
   const getInitialTheme = () => {

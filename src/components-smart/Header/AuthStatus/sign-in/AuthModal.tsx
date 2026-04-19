@@ -1,13 +1,13 @@
 import { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 import SignInPage from './login/SignInGoogle'
+import ForgotPassword from './forgot-password'
 import Login from './login'
 import Register from './register'
+import ResetPassword from './reset-password'
 
 import Modal from '@/components/Modal'
-import ForgotPassword from './forgot-password'
-import ResetPassword from './reset-password'
-import { useSearchParams } from 'next/navigation'
 
 export function AuthModal({ open, setAuthOpen }: { open: boolean; setAuthOpen: (val: boolean) => void }) {
   const [loginContent, setLoginContent] = useState('initial')

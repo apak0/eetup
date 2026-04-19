@@ -1,11 +1,12 @@
+import { eq } from 'drizzle-orm'
+import jwt from 'jsonwebtoken'
+import { NextRequest, NextResponse } from 'next/server'
+
+import { JWT_SECRET } from '@/constants'
 import { db } from '@/lib/database/db'
 import { account } from '@/lib/database/schema/account'
-import { eq } from 'drizzle-orm'
-import { NextRequest, NextResponse } from 'next/server'
 import { resetPasswordEmailTemplate } from '@/lib/templates/resetPassword'
 import { sendEmail } from '@/lib/utils/sendEmail'
-import jwt from 'jsonwebtoken'
-import { JWT_SECRET } from '@/constants'
 
 async function sendResetEmail(email: string, token: string) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.FRONTEND_LINK
@@ -32,6 +33,6 @@ export async function POST(req: NextRequest) {
     }
     return NextResponse.json({ message: 'If the email exists, a reset link has been sent.' })
   } catch (e) {
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    return NextResponse.json({ error: 'Internal server error', cause: e }, { status: 500 })
   }
 }

@@ -1,4 +1,5 @@
 import { integer, varchar } from 'drizzle-orm/pg-core'
+
 import { account } from './account'
 import { cs1, withTimestamps } from './utils'
 

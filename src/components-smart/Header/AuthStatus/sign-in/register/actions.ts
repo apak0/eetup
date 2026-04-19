@@ -2,14 +2,13 @@
 import bcrypt from 'bcrypt'
 import { eq } from 'drizzle-orm'
 import jwt from 'jsonwebtoken'
-import nodemailer from 'nodemailer'
 
 import { appName, JWT_SECRET } from '@/constants'
 import { db } from '@/lib/database/db'
 import { account } from '@/lib/database/schema/account'
 import { user } from '@/lib/database/schema/user'
-import { sendEmail } from '@/lib/utils/sendEmail'
 import { registerUserEmailTemplate } from '@/lib/templates/registerUser'
+import { sendEmail } from '@/lib/utils/sendEmail'
 
 export const registerUserAction = async (_prevState: any, formData: FormData) => {
   const email = formData.get('email')?.toString() || ''
@@ -32,16 +31,6 @@ export const registerUserAction = async (_prevState: any, formData: FormData) =>
       values,
     }
   }
-
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT),
-    secure: true,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  })
 
   const registrationToken = jwt.sign({ email, firstName, lastName }, JWT_SECRET, { expiresIn: '1h' })
 

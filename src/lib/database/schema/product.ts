@@ -1,6 +1,7 @@
-import { integer, varchar, decimal, boolean, jsonb, unique } from 'drizzle-orm/pg-core'
-import { company } from './company'
+import { boolean, decimal, integer, jsonb, unique, varchar } from 'drizzle-orm/pg-core'
+
 import { category } from './category'
+import { company } from './company'
 import { cs1, withTimestamps } from './utils'
 
 export const product = cs1.table(

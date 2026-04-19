@@ -1,7 +1,8 @@
-import { integer, varchar, check } from 'drizzle-orm/pg-core'
+import { sql } from 'drizzle-orm'
+import { check, integer, varchar } from 'drizzle-orm/pg-core'
+
 import { company } from './company'
 import { cs1, withTimestamps } from './utils'
-import { sql } from 'drizzle-orm'
 
 export const tag = cs1.table(
   'tag',
