@@ -1,34 +1,34 @@
 /* eslint-disable no-param-reassign */
 import bcrypt from 'bcrypt'
-import { and, eq } from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 
 import { db } from '@/lib/database/db'
-import { company, user } from '@/lib/database/schema'
-import { Company, CompanyWithPassword, User, UserWithPassword } from '@/lib/database/type'
+import { account } from '@/lib/database/schema/account'
+import { company } from '@/lib/database/schema/company'
+import { user } from '@/lib/database/schema/user'
 
 export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }: { token: any; user: any }) {
       if (user) {
-        const typedUser = user as (User | Company) & { isCompany: boolean }
-        token.id = typedUser.id
-        token.firstName = typedUser.firstName
-        token.lastName = typedUser.lastName
-        token.organization = (typedUser as Company).organization
-        token.isCompany = typedUser.isCompany
+        token.id = user.id
+        token.role = user.role
+        token.firstName = user.firstName
+        token.lastName = user.lastName
+        token.organization = user.organization
       }
       return token
     },
     async session({ session, token }: any) {
       if (token) {
         session.user.id = token.id
+        session.user.role = token.role
         session.user.firstName = token.firstName
         session.user.lastName = token.lastName
         session.user.organization = token.organization
-        session.user.isCompany = token.isCompany
         return session
       } else {
         return null
@@ -36,7 +36,6 @@ export const authOptions: NextAuthOptions = {
     },
   },
 
-  // Configure one or more authentication providers
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID!,
@@ -45,55 +44,46 @@ export const authOptions: NextAuthOptions = {
 
     CredentialsProvider({
       id: 'credentials',
-      // The name to display on the sign in form (e.g. 'Sign in with...')
       name: 'Credentials',
-      // The credentials is used to generate a suitable form on the sign in page.
-      // You can specify whatever fields you are expecting to be submitted.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
-        username: { label: 'Username', type: 'text', placeholder: 'jsmith' },
+        username: { label: 'Email', type: 'text', placeholder: 'jsmith@example.com' },
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, _req) {
-        if (credentials) {
-          const email = credentials.username
-          const password = credentials.password
+        if (!credentials) throw new Error('Invalid credentials')
+        const email = credentials.username
+        const password = credentials.password
 
-          const [foundUser] = await db
-            .select()
-            .from(user)
-            .where(and(eq(user.email, email), eq(user.emailVerified, true)))
-
-          let entery: UserWithPassword | CompanyWithPassword = foundUser
-          if (!entery) {
-            entery = (
-              await db
-                .select()
-                .from(company)
-                .where(and(eq(company.email, email), eq(company.emailVerified, true)))
-            )[0]
-          }
-
-          if (!entery) {
-            throw new Error('User not found or not verified')
-          }
-
-          const isPasswordValid = entery.password && (await bcrypt.compare(password, entery.password))
-          if (!isPasswordValid && entery.password) {
-            throw new Error('Invalid credentials')
-          }
-
-          const { password: _, ...userWithoutPassword } = entery
-
-          if (userWithoutPassword) {
-            return { ...userWithoutPassword, id: userWithoutPassword.id.toString(), isCompany: !foundUser }
-          } else {
-            throw new Error('Invalid credentials')
-          }
-        } else {
+        // Find account by email
+        const foundAccount = await db.query.account.findFirst({
+          where: eq(account.email, email),
+        })
+        if (!foundAccount || !foundAccount.emailVerified) {
+          throw new Error('Account not found or not verified')
+        }
+        // Check password
+        if (!(await bcrypt.compare(password, foundAccount.password))) {
           throw new Error('Invalid credentials')
         }
+        // Get profile info (user or company)
+        let profile = null
+        if (foundAccount.role === 'user') {
+          profile = await db.query.user.findFirst({ where: eq(user.accountId, foundAccount.id) })
+        } else if (foundAccount.role === 'company') {
+          profile = await db.query.company.findFirst({ where: eq(company.accountId, foundAccount.id) })
+        }
+        if (!profile) throw new Error('Profile not found')
+        const base = {
+          id: foundAccount.id.toString(),
+          role: foundAccount.role,
+          email: foundAccount.email,
+          firstName: profile.firstName,
+          lastName: profile.lastName,
+        }
+        if (foundAccount.role === 'company' && 'organization' in profile) {
+          return { ...base, organization: profile.organization }
+        }
+        return base
       },
     }),
   ],
@@ -101,5 +91,4 @@ export const authOptions: NextAuthOptions = {
 }
 
 export const handler = NextAuth(authOptions)
-
 export { handler as GET, handler as POST }

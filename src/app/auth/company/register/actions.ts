@@ -5,7 +5,8 @@ import jwt from 'jsonwebtoken'
 
 import { JWT_SECRET } from '@/constants'
 import { db } from '@/lib/database/db'
-import { company } from '@/lib/database/schema'
+import { account } from '@/lib/database/schema/account'
+import { company } from '@/lib/database/schema/company'
 import { getLatLon } from '@/lib/utils/getLatLon'
 
 export const registerCompanyAction = async (_prevState: any, formData: FormData) => {
@@ -30,7 +31,7 @@ export const registerCompanyAction = async (_prevState: any, formData: FormData)
     cocId,
   }
 
-  let decodedToken: any = null
+  let decodedToken: any
 
   if (!privacyPolicy) {
     return {
@@ -49,17 +50,15 @@ export const registerCompanyAction = async (_prevState: any, formData: FormData)
     }
   }
 
-  const [foundCompany] = await db.select().from(company).where(eq(company.email, decodedToken.email))
-
-  if (!foundCompany) {
+  const [foundAccount] = await db.select().from(account).where(eq(account.email, decodedToken.email))
+  if (!foundAccount) {
     return {
-      title: 'This company is not stared yet!',
+      title: 'This company is not started yet!',
       error: 'Your company is not started yet. Please start the registration process again.',
       values,
     }
   }
-
-  if (foundCompany.emailVerified) {
+  if (foundAccount.emailVerified) {
     return {
       title: 'Company is already registered!',
       error: 'This email is already used. If you forgot your password, use forgot password flow.',
@@ -79,16 +78,16 @@ export const registerCompanyAction = async (_prevState: any, formData: FormData)
   try {
     const { lat, lon } = await getLatLon({ postalcode: postcode, city, street })
 
+    await db.update(account).set({ password: hashedPassword, emailVerified: true }).where(eq(account.email, decodedToken.email))
+
     await db
       .update(company)
       .set({
         ...values,
         lat,
         lon,
-        password: hashedPassword,
-        emailVerified: true,
       })
-      .where(eq(company.email, decodedToken.email))
+      .where(eq(company.accountId, foundAccount.id))
   } catch (e: any) {
     return {
       error: e?.detail || 'Error registering company. Please try again later.',

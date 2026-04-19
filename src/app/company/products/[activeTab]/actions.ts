@@ -9,7 +9,7 @@ import { auth } from '@/lib/utils/auth'
 
 export const createProductAction = async (formValues: any) => {
   const session = await auth()
-  if (!session?.user?.id || !session?.user?.isCompany) return { error: 'Unauthorized' }
+  if (!session?.user?.id || session?.user?.role !== 'company') return { error: 'Unauthorized' }
   const companyId = session?.user?.id
 
   const newProduct = formValues
@@ -24,7 +24,7 @@ export const createProductAction = async (formValues: any) => {
 
 export const editProductAction = async (formValues: any, productId: number) => {
   const session = await auth()
-  if (!session?.user?.id || !session?.user?.isCompany) return { error: 'Unauthorized' }
+  if (!session?.user?.id || session?.user?.role !== 'company') return { error: 'Unauthorized' }
 
   const companyId = session?.user?.id
   const newProduct = formValues
@@ -51,15 +51,12 @@ export const getProductsAction = async () => {
 export const getLoggedInCompanyWithConnectionsAction = async (): Promise<{ error?: any; data?: CompanyWithConnections }> => {
   const session = await auth()
 
-  if (!session?.user?.id || !session?.user?.isCompany) return { error: 'Unauthorized' }
+  if (!session?.user?.id || session?.user?.role !== 'company') return { error: 'Unauthorized' }
 
   const companyId = session?.user?.id
 
   const companyWithConnections = await db.query.company.findFirst({
     where: (company, { eq }) => eq(company.id, companyId),
-    columns: {
-      password: false,
-    },
     with: {
       product: true,
       category: {
@@ -149,7 +146,7 @@ export const getCompanyCategoryOptions = async () => {
 
 export const createCategoryAction = async (formValues: any) => {
   const session = await auth()
-  if (!session?.user?.id || !session?.user?.isCompany) return { error: 'Unauthorized' }
+  if (!session?.user?.id || session?.user?.role !== 'company') return { error: 'Unauthorized' }
   const companyId = session?.user?.id
 
   const newCategory = formValues

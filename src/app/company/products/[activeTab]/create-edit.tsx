@@ -19,8 +19,8 @@ import { useSession } from 'next-auth/react'
 import { createCategoryAction, createProductAction, editProductAction } from './actions'
 import { ProductPreference } from './type'
 
-import Modal from '@/components/reusables/Modal'
-import Select from '@/components/reusables/Select'
+import Modal from '@/components/Modal'
+import Select from '@/components/Select'
 import { productAllergens, productDietary } from '@/lib/database/constants'
 import { Category, Product } from '@/lib/database/type'
 import { validateImageFile } from '@/lib/utils/validateImageSize'
@@ -79,8 +79,8 @@ export const CreateEditProduct = ({ productData, categoryOptions }: { productDat
       const data = await response.json()
       const { signature, expire, token, publicKey } = data
       return { signature, expire, token, publicKey }
-    } catch (_e) {
-      throw new Error('Authentication request failed')
+    } catch (e) {
+      throw new Error('Authentication request failed', { cause: e })
     }
   }
 
@@ -146,7 +146,7 @@ export const CreateEditProduct = ({ productData, categoryOptions }: { productDat
       router.refresh()
       router.push('/company/products/overview')
     } catch (error) {
-      let errorMesssage = ''
+      let errorMesssage
       if (error instanceof ImageKitAbortError) {
         errorMesssage = 'Upload aborted: ' + error.reason
       } else if (error instanceof ImageKitInvalidRequestError) {

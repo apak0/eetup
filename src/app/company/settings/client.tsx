@@ -8,8 +8,8 @@ import { useRouter } from 'next/navigation'
 
 import { createTagAction } from './actions'
 
-import Modal from '@/components/reusables/Modal'
-import Select from '@/components/reusables/Select'
+import Modal from '@/components/Modal'
+import Select from '@/components/Select'
 import { Tag } from '@/lib/database/type'
 
 export default function CompanySettingsClient({ tagOptions }: { tagOptions: Tag[] }) {

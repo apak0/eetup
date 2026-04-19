@@ -6,10 +6,11 @@ declare module 'next-auth' {
     user: {
       id: string
       name: undefined
-      firstName?: string
-      lastName?: string
+      role: string
+      email: string
+      firstName: string
+      lastName: string
       organization?: string
-      isCompany?: boolean
       // Add any custom fields you have
     } & DefaultSession['user']
   }

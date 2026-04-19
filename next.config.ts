@@ -2,7 +2,6 @@ import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['cdn-icons-png.flaticon.com', 'images.unsplash.com'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -13,6 +12,18 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'img.freepik.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn-icons-png.flaticon.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
         port: '',
         pathname: '/**',
       },

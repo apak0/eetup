@@ -9,9 +9,6 @@ export const getCompanyWithProductsAction = async (companyId: number): Promise<{
 
   const companyWithConnections = await db.query.company.findFirst({
     where: (company, { eq }) => eq(company.id, companyId),
-    columns: {
-      password: false,
-    },
     with: {
       product: true,
       category: {

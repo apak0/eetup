@@ -13,11 +13,10 @@ import { Preference } from './type'
 
 import { ProductPreference } from '@/app/company/products/[activeTab]/type'
 import { useBasket } from '@/app/Providers'
-import { MenuSearch } from '@/components/MenuSearch'
-import { ProductItem } from '@/components/ProductItem'
-import Modal from '@/components/reusables/Modal'
-import { RadioGroup } from '@/components/reusables/RadioGroup'
-import { Tag } from '@/components/reusables/Tag'
+import Modal from '@/components/Modal'
+import { RadioGroup } from '@/components/RadioGroup'
+import { Tag } from '@/components/Tag'
+import { MenuSearch } from '@/components-smart/MenuSearch'
 import { CompanyWithConnections } from '@/lib/database/type'
 
 export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWithConnections }) {
@@ -146,7 +145,7 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
             <Button
               className="w-full"
               onClick={() => {
-                if (session?.data?.user?.isCompany) {
+                if (session?.data?.user?.role === 'company') {
                   toast.error('You cannot checkout as a company user. Please switch to a customer account.')
                 } else {
                   redirect(`/restaurants/${companyData?.id}/checkout`)
@@ -355,16 +354,7 @@ export function ClientRestaurantDetail({ companyData }: { companyData: CompanyWi
                 companyData?.category?.map((catItem) => ({
                   id: catItem.id,
                   label: catItem.name,
-                  items: catItem?.product.map((product) => (
-                    <ProductItem
-                      key={product.id}
-                      item={product}
-                      onAdd={() => {
-                        setAddToBasketOpen(true)
-                        setPreference({ ...product, selections: {}, qty: 1 })
-                      }}
-                    />
-                  )),
+                  products: catItem.product,
                 })) || []
               }
             />

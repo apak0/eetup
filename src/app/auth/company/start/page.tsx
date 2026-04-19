@@ -5,12 +5,14 @@ import { Checkbox, Field, Label } from '@headlessui/react'
 import { CheckIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 
 import { startCompanyAction } from './actions'
 
-import { PhoneInput } from '@/components/reusables/PhoneInput'
+import { PhoneInput } from '@/components/PhoneInput'
 
 export default function StartAsCompany() {
+  useSession()
   const router = useRouter()
   const [formState, formAction] = useActionState<{ values?: any; error?: any; message?: any }, any>(startCompanyAction, { values: {} })
 

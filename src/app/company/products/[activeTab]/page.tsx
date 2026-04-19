@@ -4,7 +4,7 @@ import { getCompanyCategoryOptions, getProductDataAction } from './actions'
 import { CreateEditProduct } from './create-edit'
 import { ProductsOverview } from './overview'
 
-import { Tabs } from '@/components/reusables/Tabs'
+import { Tabs } from '@/components/Tabs'
 
 export default async function ProductsPage({
   params,
@@ -36,5 +36,5 @@ export default async function ProductsPage({
       icon: <Edit size={20} />,
     })
   }
-  return <Tabs tabs={tabs} selectedTab={activeTab} />
+  return <Tabs tabs={tabs} selectedTab={activeTab} basePath="/company/products/" />
 }

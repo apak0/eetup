@@ -3,6 +3,11 @@ import qs from 'qs'
 export const getLatLon = async (address: { q?: string; postalcode?: string; city?: string; street?: string }) => {
   const [data] = await fetch(
     `https://nominatim.openstreetmap.org/search?${qs.stringify(address)}${address?.postalcode ? '&country=Netherlands' : ''}&format=json`,
+    {
+      headers: {
+        'User-Agent': 'Eetup/1.0 (eetup.business@gmail.com)',
+      },
+    },
   )
     .then((res) => {
       if (res.ok) {

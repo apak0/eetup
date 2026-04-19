@@ -4,14 +4,14 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import { JWT_SECRET } from '@/constants'
 import { db } from '@/lib/database/db'
-import { user } from '@/lib/database/schema'
+import { account } from '@/lib/database/schema/account'
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams
 
   const token = searchParams.get('token') || ''
 
-  let decodedToken: any = null
+  let decodedToken: any
 
   try {
     decodedToken = jwt.verify(token, JWT_SECRET)
@@ -23,13 +23,13 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  const [foundUser] = await db.select().from(user).where(eq(user.email, decodedToken?.email))
+  const [foundAccount] = await db.select().from(account).where(eq(account.email, decodedToken?.email))
 
-  if (foundUser && foundUser.emailVerified) {
-    return NextResponse.json({ message: 'User already exists' }, { status: 400 })
+  if (foundAccount && foundAccount.emailVerified) {
+    return NextResponse.json({ message: 'Account already activated' }, { status: 400 })
   }
 
-  await db.update(user).set({ emailVerified: true }).where(eq(user.email, decodedToken?.email))
+  await db.update(account).set({ emailVerified: true }).where(eq(account.email, decodedToken?.email))
 
   return NextResponse.redirect(new URL('/hub/user/activated', req.url))
 }

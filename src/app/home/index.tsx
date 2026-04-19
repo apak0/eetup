@@ -8,13 +8,13 @@ export default function Home() {
       {/* Hero Section */}
       <section className="min-h-[40vh] md:h-[50vh] flex items-center justify-center w-full ">
         <div className="w-full  ">
-          <div className="2xl:block hidden absolute left-0 top-[10%] w-[30%] max-w-[400px]">
+          <div className="2xl:block hidden absolute left-0 top-[10%] w-[30%] max-w-100">
             <Image
               src="/images/home_grocery_basket.png"
               alt="Grocery Basket"
               width={400}
               height={400}
-              className="object-contain w-full h-auto"
+              className="object-contain w-auto h-auto"
               priority
             />
           </div>
@@ -26,8 +26,8 @@ export default function Home() {
             <Search />
           </div>
 
-          <div className="sm:block hidden absolute right-0 top-[10%] [@media(min-width:1920px)]:w-[400px] [@media(max-width:1920px)]:w-[20%]">
-            <Image src="/images/home_burger.png" alt="Burger" width={400} height={400} className="object-contain w-full h-auto" priority />
+          <div className="sm:block hidden absolute right-0 top-[10%] [@media(min-width:1920px)]:w-100 [@media(max-width:1920px)]:w-[20%]">
+            <Image src="/images/home_burger.png" alt="Burger" width={400} height={400} className="object-contain w-auto h-auto" priority />
           </div>
         </div>
       </section>
