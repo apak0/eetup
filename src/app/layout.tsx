@@ -10,6 +10,7 @@ import { Header } from '../components-smart/Header'
 import { Providers } from './Providers'
 
 import './globals.css'
+import CookieToast from '@/components-smart/CookieToast'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -34,6 +35,7 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies()
   const theme: any = cookieStore.get('theme')?.value
+  const toastCookie: any = cookieStore.get('toast')?.value
 
   return (
     <html lang="en" className={classNames({ dark: theme === 'dark' })}>
@@ -45,6 +47,7 @@ export default async function RootLayout({
             <Toaster position="bottom-right" />
             <main className="px-2 lg:px-10">{children}</main>
             <Footer />
+            <CookieToast toastCookie={JSON.parse(toastCookie || '{}')} />
           </>
         </Providers>
       </body>

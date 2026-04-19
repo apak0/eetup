@@ -14,7 +14,7 @@ export default async function CompanyLayout({ children }: { children: React.Reac
   ]
 
   return (
-    <div className="grid grid-cols-3 xl:grid-cols-8 gap-4 min-h-[calc(100vh-5rem)]">
+    <div className="grid grid-cols-3 2xl:grid-cols-8 gap-4 min-h-[calc(100vh-5rem)]">
       <aside>
         <div className="flex flex-col sticky top-0">
           <h2 className="col-span-4 text-lg font-semibold my-4 h-7"></h2>
@@ -27,7 +27,7 @@ export default async function CompanyLayout({ children }: { children: React.Reac
           </ul>
         </div>
       </aside>
-      <section className="col-span-2 xl:col-span-7 mt-6">{children}</section>
+      <section className="col-span-2 2xl:col-span-7 mt-6">{children}</section>
     </div>
   )
 }
